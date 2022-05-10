@@ -39,12 +39,11 @@ public class UFO extends Traveller {
      * mozog az aszteroidájának egy random szomszédjára.
      */
     public void makeAction(){
-        Random rand = new Random();
-        boolean randDecision = rand.nextBoolean();
+        boolean randDecision = Game.rand.nextBoolean();
     	if(randDecision) {
     		mine();
     	} else {
-            int randNeighbour = rand.nextInt(asteroid.getNeighbourCount());
+            int randNeighbour = Game.rand.nextInt(asteroid.getNeighbourCount());
     		move(randNeighbour);
     	}
 

@@ -16,6 +16,11 @@ public class LevelView extends JPanel implements View {
     }
 
     /**
+     * Random objektum.
+     */
+    private Random random = new Random();
+
+    /**
      * Megmondja, hogy az adott nyersanyaghoz milyen szín tartozik.
      * @param m A nyersanyag
      * @return A szín, ami a nyersanyaghoz tartozik
@@ -262,7 +267,6 @@ public class LevelView extends JPanel implements View {
      */
     private void addTeleportView(Teleport t) {
         boolean found = false;
-        Random random = new Random();
         Color color = new Color(random.nextFloat(), random.nextFloat(), random.nextFloat());
         for (TeleportView tv : teleportViews.values())
             if (tv != null && tv.isPair(t)){
@@ -296,7 +300,6 @@ public class LevelView extends JPanel implements View {
             return teleportcolors.get(t);
         if (t.getPair() != null && teleportcolors.containsKey(t.getPair()))
             return teleportcolors.get(t.getPair());
-        Random random = new Random();
         Color color = new Color(random.nextFloat(), random.nextFloat(), random.nextFloat());
         teleportcolors.put(t, color);
         if (t.getPair() != null)

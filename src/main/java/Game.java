@@ -38,6 +38,11 @@ public class Game {
      * A játékban lévő lehelyezett teleportkapuk. Amik a játékos zsebében vannak, azokat is tárolja.
      */
     private List<Teleport> gates = new ArrayList<Teleport>();
+
+    /**
+     * Random objektum.
+     */
+    public static final Random rand = new Random();
     
     /**
      * Konstruktor, meghívja a Mineral osztály egy statikus függvényét,
@@ -99,7 +104,6 @@ public class Game {
         if(UFOs.size() > 0) {
         	UFOs = new ArrayList<UFO>();
         }
-        Random rand = new Random();
         for(int i = 0; i < nAsteroid; i++) {
         	asteroids.add(new Asteroid(rand.nextInt(6), rand.nextBoolean(), rand.nextInt(5) == 0 ? null : allMinerals.get(rand.nextInt(allMinerals.size())), sun));
         }

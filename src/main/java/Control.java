@@ -205,6 +205,11 @@ public class Control implements ActionListener, MouseListener{
     private static boolean random = true;
 
     /**
+     * Random objektum.
+     */
+    private static Random rand = new Random();
+
+    /**
      * A game objektum, amivel ?ppen t?rt?nik a j?t?k.
      */
     private static Game game = new Game();
@@ -1303,7 +1308,6 @@ public class Control implements ActionListener, MouseListener{
                             output.println("robot " + args[1] + " couldn't move");
                             return;
                         }
-                        Random rand = new Random();
                         int randNeighbour = rand.nextInt(a.getNeighbourCount())-1;
                         if (r.move(randNeighbour)) {
                             output.println("robot " + args[1] + " moved to " + reverseIDs.get(r.getAsteroid()));
