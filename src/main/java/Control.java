@@ -15,6 +15,37 @@ public class Control implements ActionListener, MouseListener{
      */
     public Control() {}
 
+    private static class Commands {
+        static String newGame = "newgame";
+        static String nextTurn = "nextturn";
+        static String mustBeSpecified = "all details must be specified";
+        static String couldNotComplete = "couldn't complete request\n";
+        static String unsuccessful = "unsuccessful";
+        static String notAvailable = "selected ID not available\n";
+        static String added = " added to asteroid: ";
+        static String stillHasShell = "asteroid still has shell";
+        static String rDied = " robot died";
+        static String sDied = " settler died";
+        static String uDied = " ufo died";
+        static String tDied = " teleport perished";
+        static String moved = " moved to ";
+        static String couldNotMove = " couldn't move";
+        static String rAction = "robotaction";
+        static String uAction = "ufoaction";
+        static String sAction = "sunaction";
+        static String invCommand = "invalid command";
+        static String drilled = " drilled on ";
+        static String drill = "drill";
+        static String solarWind = "solarwind";
+
+    }
+
+    private static class Entities {
+        static String robot = "robot";
+        static String settler = "settler";
+        static String asteroid = "asteroid";
+        static String teleport = "teleport";
+    }
 
     /**
      * Eseménykezelő. A levelview és az inventoryview eseményeit kezeli le.
@@ -29,11 +60,11 @@ public class Control implements ActionListener, MouseListener{
         System.out.println();
         commands.get(actionCommand[0]).execute(actionCommand);      //move még kérdéses
         if (actionCommand[0].equals("save") || actionCommand[0].equals("giveup") ||
-                actionCommand[0].equals("checkwin") || actionCommand[0].equals("checklose")|| actionCommand[0].equals("newgame")) {
+                actionCommand[0].equals("checkwin") || actionCommand[0].equals("checklose")|| actionCommand[0].equals(Commands.newGame)) {
 
         }else{
             if (refreshActiveSettler()) {
-                commands.get("nextturn").execute(new String[]{"nextturn"});
+                commands.get(Commands.nextTurn).execute(new String[]{Commands.nextTurn});
                 if (checkActiveSettlerDied())
                     refreshActiveSettler();
                 JOptionPane.showMessageDialog(null, "Turn ended, next turn starts.");
@@ -63,7 +94,7 @@ public class Control implements ActionListener, MouseListener{
                     if(neighbours.get(i).equals(neighbour)){
                         commands.get("move").execute(new String[]{"move", Integer.toString(i)});
                         if(refreshActiveSettler()){
-                            commands.get("nextturn").execute(new String[]{"nextturn"});
+                            commands.get(Commands.nextTurn).execute(new String[]{Commands.nextTurn});
                             if(checkActiveSettlerDied())
                                 refreshActiveSettler();
                             JOptionPane.showMessageDialog(null, "Turn ended, next turn starts.");
@@ -349,7 +380,7 @@ public class Control implements ActionListener, MouseListener{
                     throw new Exception();
                 Settler s = new Settler(a, game);
                 String ID = pieces[0].substring(0, pieces[0].length()-1);
-                updateMaxID("settler", ID);
+                updateMaxID(Entities.settler, ID);
                 addID(ID, s);
                 game.addSettler(s);
                 int k = Integer.parseInt(pieces[2]);
@@ -373,7 +404,7 @@ public class Control implements ActionListener, MouseListener{
                     throw new Exception();
                 Robot r = new Robot(a, game);
                 String ID = pieces[0].substring(0, pieces[0].length()-1);
-                updateMaxID("robot", ID);
+                updateMaxID(Entities.robot, ID);
                 addID(ID, r);
                 game.addRobot(r);
 
@@ -426,7 +457,7 @@ public class Control implements ActionListener, MouseListener{
                 Asteroid a = new Asteroid(shell, closeToSun, m, sun);
                 asteroids.add(a);
                 String ID = pieces[0].substring(0, pieces[0].length()-1);
-                updateMaxID("asteroid", ID);
+                updateMaxID(Entities.asteroid, ID);
                 addID(ID, a);
             }
             sun.addAsteroids(asteroids);
@@ -436,7 +467,7 @@ public class Control implements ActionListener, MouseListener{
                 Teleport t = new Teleport();
                 game.addTeleport(t);
                 String ID = pieces[0].substring(0, pieces[0].length()-1);
-                updateMaxID("teleport", ID);
+                updateMaxID(Entities.teleport, ID);
                 addID(ID, t);
             }
             for (int i = 0; i < nAsteroids; i++){
@@ -642,7 +673,7 @@ public class Control implements ActionListener, MouseListener{
          */
         public void execute(String[] args) {
             if (args.length < 2) {
-                output.println("unsuccessful");
+                output.println(Commands.unsuccessful);
                 return;
             }
             File file = new File(args[1]);
@@ -650,7 +681,7 @@ public class Control implements ActionListener, MouseListener{
             try {
                 temp = new Scanner(file);
             } catch (FileNotFoundException e) {
-                output.println("unsuccessful");
+                output.println(Commands.unsuccessful);
                 return;
             }
             input.close();
@@ -669,7 +700,7 @@ public class Control implements ActionListener, MouseListener{
          */
         public void execute(String[] args) {
             if (args.length < 2) {
-                output.println("unsuccessful");
+                output.println(Commands.unsuccessful);
                 return;
             }
             File file = new File(args[1]);
@@ -677,7 +708,7 @@ public class Control implements ActionListener, MouseListener{
             try {
                 temp = new PrintStream(new FileOutputStream(file));
             } catch (Exception e) {
-                output.println("unsuccessful");
+                output.println(Commands.unsuccessful);
                 return;
             }
             System.out.println("output set to " + args[1]);
@@ -699,23 +730,23 @@ public class Control implements ActionListener, MouseListener{
          */
         public void execute(String[] args) {
             if (args.length < 2) {
-                output.println("all details must be specified");
+                output.println(Commands.mustBeSpecified);
                 return;
             }
             Object asteroid = IDs.getOrDefault(args[1], null);
             Sun sun = game.getSun();
             List<Asteroid> asteroids = sun.getAsteroids();
             if (asteroid == null || !asteroids.contains((Asteroid) asteroid)){
-                output.println("couldn't complete request\n" +
-                        "selected ID not available\n");
+                output.println(Commands.couldNotComplete +
+                        Commands.notAvailable);
             }else{
                 Settler s = new Settler((Asteroid) asteroid, game);
-                int n = maxIDs.get("settler");
-                maxIDs.replace("settler", n+1);
+                int n = maxIDs.get(Entities.settler);
+                maxIDs.replace(Entities.settler, n+1);
                 addID("s" + (n+1), s);
                 game.addSettler(s);
                 ((Asteroid) asteroid).placeTraveller(s);
-                output.println("settler s" + (n+1) + " added to asteroid: " + args[1]);
+                output.println("settler s" + (n+1) + Commands.added + args[1]);
             }
         }
     }
@@ -732,7 +763,7 @@ public class Control implements ActionListener, MouseListener{
          */
         public void execute(String[] args) {
             if (args.length < 4) {
-                output.println("all details must be specified");
+                output.println(Commands.mustBeSpecified);
                 return;
             }
             int shell = Integer.parseInt(args[1]);
@@ -742,8 +773,8 @@ public class Control implements ActionListener, MouseListener{
             Mineral m = parseMineral(args[3]);
             Asteroid asteroid = new Asteroid(shell, cts, m, game.getSun());
             game.getSun().addAsteroid(asteroid);
-            int n = maxIDs.get("asteroid");
-            maxIDs.replace("asteroid", n+1);
+            int n = maxIDs.get(Entities.asteroid);
+            maxIDs.replace(Entities.asteroid, n+1);
             addID("a" + (n+1), asteroid);
             output.println("asteroid a" + (n+1) + " added");
             output.println("shell: " + shell);
@@ -763,23 +794,23 @@ public class Control implements ActionListener, MouseListener{
          */
         public void execute(String[] args) {
             if (args.length < 2) {
-                output.println("all details must be specified");
+                output.println(Commands.mustBeSpecified);
                 return;
             }
             Object asteroid = IDs.getOrDefault(args[1], null);
             Sun sun = game.getSun();
             List<Asteroid> asteroids = sun.getAsteroids();
             if (asteroid == null || !asteroids.contains((Asteroid) asteroid)){
-                output.println("couldn't complete request\n" +
+                output.println(Commands.couldNotComplete +
                         "    selected ID not available\n");
             }else{
                 Robot r = new Robot((Asteroid) asteroid, game);
-                int n = maxIDs.get("robot");
-                maxIDs.replace("robot", n+1);
+                int n = maxIDs.get(Entities.robot);
+                maxIDs.replace(Entities.robot, n+1);
                 addID("r" + (n+1), r);
                 game.addRobot(r);
                 ((Asteroid) asteroid).placeTraveller(r);
-                output.println("robot r" + (n+1) + " added to asteroid: " + args[1]);
+                output.println("robot r" + (n+1) + Commands.added + args[1]);
             }
         }
     }
@@ -795,14 +826,14 @@ public class Control implements ActionListener, MouseListener{
          */
         public void execute(String[] args) {
             if (args.length < 2) {
-                output.println("all details must be specified");
+                output.println(Commands.mustBeSpecified);
                 return;
             }
             Object asteroid = IDs.getOrDefault(args[1], null);
             Sun sun = game.getSun();
             List<Asteroid> asteroids = sun.getAsteroids();
             if (asteroid == null || !asteroids.contains((Asteroid) asteroid)){
-                output.println("couldn't complete request\n" +
+                output.println(Commands.couldNotComplete +
                         "    selected ID not available\n");
             }else{
                 UFO ufo = new UFO((Asteroid) asteroid, game);
@@ -811,7 +842,7 @@ public class Control implements ActionListener, MouseListener{
                 addID("u" + (n+1), ufo);
                 ((Asteroid) asteroid).placeTraveller(ufo);
                 game.addUFO(ufo);
-                output.println("ufo u" + (n+1) + " added to asteroid: " + args[1]);
+                output.println("ufo u" + (n+1) + Commands.added + args[1]);
             }
         }
     }
@@ -827,13 +858,13 @@ public class Control implements ActionListener, MouseListener{
          */
         public void execute(String[] args) {
             if (args.length < 3) {
-                output.println("all details must be specified");
+                output.println(Commands.mustBeSpecified);
                 return;
             }
             Asteroid a1 = (Asteroid) IDs.getOrDefault(args[1], null);
             Asteroid a2 = (Asteroid) IDs.getOrDefault(args[2], null);
             if (a1 == null || a2 == null){
-                output.println("couldn't complete request\n" +
+                output.println(Commands.couldNotComplete +
                         "    selected ID not available\n");
                 return;
             }
@@ -867,7 +898,7 @@ public class Control implements ActionListener, MouseListener{
                     String id = reverseIDs.get(n);
                     String type = "";
                     if (id.charAt(0) == 'a')
-                        type = "asteroid";
+                        type = Entities.asteroid;
                     if (id.charAt(0) == 't')
                         type = "teleportgate";
                     output.println(id + ": " + type);
@@ -928,7 +959,7 @@ public class Control implements ActionListener, MouseListener{
             } else {
                 output.println("mining unsuccessful");
                 if (activeSettler.getAsteroid().getShell() > 0) {
-                    output.println("asteroid still has shell");
+                    output.println(Commands.stillHasShell);
                     return;
                 }
                 if (m == null){
@@ -982,26 +1013,26 @@ public class Control implements ActionListener, MouseListener{
                     output.println("the returned uranium caused an explosion");
                     for (Robot r : robots) {
                         if (!game.getRobots().contains(r))
-                            output.println(reverseIDs.get(r) + " robot died");
+                            output.println(reverseIDs.get(r) + Commands.rDied);
                     }
                     for (Settler s : settlers) {
                         if (!game.getSettlers().contains(s))
-                            output.println(reverseIDs.get(s) + " settler died");
+                            output.println(reverseIDs.get(s) + Commands.sDied);
                     }
                     for (UFO u : UFOs) {
                         if (!game.getUFOs().contains(u))
-                            output.println(reverseIDs.get(u) + " ufo died");
+                            output.println(reverseIDs.get(u) + Commands.uDied);
                     }
                     for (Teleport t : teleports) {
                         if (!game.getGates().contains(t))
-                            output.println(reverseIDs.get(t) + " teleport perished");
+                            output.println(reverseIDs.get(t) + Commands.tDied);
                     }
                 }
 
             } else {
                 output.println("putting back mineral unsuccessful");
                 if (activeSettler.getAsteroid().getShell() > 0){
-                    output.println("asteroid still has shell");
+                    output.println(Commands.stillHasShell);
                     JOptionPane.showMessageDialog(null, "The asteroid still has shell");
                 } else if (core != null){
                     output.println("asteroid has other mineral");
@@ -1028,8 +1059,8 @@ public class Control implements ActionListener, MouseListener{
                 return;
             if (activeSettler.craftRobot()) {
                 Robot newrobot = game.getRobots().get(game.getRobots().size()-1);
-                int n = maxIDs.get("robot");
-                maxIDs.replace("robot", n+1);
+                int n = maxIDs.get(Entities.robot);
+                maxIDs.replace(Entities.robot, n+1);
                 addID("r" + (n+1), newrobot);
                 output.println("new robot r" + (n+1) + " successfully crafted");
             } else {
@@ -1053,10 +1084,10 @@ public class Control implements ActionListener, MouseListener{
             if (activeSettler.craftTeleport()) {
                 Teleport t1 = game.getGates().get(game.getGates().size()-2);
                 Teleport t2 = game.getGates().get(game.getGates().size()-1);
-                int n = maxIDs.get("teleport");
+                int n = maxIDs.get(Entities.teleport);
                 addID("t" + (n+1), t1);
                 addID("t" + (n+2), t2);
-                maxIDs.replace("teleport", (n+2));
+                maxIDs.replace(Entities.teleport, (n+2));
                 output.println("new pair of teleportgates t" + (n+1) + " and t" + (n+2) + " successfully crafted");
             } else {
                 if (activeSettler.getTeleportgates().size() < 2)
@@ -1093,12 +1124,12 @@ public class Control implements ActionListener, MouseListener{
             }
             int i = Integer.parseInt(args[1]);      //ez mar nullatol varja a cimzest
             if (i < 0 || i >= gates.size()) {
-                output.println("all details must be specified");
+                output.println(Commands.mustBeSpecified);
                 return;
             }
             Teleport t = gates.get(i);
             activeSettler.placeTeleport(t);
-            output.println("teleport " + reverseIDs.get(t) + " placed");
+            output.println(Entities.teleport + " " + reverseIDs.get(t) + " placed");
 
         }
     }
@@ -1118,7 +1149,7 @@ public class Control implements ActionListener, MouseListener{
                 return;
             Mineral mineral = parseMineral(args[1]);
             if (mineral == null) {
-                output.println("all details must be specified");
+                output.println(Commands.mustBeSpecified);
                 return;
             }
             if (activeSettler.addMineral(mineral))
@@ -1140,13 +1171,13 @@ public class Control implements ActionListener, MouseListener{
          */
         public void execute(String[] args) {
             if (args.length < 3) {
-                output.println("all details must be specified");
+                output.println(Commands.mustBeSpecified);
                 return;
             }
             Asteroid a1 = (Asteroid) IDs.getOrDefault(args[1], null);
             Asteroid a2 = (Asteroid) IDs.getOrDefault(args[2], null);
             if (a1 == null || a2 == null){
-                output.println("couldn't complete request\n" +
+                output.println(Commands.couldNotComplete +
                         "    selected ID not available\n");
                 return;
             }
@@ -1156,10 +1187,10 @@ public class Control implements ActionListener, MouseListener{
             t2.setPair(t1);
             t1.setNeighbour(a1);
             t2.setNeighbour(a2);
-            int id = maxIDs.get("teleport");
+            int id = maxIDs.get(Entities.teleport);
             addID("t" + (id+1), t1);
             addID("t" + (id+2), t2);
-            maxIDs.replace("teleport", id+2);
+            maxIDs.replace(Entities.teleport, id+2);
             game.addTeleport(t1);
             game.addTeleport(t2);
             output.println("connected teleportgates " + ("t" + (id+1)) +" " + ("t" + (id+2)) + " placed by " + args[1] + " and " + args[2]);
@@ -1182,29 +1213,29 @@ public class Control implements ActionListener, MouseListener{
                     Asteroid a = t.getNeighbour();
                     t.makeAction();
                     if (a.equals(t.getNeighbour()))
-                        output.println("teleport " + reverseIDs.get(t) + " couldn't move");
+                        output.println(Entities.teleport + " " + reverseIDs.get(t) + Commands.couldNotMove);
                     else
-                        output.println("teleport " + reverseIDs.get(t) + " moved to " + reverseIDs.get(t.getNeighbour()));
+                        output.println(Entities.teleport + " " + reverseIDs.get(t) + Commands.moved + reverseIDs.get(t.getNeighbour()));
                 }
             }
             if (random) {
                 for (Robot r : game.getRobots()) {
-                    commands.get("robotaction").execute(new String[]{"robotaction", reverseIDs.get(r)});
+                    commands.get(Commands.rAction).execute(new String[]{Commands.rAction, reverseIDs.get(r)});
                 }
                 for (UFO u : game.getUFOs()) {
-                    commands.get("ufoaction").execute(new String[]{"ufoaction", reverseIDs.get(u)});
+                    commands.get(Commands.uAction).execute(new String[]{Commands.uAction, reverseIDs.get(u)});
                 }
-                commands.get("sunaction").execute(new String[]{"sunaction"});
+                commands.get(Commands.sAction).execute(new String[]{Commands.sAction});
             } else {
                 for (Robot r : game.getRobots()) {
                     output.println("enter a robotaction command for robot " + reverseIDs.get(r));
                     String[] pieces;
                     if (input.hasNextLine()) {
                         pieces = input.nextLine().split(" ");
-                        if (pieces[0].equals("robotaction") && pieces[1].equals(reverseIDs.get(r))) {
-                            commands.get("robotaction").execute(pieces);
+                        if (pieces[0].equals(Commands.rAction) && pieces[1].equals(reverseIDs.get(r))) {
+                            commands.get(Commands.rAction).execute(pieces);
                         } else {
-                            output.println("invalid command");
+                            output.println(Commands.invCommand);
                         }
                     }
                     else
@@ -1215,16 +1246,16 @@ public class Control implements ActionListener, MouseListener{
                     String[] pieces;
                     if (input.hasNextLine()) {
                         pieces = input.nextLine().split(" ");
-                        if (pieces[0].equals("ufoaction") && pieces[1].equals(reverseIDs.get(u))) {
-                            commands.get("ufoaction").execute(pieces);
+                        if (pieces[0].equals(Commands.uAction) && pieces[1].equals(reverseIDs.get(u))) {
+                            commands.get(Commands.uAction).execute(pieces);
                         } else {
-                            output.println("invalid command");
+                            output.println(Commands.invCommand);
                         }
                     }
                     else
                         return;
                 }
-                commands.get("sunaction").execute(new String[]{"sunaction"});
+                commands.get(Commands.sAction).execute(new String[]{Commands.sAction});
             }
         }
     }
@@ -1259,34 +1290,34 @@ public class Control implements ActionListener, MouseListener{
                 if (args.length == 2) {
                     if (r.makeAction()) {
                         if (!a.equals(r.getAsteroid())) {
-                            output.println("robot " + args[1] + " moved to " + reverseIDs.get(r.getAsteroid()));
+                            output.println(Entities.robot + " " + args[1] + Commands.moved + reverseIDs.get(r.getAsteroid()));
                             return;
                         }
                         if (shell != r.getAsteroid().getShell()){
-                            output.println("robot " + args[1] + " drilled on " + reverseIDs.get(a) + " shell is now " + r.getAsteroid().getShell());
+                            output.println(Entities.robot + " " + args[1] + Commands.drilled + reverseIDs.get(a) + " shell is now " + r.getAsteroid().getShell());
                             return;
                         }
                     } else {
-                        output.println("robot " + args[1] + " couldn't make action");
+                        output.println(Entities.robot + " " + args[1] + " couldn't make action");
                     }
                     return;
                 }
-                if (args[2].equals("drill")) {
+                if (args[2].equals(Commands.drill)) {
                     if (r.drill())
-                        output.println("robot " + args[1] + " drilled on " +
+                        output.println(Entities.robot + " " + args[1] + Commands.drilled +
                                 reverseIDs.get(r.getAsteroid()) + "shell is now" + r.getAsteroid().getShell());
                     else
-                        output.println("robot " + args[1] + " couldn't drill");
+                        output.println(Entities.robot + " " + args[1] + " couldn't drill");
                 }
                 if (args[2].equals("move")) {
                     if (args.length < 4) {
                         if (a.getNeighbourCount() == 0) {
-                            output.println("robot " + args[1] + " couldn't move");
+                            output.println(Entities.robot + " " + args[1] + Commands.couldNotMove);
                             return;
                         }
                         int randNeighbour = rand.nextInt(a.getNeighbourCount())-1;
                         if (r.move(randNeighbour)) {
-                            output.println("robot " + args[1] + " moved to " + reverseIDs.get(r.getAsteroid()));
+                            output.println(Entities.robot + " " + args[1] + Commands.moved + reverseIDs.get(r.getAsteroid()));
                         } else {
                             output.println("robot couldn't move");
                         }
@@ -1294,33 +1325,33 @@ public class Control implements ActionListener, MouseListener{
                     }
                     int i = Integer.parseInt(args[3]) - 1;
                     if (r.move(i))
-                        output.println("robot " + args[1] + " moved to " + reverseIDs.get(r.getAsteroid()));
+                        output.println(Entities.robot + " " + args[1] + Commands.moved + reverseIDs.get(r.getAsteroid()));
                     else
                         output.println("robot couldn't move");
                 }
             } else {
                 if (args.length < 3) {
-                    output.println("all details must be specified");
+                    output.println(Commands.mustBeSpecified);
                     return;
                 }
                 Robot r = (Robot) IDs.get(args[1]);
-                if (args[2].equals("drill")) {
+                if (args[2].equals(Commands.drill)) {
                     if (r.drill())
-                        output.println("robot " + args[1] + " drilled on " +
+                        output.println(Entities.robot + " " + args[1] + Commands.drilled +
                                 reverseIDs.get(r.getAsteroid()) + "shell is now" + r.getAsteroid().getShell());
                     else
-                        output.println("robot " + args[1] + " couldn't drill");
+                        output.println(Entities.robot + " " + args[1] + " couldn't drill");
                 }
                 if (args[2].equals("move")) {
                     if (args.length < 4) {
-                        output.println("all details must be specified");
+                        output.println(Commands.mustBeSpecified);
                         return;
                     }
                     int i = Integer.parseInt(args[3]) - 1;
                     if (r.move(i))
-                        output.println("robot " + args[1] + " moved to " + reverseIDs.get(r.getAsteroid()));
+                        output.println(Entities.robot + " " + args[1] + Commands.moved + reverseIDs.get(r.getAsteroid()));
                     else
-                        output.println("robot " + args[1] + " couldn't move");
+                        output.println(Entities.robot + " " + args[1] + Commands.couldNotMove);
                 }
             }
         }
@@ -1347,13 +1378,13 @@ public class Control implements ActionListener, MouseListener{
          */
         public void execute(String[] args) {
             if (args.length < 2 || (args.length == 3 && !"mine".equals(args[2])) || (args.length == 4 && !"move".equals(args[2]))){
-                output.println("all details must be specified");
+                output.println(Commands.mustBeSpecified);
                 return;
             }
             UFO ufo = (UFO)IDs.getOrDefault(args[1], null);
             if (ufo == null) {
-                output.print("couldn't complete request\n" +
-                        "selected ID not available\n");
+                output.print(Commands.couldNotComplete +
+                        Commands.notAvailable);
                 return;
             }
             Asteroid a = ufo.getAsteroid();
@@ -1378,16 +1409,16 @@ public class Control implements ActionListener, MouseListener{
                 move = true;
             }
             if (a != ufo.getAsteroid()) {
-                output.println("UFO " + args[1] + " moved to " + reverseIDs.get(ufo.getAsteroid()));
+                output.println("UFO " + args[1] + Commands.moved + reverseIDs.get(ufo.getAsteroid()));
                 return;
             }else if (move) {
-                output.println("UFO " + args[1] + " couldn't move");
+                output.println("UFO " + args[1] + Commands.couldNotMove);
                 return;
             }
 
             if (shell > 0){
                 output.println("UFO " + args[1] + " couldn't mine");
-                output.println("asteroid still has shell");
+                output.println(Commands.stillHasShell);
                 return;
             }
             if (core == null){
@@ -1430,19 +1461,19 @@ public class Control implements ActionListener, MouseListener{
                 game.getSun().makeAction();
                 for (Settler s : settlers) {
                     if (!game.getSettlers().contains(s))
-                        output.println(reverseIDs.get(s) + " settler died");
+                        output.println(reverseIDs.get(s) + Commands.sDied);
                 }
                 for (Robot r : robots) {
                     if (!game.getRobots().contains(r))
-                        output.println(reverseIDs.get(r) + " robot died");
+                        output.println(reverseIDs.get(r) + Commands.rDied);
                 }
                 for (UFO u : UFOs) {
                     if (!game.getUFOs().contains(u))
-                        output.println(reverseIDs.get(u) + " ufo died");
+                        output.println(reverseIDs.get(u) + Commands.uDied);
                 }
                 for (int i = 0; i < teleports.size(); i++) {
                     if (!game.getGates().contains(teleports.get(i))) {
-                        output.println(reverseIDs.get(teleports.get(i)) + " teleport perished");
+                        output.println(reverseIDs.get(teleports.get(i)) + Commands.tDied);
                     } else {
                         if (!b[i] && teleports.get(i).getBamboozled()) {
                             output.println(reverseIDs.get(teleports.get(i)) + " teleportgate gone mad");
@@ -1454,7 +1485,7 @@ public class Control implements ActionListener, MouseListener{
                 if (a == null)
                     return;
                 else {
-                    commands.get("solarwind").execute(new String[] {"solarwind", reverseIDs.get(a), "0"});
+                    commands.get(Commands.solarWind).execute(new String[] {Commands.solarWind, reverseIDs.get(a), "0"});
                 }
             }
         }
@@ -1473,12 +1504,12 @@ public class Control implements ActionListener, MouseListener{
          */
         public void execute(String[] args) {
             if (args.length < 3) {
-                output.println("all details must be specified");
+                output.println(Commands.mustBeSpecified);
                 return;
             }
             Asteroid a = (Asteroid) IDs.getOrDefault(args[1], null);
             if (a == null){
-                output.println("couldn't complete request\n" +
+                output.println(Commands.couldNotComplete +
                         "    selected ID not available\n");
                 return;
             }
@@ -1500,15 +1531,15 @@ public class Control implements ActionListener, MouseListener{
 
             for (Settler s : settlers) {
                 if (!game.getSettlers().contains(s))
-                    output.println(reverseIDs.get(s) + " settler died");
+                    output.println(reverseIDs.get(s) + Commands.sDied);
             }
             for (Robot r : robots) {
                 if (!game.getRobots().contains(r))
-                    output.println(reverseIDs.get(r) + " robot died");
+                    output.println(reverseIDs.get(r) + Commands.rDied);
             }
             for (UFO u : UFOs) {
                 if (!game.getUFOs().contains(u))
-                    output.println(reverseIDs.get(u) + " ufo died");
+                    output.println(reverseIDs.get(u) + Commands.uDied);
             }
             for (int i = 0; i < teleports.size(); i++) {
                 if (!b[i] && teleports.get(i).getBamboozled())
@@ -1616,9 +1647,9 @@ public class Control implements ActionListener, MouseListener{
             LevelView lv = gameFrame.getLevelView();
             refreshActiveSettler();
 
-            maxIDs.replace("settler", allSettlers.size());
+            maxIDs.replace(Entities.settler, allSettlers.size());
             maxIDs.replace("ufo", allUFOs.size());
-            maxIDs.replace("asteroid", allAsteroids.size());
+            maxIDs.replace(Entities.asteroid, allAsteroids.size());
 
             for(int i = 0; i < allSettlers.size(); i++) {
                 addID("s" + (i+1), allSettlers.get(i));
@@ -1655,14 +1686,14 @@ public class Control implements ActionListener, MouseListener{
          */
         public void execute(String[] args) {
             if (args.length < 3 || (!"0".equals(args[2]) && !"1".equals(args[2]))) {
-                output.println("all details must be specified");
+                output.println(Commands.mustBeSpecified);
                 return;
             }
             Asteroid asteroid = (Asteroid)IDs.getOrDefault(args[1], null);
             Sun sun = game.getSun();
             List<Asteroid> asteroids = sun.getAsteroids();
             if (asteroid == null || !asteroids.contains(asteroid)){
-                output.println("couldn't complete request\n" +
+                output.println(Commands.couldNotComplete +
                         "    selected ID not available\n");
             }else{
                 boolean oldCloseToSun = asteroid.getCloseToSun();
@@ -1681,19 +1712,19 @@ public class Control implements ActionListener, MouseListener{
                         output.println(args[1] + " exploded");
                         for (Robot r : robots) {
                             if (!game.getRobots().contains(r))
-                                output.println(reverseIDs.get(r) + " robot died");
+                                output.println(reverseIDs.get(r) + Commands.rDied);
                         }
                         for (Settler s : settlers) {
                             if (!game.getSettlers().contains(s))
-                                output.println(reverseIDs.get(s) + " settler died");
+                                output.println(reverseIDs.get(s) + Commands.sDied);
                         }
                         for (UFO u : UFOs) {
                             if (!game.getUFOs().contains(u))
-                                output.println(reverseIDs.get(u) + " ufo died");
+                                output.println(reverseIDs.get(u) + Commands.uDied);
                         }
                         for (Teleport t : teleports) {
                             if (!game.getGates().contains(t))
-                                output.println(reverseIDs.get(t) + " teleport perished");
+                                output.println(reverseIDs.get(t) + Commands.tDied);
                         }
                     }
                 }
@@ -1730,7 +1761,7 @@ public class Control implements ActionListener, MouseListener{
          */
         public void execute(String[] args) {
             if (args.length < 3 || (!"0".equals(args[2]) && !"1".equals(args[2]))) {
-                output.println("all details must be specified");
+                output.println(Commands.mustBeSpecified);
                 return;
             }
             Teleport teleport = (Teleport)IDs.getOrDefault(args[1], null);
@@ -1739,8 +1770,8 @@ public class Control implements ActionListener, MouseListener{
                 teleport.setBamboozled(bamboozled);
                 output.println(args[1] + " teleportgate " + (bamboozled ? "" : "not ") + "bamboozled");
             }else{
-                output.print("couldn't complete request\n" +
-                        "selected ID not available\n");
+                output.print(Commands.couldNotComplete +
+                        Commands.notAvailable);
             }
         }
     }
@@ -1752,11 +1783,11 @@ public class Control implements ActionListener, MouseListener{
      */
     private static boolean settlerCommandCheck(String[] args, int argscnt){
         if (args.length < argscnt){
-            output.println("all details must be specified");
+            output.println(Commands.mustBeSpecified);
             return false;
         }
         if (activeSettler == null){
-            output.println("couldn't complete request\n" +
+            output.println(Commands.couldNotComplete +
                     "    no active settler selected\n");
             return false;
         }
@@ -1782,15 +1813,17 @@ public class Control implements ActionListener, MouseListener{
         commands.put("addsettler", new addsettlerCommand()); commands.put("addasteroid", new addasteroidCommand());
         commands.put("addrobot", new addrobotCommand()); commands.put("addufo", new addufoCommand());
         commands.put("connectasteroid", new connectasteroidCommand());
-        commands.put("move", new moveCommand()); commands.put("drill", new drillCommand()); commands.put("mine", new mineCommand());
+        commands.put("move", new moveCommand());
+        commands.put(Commands.drill, new drillCommand());
+        commands.put("mine", new mineCommand());
         commands.put("putmineralback", new putmineralbackCommand()); commands.put("craftrobot", new craftrobotCommand());
         commands.put("craftteleport", new craftteleportCommand()); commands.put("placeteleport", new placeteleportCommand());
         commands.put("addmineral", new addmineralCommand()); commands.put("addteleportpair", new addteleportpairCommand());
-        commands.put("nextturn", new nextturnCommand()); commands.put("robotaction", new robotactionCommand());
-        commands.put("sunaction", new sunactionCommand()); commands.put("solarwind", new solarwindCommand());
+        commands.put(Commands.nextTurn, new nextturnCommand()); commands.put(Commands.rAction, new robotactionCommand());
+        commands.put(Commands.sAction, new sunactionCommand()); commands.put(Commands.solarWind, new solarwindCommand());
         commands.put("checkwin", new checkwinCommand()); commands.put("checklose", new checkloseCommand());
-        commands.put("newgame", new newgameCommand()); commands.put("setclosetosun", new setclosetosunCommand());
-        commands.put("giveup", new giveupCommand()); commands.put("ufoaction", new ufoactionCommand());
+        commands.put(Commands.newGame, new newgameCommand()); commands.put("setclosetosun", new setclosetosunCommand());
+        commands.put("giveup", new giveupCommand()); commands.put(Commands.uAction, new ufoactionCommand());
         commands.put("bamboozleteleport", new bamboozleteleportCommand());
     }
 
@@ -1840,15 +1873,15 @@ public class Control implements ActionListener, MouseListener{
         else
             return false;
         if (pieces.length == 0) {
-            output.println("invalid command");
+            output.println(Commands.invCommand);
             return true;
         }
         Command cmd = commands.getOrDefault(pieces[0], null);
         if (cmd == null){
-            output.println("invalid command");
+            output.println(Commands.invCommand);
             return true;
         }
-        if (!"newgame".equals(pieces[0]) && game.getGameEnd()){
+        if (!Commands.newGame.equals(pieces[0]) && game.getGameEnd()){
             output.println("game ended");
             return true;
         }
@@ -1861,10 +1894,10 @@ public class Control implements ActionListener, MouseListener{
      * Inicializ?lja 0-val a maxID ?sszerendel?seket.
      */
     private static void initializeMaxIDs(){
-        maxIDs.put("asteroid", 0);
-        maxIDs.put("teleport", 0);
-        maxIDs.put("settler", 0);
-        maxIDs.put("robot", 0);
+        maxIDs.put(Entities.asteroid, 0);
+        maxIDs.put(Entities.teleport, 0);
+        maxIDs.put(Entities.settler, 0);
+        maxIDs.put(Entities.robot, 0);
         maxIDs.put("ufo", 0);
     }
     /**

@@ -1,4 +1,3 @@
-import java.util.Random;
 
 /**
  * A Traveller leszármazottja. Képes bányászni és mozogni. Felelõssége csinálnia ezek közül

@@ -43,7 +43,8 @@ public class Game {
      * Random objektum.
      */
     public static final Random rand = new Random();
-    
+
+    private static String uranium = "uranium";
     /**
      * Konstruktor, meghívja a Mineral osztály egy statikus függvényét,
      * amely azért fontos, mert ez inicializálja, hogy mely nyersanyagok
@@ -155,7 +156,7 @@ public class Game {
         	for(Mineral backPackItem : backpack) {
         		for(int i = 0; i < allMineralCount; i++) {
         			if(backPackItem.toString().equals(allMinerals.get(i).toString()) ||
-        			(backPackItem.toString().contains("uranium")&&allMinerals.get(i).toString().contains("uranium"))) {
+        			(backPackItem.toString().contains(uranium)&&allMinerals.get(i).toString().contains(uranium))) {
         				counter[i]++;
         			}
         		}
@@ -167,7 +168,7 @@ public class Game {
         				for(Mineral backPackItem : backpack) {
         	        		for(int i = 0; i < allMineralCount; i++) {
         	        			if(backPackItem.toString().equals(allMinerals.get(i).toString()) ||
-        	        			(backPackItem.toString().contains("uranium")&&allMinerals.get(i).toString().contains("uranium"))) {
+        	        			(backPackItem.toString().contains(uranium)&&allMinerals.get(i).toString().contains(uranium))) {
         	        				counter[i]++;
         	        			}
         	        		}
