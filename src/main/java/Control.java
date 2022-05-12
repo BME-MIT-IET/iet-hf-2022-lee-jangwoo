@@ -27,12 +27,12 @@ public class Control implements ActionListener, MouseListener{
         if (actionCommand.length > 1)
             System.out.print(" " + actionCommand[1]);
         System.out.println();
-        commands.get(actionCommand[0]).execute(actionCommand);      //move még kérdéses
+        commands.get(actionCommand[0]).execute(actionCommand, this);      //move még kérdéses
         /*if (actionCommand[0].equals("load")){
-            activeSettler = game.getSettlers().get(0);
-            LevelView lv = gameFrame.getLevelView();
+            control.activeSettler = control.game.getSettlers().get(0);
+            LevelView lv = control.gameFrame.getLevelView();
             refreshActiveSettler();
-            lv.setActiveSettler(activeSettler);
+            lv.setActiveSettler(control.activeSettler);
             lv.Update();
             lv.repaint();
             lv.getInventory().repaint();
@@ -41,11 +41,11 @@ public class Control implements ActionListener, MouseListener{
 
         } else {*/
         if (actionCommand[0].equals("save") || actionCommand[0].equals("giveup") ||
-                actionCommand[0].equals("checkwin") || actionCommand[0].equals("checklose")|| actionCommand[0].equals("newgame")) {
+                actionCommand[0].equals("checkwin") || actionCommand[0].equals("checklose")|| actionCommand[0].equals("newcontrol.game")) {
 
         }else{
             if (refreshActiveSettler()) {
-                commands.get("nextturn").execute(new String[]{"nextturn"});
+                commands.get("nextturn").execute(new String[]{"nextturn"}, this);
                 if (checkActiveSettlerDied())
                     refreshActiveSettler();
                 JOptionPane.showMessageDialog(null, "Turn ended, next turn starts.");
@@ -78,9 +78,9 @@ public class Control implements ActionListener, MouseListener{
             if(neighbours.contains(neighbour)){
                 for(int i = 0; i < neighbours.size(); i++){
                     if(neighbours.get(i).equals(neighbour)){
-                        commands.get("move").execute(new String[]{"move", Integer.toString(i)});
+                        commands.get("move").execute(new String[]{"move", Integer.toString(i)}, this);
                         if(refreshActiveSettler()){
-                            commands.get("nextturn").execute(new String[]{"nextturn"});
+                            commands.get("nextturn").execute(new String[]{"nextturn"}, this);
                             if(checkActiveSettlerDied())
                                 refreshActiveSettler();
                             JOptionPane.showMessageDialog(null, "Turn ended, next turn starts.");
@@ -128,7 +128,7 @@ public class Control implements ActionListener, MouseListener{
      * Frissíti az aktív telepest.
      * @return IGAZ, ha véget ért a kört és kell nextturn parancs, HAMIS, ha nem.
      */
-    private static boolean refreshActiveSettler(){
+    private boolean refreshActiveSettler(){
         if(activeSettler == null){
             if(!game.getSettlers().isEmpty())
                 activeSettler = game.getSettlers().get(0);
@@ -183,26 +183,26 @@ public class Control implements ActionListener, MouseListener{
     /**
      * Tárolja, hogy mi a legutóbbi tudomása a kontrollernek a játékban lévő telepesekről.
      */
-    private static List<Settler> ControlSettlers;// = ... ArrayList ctor clone
+    private List<Settler> ControlSettlers;// = ... ArrayList ctor clone
 
     /**
      * GameFrame, ami tárolja a paneleket.
      */
-    private static GameFrame gameFrame;
+    private GameFrame gameFrame;
     /**
      * Az input, ahonnan a parancsokat olvassa. Alapesetben a standard bemenet.
      */
-    private static Scanner input = new Scanner(System.in);
+    private Scanner input = new Scanner(System.in);
 
     /**
      * Az output, ahov? a parancsok kimenet?t ?rja. Alapesetben a standard kimenet.
      */
-    private static PrintStream output = System.out;
+    private PrintStream output = System.out;
 
     /**
      * Jelzi, hogy a v?letlenszer? t?rt?n?sek ki vannak-e kapcsolva.
      */
-    private static boolean random = true;
+    private boolean random = true;
 
     /**
      * Random objektum.
@@ -210,14 +210,14 @@ public class Control implements ActionListener, MouseListener{
     private static Random rand = new Random();
 
     /**
-     * A game objektum, amivel ?ppen t?rt?nik a j?t?k.
+     * A control.game objektum, amivel ?ppen t?rt?nik a j?t?k.
      */
-    private static Game game = new Game();
+    private Game game = new Game();
 
     /**
      * Az a settler, amelyikkel ?ppen j?tszik a felhaszn?l?. Ez a settler kapja majd a settlereknek f?z?tt kommentek.
      */
-    private static Settler activeSettler = null;
+    private Settler activeSettler = null;
 
     /**
      * T?rolja, hogy a j?t?kban azonos?t?val ell?tott objektumok k?z?l,
@@ -225,24 +225,24 @@ public class Control implements ActionListener, MouseListener{
      * Azonos?t? a felhaszn?l? fel? kommunik?lt azonos?t?t jelenti.
      * T?rolt adatok pl.: settler, asteroid, ufo, robot.
      */
-    private static HashMap<String, Integer> maxIDs = new HashMap<String, Integer>();
+    private HashMap<String, Integer> maxIDs = new HashMap<String, Integer>();
 
     /**
      * A j?t?kban l?v? objektumok ?s a felhaszn?l? fel? k?z?lt azonos?t?k ?sszerendel?se. A kulcs az azonos?t?.
      */
-    public static HashMap<String, Object> IDs = new HashMap<String, Object>();
+    public HashMap<String, Object> IDs = new HashMap<String, Object>();
 
     /**
      * A j?t?kban l?v? objektumok ?s a felhaszn?l? fel? k?z?lt azonos?t?k ?sszerendel?se. A kulcs az objektum.
      */
-    public static HashMap<Object, String> reverseIDs = new HashMap<Object, String>();
+    public HashMap<Object, String> reverseIDs = new HashMap<Object, String>();
 
     /**
      * Hozz?ad egy ?j azonos?t?t az azonos?t? t?rol?khoz.
      * @param s A sz?veges azonos?t?
      * @param o Az objektum
      */
-    private static void addID(String s, Object o){
+    private void addID(String s, Object o){
         IDs.put(s, o);
         reverseIDs.put(o, s);
     }
@@ -252,7 +252,7 @@ public class Control implements ActionListener, MouseListener{
      * @param s A sz?veges azonos?t?
      * @param o Az objektum
      */
-    private static void removeID(String s, Object o){
+    private void removeID(String s, Object o){
         IDs.remove(s);
         reverseIDs.remove(o);
     }
@@ -260,7 +260,7 @@ public class Control implements ActionListener, MouseListener{
     /**
      * T?rli az azonos?t?-objektum ?sszerendel?seket.
      */
-    private static void resetIDs(){
+    private void resetIDs(){
         IDs.clear();
         reverseIDs.clear();
     }
@@ -272,10 +272,11 @@ public class Control implements ActionListener, MouseListener{
         /**
          * A parancsot v?grehajt? f?ggv?ny.
          * @param args A parancs parancssori argumentumai, a teljes sort meg kell adni, amely sz?k?z?kkel lett elv?lasztva.
+         * @param control
          */
-        public void execute(String[] args);
+        public void execute(String[] args, Control control);
     }
-    private static class loadCommand implements Command{
+    private class loadCommand implements Command{
 
         /**
          * Annak a megnyitott f?jlnak scannere, amib?l olvassa a bet?lteni k?v?nt p?ly?t.
@@ -315,38 +316,39 @@ public class Control implements ActionListener, MouseListener{
          * Jelzi a felhaszn?l?nak a parancs sikeress?g?t.
          * Ha nincs el?g argumentum, vagy hiba t?rt?nt olvas?s k?zben, akkor jelzi a felhaszn?l?nak.
          * @param args A parancs parancssori argumentumai, a teljes sort meg kell adni, amely sz?k?z?kkel lett elv?lasztva.
+         * @param control
          */
-        public void execute(String[] args) {
+        public void execute(String[] args, Control control) {
             File file;
             if (args.length < 2) {
                 file = showDialog();
-                //output.println("load unsuccessful");
+                //control.output.println("load unsuccessful");
                 //return;
             }else{
                 file = new File(args[1]);
             }
             if (!file.exists()){
-                output.println("load unsuccessful");
+                control.output.println("load unsuccessful");
                 return;
             }
-            game = new Game();
-            gameFrame.getLevelView().setGame(game);
-            Sun sun = game.getSun();
-            activeSettler = null;
-            IDs.clear();
-            reverseIDs.clear();
+            control.game = new Game();
+            control.gameFrame.getLevelView().setGame(control.game);
+            Sun sun = control.game.getSun();
+            control.activeSettler = null;
+            control.IDs.clear();
+            control.reverseIDs.clear();
             try {
                 fileInput = new Scanner(file);
-                readAsteroidsTeleports(sun);
-                readTravellers();
-                readCoordinates();
+                readAsteroidsTeleports(sun, control);
+                readTravellers(control);
+                readCoordinates(control);
             }catch (Exception e){
                 e.printStackTrace();
-                output.println("load unsuccessful");
+                control.output.println("load unsuccessful");
                 return;
             }
-            gameFrame.getLevelView().Update();
-            //output.println("loaded " + args[1]);
+            control.gameFrame.getLevelView().Update();
+            //control.output.println("loaded " + args[1]);
         }
 
         /**
@@ -356,20 +358,20 @@ public class Control implements ActionListener, MouseListener{
          * @throws Exception Ha b?rmilyen hiba t?rt?nik olvas?s k?zben, akkor exceptiont dob.
          * Hiba lehet, ha nem megfelel? a form?tum vagy a f?jl olvas?sa k?zben hiba t?rt?nik.
          */
-        private void readTravellers() throws Exception{
+        private void readTravellers(Control control) throws Exception{
             String[] pieces = fileInput.nextLine().split(" ");
             int nSettlers = Integer.parseInt(pieces[1]);
             int nRobots = Integer.parseInt(pieces[3]);
             int nUFOs = Integer.parseInt(pieces[5]);
             for (int i = 0; i < nSettlers; i++){
                 pieces = fileInput.nextLine().split(" ");
-                Asteroid a = (Asteroid)IDs.getOrDefault(pieces[1], null);
+                Asteroid a = (Asteroid)control.IDs.getOrDefault(pieces[1], null);
                 if (a == null)
                     throw new Exception();
                 Settler s = new Settler(a, game);
                 String ID = pieces[0].substring(0, pieces[0].length()-1);
                 updateMaxID("settler", ID);
-                addID(ID, s);
+                control.addID(ID, s);
                 game.addSettler(s);
                 int k = Integer.parseInt(pieces[2]);
                 for (int j = 0; j < k; j++){
@@ -378,36 +380,36 @@ public class Control implements ActionListener, MouseListener{
                 }
                 int t = Integer.parseInt(pieces[3+k]);
                 for (int j = 0; j < t; j++){
-                    Teleport teleport = (Teleport)IDs.getOrDefault(pieces[3+k+1+j], null);
+                    Teleport teleport = (Teleport)control.IDs.getOrDefault(pieces[3+k+1+j], null);
                     if (teleport == null)
                         throw new Exception();
                     s.addTeleport(teleport);
                 }
-                gameFrame.getLevelView().addSettlerView(s);
+                control.gameFrame.getLevelView().addSettlerView(s);
             }
             for (int i = 0; i < nRobots; i++){
                 pieces = fileInput.nextLine().split(" ");
-                Asteroid a = (Asteroid)IDs.getOrDefault(pieces[1], null);
+                Asteroid a = (Asteroid)control.IDs.getOrDefault(pieces[1], null);
                 if (a == null)
                     throw new Exception();
-                Robot r = new Robot(a, game);
+                Robot r = new Robot(a, control.game);
                 String ID = pieces[0].substring(0, pieces[0].length()-1);
                 updateMaxID("robot", ID);
-                addID(ID, r);
-                game.addRobot(r);
+                control.addID(ID, r);
+                control.game.addRobot(r);
 
             }
             for (int i = 0; i < nUFOs; i++){
                 pieces = fileInput.nextLine().split(" ");
-                Asteroid a = (Asteroid)IDs.getOrDefault(pieces[1], null);
+                Asteroid a = (Asteroid)control.IDs.getOrDefault(pieces[1], null);
                 if (a == null)
                     throw new Exception();
-                UFO ufo = new UFO(a, game);
+                UFO ufo = new UFO(a, control.game);
                 String ID = pieces[0].substring(0, pieces[0].length()-1);
                 updateMaxID("ufo", ID);
-                addID(ID, ufo);
-                game.addUFO(ufo);
-                gameFrame.getLevelView().addUFOView(ufo);
+                control.addID(ID, ufo);
+                control.game.addUFO(ufo);
+                control.gameFrame.getLevelView().addUFOView(ufo);
             }
         }
 
@@ -430,7 +432,7 @@ public class Control implements ActionListener, MouseListener{
          * @throws Exception Ha b?rmilyen hiba t?rt?nik olvas?s k?zben, akkor exceptiont dob.
          * Hiba lehet, ha nem megfelel? a form?tum vagy a f?jl olvas?sa k?zben hiba t?rt?nik.
          */
-        private void readAsteroidsTeleports(Sun sun) throws Exception {
+        private void readAsteroidsTeleports(Sun sun, Control control) throws Exception {
             String[] pieces = fileInput.nextLine().split(" ");
             nAsteroids=Integer.parseInt(pieces[1]);
             nTeleports=Integer.parseInt(pieces[3]);
@@ -446,32 +448,32 @@ public class Control implements ActionListener, MouseListener{
                 asteroids.add(a);
                 String ID = pieces[0].substring(0, pieces[0].length()-1);
                 updateMaxID("asteroid", ID);
-                addID(ID, a);
+                control.addID(ID, a);
             }
             sun.addAsteroids(asteroids);
             for (int i = 0; i < nTeleports; i++){
                 pieces = fileInput.nextLine().split(" ");
                 lines.add(pieces);
                 Teleport t = new Teleport();
-                game.addTeleport(t);
+                control.game.addTeleport(t);
                 String ID = pieces[0].substring(0, pieces[0].length()-1);
                 updateMaxID("teleport", ID);
-                addID(ID, t);
+                control.addID(ID, t);
             }
             for (int i = 0; i < nAsteroids; i++){
                 pieces = lines.get(i);
                 int k = Integer.parseInt(pieces[1]);
                 for (int j = 0; j < k; j++){
-                    Asteroid a = (Asteroid) IDs.getOrDefault(pieces[0].substring(0, pieces[0].length()-1), null);
-                    INeighbour neighbour = (INeighbour)IDs.getOrDefault(pieces[2+j], null);
+                    Asteroid a = (Asteroid) control.IDs.getOrDefault(pieces[0].substring(0, pieces[0].length()-1), null);
+                    INeighbour neighbour = (INeighbour)control.IDs.getOrDefault(pieces[2+j], null);
                     a.addNeighbour(neighbour);
                 }
             }
             for (int i = nAsteroids; i < nAsteroids+nTeleports; i++){
                 pieces = lines.get(i);
-                Teleport t = (Teleport)IDs.getOrDefault(pieces[0].substring(0, pieces[0].length()-1), null);
+                Teleport t = (Teleport)control.IDs.getOrDefault(pieces[0].substring(0, pieces[0].length()-1), null);
                 if (!"0".equals(pieces[1])) {
-                    Asteroid a = (Asteroid) IDs.getOrDefault(pieces[1], null);
+                    Asteroid a = (Asteroid) control.IDs.getOrDefault(pieces[1], null);
                     if (a == null)
                         throw new Exception();
                     t.setNeighbour(a);
@@ -479,7 +481,7 @@ public class Control implements ActionListener, MouseListener{
                     t.setNeighbour(null);
                 }
                 if (!"0".equals(pieces[2])){
-                    Teleport t2 = (Teleport) IDs.getOrDefault(pieces[2], null);
+                    Teleport t2 = (Teleport) control.IDs.getOrDefault(pieces[2], null);
                     if (t2 == null)
                         throw new Exception();
                     t.setPair(t2);
@@ -492,26 +494,26 @@ public class Control implements ActionListener, MouseListener{
         /**
          * A fájl végéről beolvassa az aszteroidák és teleportkapuk koordinátáit és a teleportkapuk színeit.
          */
-        private void readCoordinates(){
+        private void readCoordinates(Control control){
             for (int i = 0; i < nAsteroids; i++){
                 String[] pieces = fileInput.nextLine().split(" ");
                 String ID = pieces[0].substring(0, pieces[0].length()-1);
-                Asteroid a = (Asteroid)IDs.get(ID);
+                Asteroid a = (Asteroid)control.IDs.get(ID);
                 int x = Integer.parseInt(pieces[1]);
                 int y = Integer.parseInt(pieces[2]);
-                gameFrame.getLevelView().addAsteroidView(a, x, y);
+                control.gameFrame.getLevelView().addAsteroidView(a, x, y);
             }
             for (int i = 0; i < nTeleports; i++){
                 String[] pieces = fileInput.nextLine().split(" ");
                 String ID = pieces[0].substring(0, pieces[0].length()-1);
-                Teleport t = (Teleport)IDs.get(ID);
+                Teleport t = (Teleport)control.IDs.get(ID);
                 if (t.getNeighbour() == null)
                     continue;
                 int x = Integer.parseInt(pieces[1]);
                 int y = Integer.parseInt(pieces[2]);
                 Color c = new Color(Integer.parseInt(pieces[3]), Integer.parseInt(pieces[4]), Integer.parseInt(pieces[5]));
                 if (t != null)
-                    gameFrame.getLevelView().addTeleportView(t, c, x, y);
+                    control.gameFrame.getLevelView().addTeleportView(t, c, x, y);
             }
         }
     }
@@ -528,6 +530,8 @@ public class Control implements ActionListener, MouseListener{
          * Egy filechooser dialógusablak, amiből a felhasználó a fájlt választhatja ki.
          */
         private JFileChooser fileChooser = new JFileChooser();
+
+        private Control control;
 
         /**
          * Egy JFileChooser dialógusablak segítségével lekéri a felhasználótól az útvonalat.
@@ -547,12 +551,14 @@ public class Control implements ActionListener, MouseListener{
          * Jelzi a felhaszn?l?nak, hogy sikeres volt-e a parancs.
          * Ha hiba t?rt?nik a f?jlba ?r?s k?zben, akkor jelzi a felhaszn?l?nak.
          * @param args A parancs parancssori argumentumai, a teljes sort meg kell adni, amely sz?k?z?kkel lett elv?lasztva.
+         * @param control
          */
-        public void execute(String[] args) {
+        public void execute(String[] args, Control control) {
+            this.control = control;
             File file;
             if (args.length < 2) {
                 file = showDialog();
-                //output.println("save unsuccessful");
+                //control.output.println("save unsuccessful");
                 //return;
             }else{
                 file = new File(args[1]);
@@ -562,27 +568,27 @@ public class Control implements ActionListener, MouseListener{
             try {
                 fileOutput = new PrintWriter(file);
                 saveAsteroidTeleport();
-                fileOutput.println("S: " + game.getSettlers().size() + " R: " + game.getRobots().size() + " U: " + game.getUFOs().size());
+                fileOutput.println("S: " + control.game.getSettlers().size() + " R: " + control.game.getRobots().size() + " U: " + control.game.getUFOs().size());
                 saveSettlers();
                 saverobotsUFOs();
                 saveCoordinates();
             }catch (Exception e){
                 e.printStackTrace();
-                output.println("save unsuccessful");
+                control.output.println("save unsuccessful");
                 return;
             }
             fileOutput.close();
-           // output.println("saved to " + args[1]);
+           // control.output.println("saved to " + args[1]);
         }
 
         /**
          * Kimenti a megadott f?jlba a settlereket.
          */
         private void saveSettlers() {
-            List<Settler> settlers = game.getSettlers();
+            List<Settler> settlers = control.game.getSettlers();
             for (Settler s : settlers) {
                 List<Mineral> minerals = s.getMinerals();
-                fileOutput.print(reverseIDs.get(s) + ": " + reverseIDs.get(s.getAsteroid()) + " " + minerals.size() + " ");
+                fileOutput.print(control.reverseIDs.get(s) + ": " + control.reverseIDs.get(s.getAsteroid()) + " " + minerals.size() + " ");
                 for (Mineral m : minerals)
                     fileOutput.print(m.toString() + " ");
 
@@ -590,9 +596,9 @@ public class Control implements ActionListener, MouseListener{
                 int t = teleports.size();
                 fileOutput.print(t + (t > 0 ? " " : ""));
                 for (int i = 0; i < t - 1; i++)
-                    fileOutput.print(reverseIDs.get(teleports.get(i)) + " ");
+                    fileOutput.print(control.reverseIDs.get(teleports.get(i)) + " ");
                 if (t > 0)
-                    fileOutput.print(reverseIDs.get(teleports.get(t - 1)));
+                    fileOutput.print(control.reverseIDs.get(teleports.get(t - 1)));
                 fileOutput.print("\n");
             }
         }
@@ -601,31 +607,31 @@ public class Control implements ActionListener, MouseListener{
          * Kimenti a f?jlba a robotokat ?s az uf?kat.
          */
         private void saverobotsUFOs(){
-            for (Robot r : game.getRobots())
-                fileOutput.println(reverseIDs.get(r) + ": " + reverseIDs.get(r.getAsteroid()));
-            for (UFO ufo : game.getUFOs())
-                fileOutput.println(reverseIDs.get(ufo) + ": " + reverseIDs.get(ufo.getAsteroid()));
+            for (Robot r : control.game.getRobots())
+                fileOutput.println(control.reverseIDs.get(r) + ": " + control.reverseIDs.get(r.getAsteroid()));
+            for (UFO ufo : control.game.getUFOs())
+                fileOutput.println(control.reverseIDs.get(ufo) + ": " + control.reverseIDs.get(ufo.getAsteroid()));
         }
 
         /**
          * Kimenti a f?jlba az aszteorid?kat ?s a robotokat.
          */
         private void saveAsteroidTeleport(){
-            List<Asteroid> asteroids = game.getSun().getAsteroids();
-            List <Teleport> gates = game.getGates();
+            List<Asteroid> asteroids = control.game.getSun().getAsteroids();
+            List <Teleport> gates = control.game.getGates();
             fileOutput.println("A: " + asteroids.size() + " T: " + gates.size());
 
             for (Asteroid a : asteroids){
                 int ncount = a.getNeighbourCount();
-                fileOutput.print(reverseIDs.get(a) + ": " + ncount + " ");
+                fileOutput.print(control.reverseIDs.get(a) + ": " + ncount + " ");
                 for (int i = 0; i < ncount; i++)
-                    fileOutput.print(reverseIDs.get(a.getNeighbourAt(i)) + " ");
+                    fileOutput.print(control.reverseIDs.get(a.getNeighbourAt(i)) + " ");
                 fileOutput.print(a.getShell() + " " + (a.getCloseToSun() ? "1" : "0") + " ");
                 fileOutput.println(a.getCore() == null ? "empty" : a.getCore().toString());
             }
             for (Teleport t : gates)
-                fileOutput.println(reverseIDs.get(t) + ": " + reverseIDs.getOrDefault(t.getNeighbour(), "0")
-                        + " " + reverseIDs.getOrDefault(t.getPair(), "0") + (t.getBamboozled() ? " 1" : " 0"));
+                fileOutput.println(control.reverseIDs.get(t) + ": " + control.reverseIDs.getOrDefault(t.getNeighbour(), "0")
+                        + " " + control.reverseIDs.getOrDefault(t.getPair(), "0") + (t.getBamboozled() ? " 1" : " 0"));
         }
 
         /**
@@ -633,12 +639,12 @@ public class Control implements ActionListener, MouseListener{
          * Elmenti az aszteroidák nézeteinek koordinátáit.
          */
         private void saveCoordinates(){
-            LevelView lv = gameFrame.getLevelView();
+            LevelView lv = control.gameFrame.getLevelView();
             HashMap<Asteroid, AsteroidView> asteroidviews = lv.getAsteroidViews();
             HashMap<Teleport, TeleportView> teleportviews = lv.getTeleportViews();
             for (Asteroid a : asteroidviews.keySet()){
                 if (a != null){
-                    String ID = reverseIDs.get(a);
+                    String ID = control.reverseIDs.get(a);
                     AsteroidView av = asteroidviews.get(a);
                     if (av == null) continue;
                     fileOutput.println(ID + ": " + av.getX() + " " + av.getY());
@@ -646,7 +652,7 @@ public class Control implements ActionListener, MouseListener{
             }
             for (Teleport t : teleportviews.keySet()){
                 if (t != null){
-                    String ID = reverseIDs.get(t);
+                    String ID = control.reverseIDs.get(t);
                     TeleportView tv = teleportviews.get(t);
                     if (tv == null) continue;
                     Color c = tv.getColor();
@@ -663,10 +669,11 @@ public class Control implements ActionListener, MouseListener{
          * A param?terk?nt megadott f?jlra ?ll?tja a bemenetet.
          * Ha nincs el?g argumentum, akkor hib?t jelez.
          * @param args A parancs parancssori argumentumai, a teljes sort meg kell adni, amely sz?k?z?kkel lett elv?lasztva.
+         * @param control
          */
-        public void execute(String[] args) {
+        public void execute(String[] args, Control control) {
             if (args.length < 2) {
-                output.println("unsuccessful");
+                control.output.println("unsuccessful");
                 return;
             }
             File file = new File(args[1]);
@@ -674,11 +681,11 @@ public class Control implements ActionListener, MouseListener{
             try {
                 temp = new Scanner(file);
             } catch (FileNotFoundException e) {
-                output.println("unsuccessful");
+                control.output.println("unsuccessful");
                 return;
             }
-            input.close();
-            input = temp;
+            control.input.close();
+            control.input = temp;
             System.out.println("input set to " + args[1]);
         }
     }
@@ -690,10 +697,11 @@ public class Control implements ActionListener, MouseListener{
          * A param?terk?nt megadott f?jlra ir?ny?tja a kimenetet.
          * Ha nincs el?g argumentum, akkor hib?t jelez.
          * @param args A parancs parancssori argumentumai, a teljes sort meg kell adni, amely sz?k?z?kkel lett elv?lasztva.
+         * @param control
          */
-        public void execute(String[] args) {
+        public void execute(String[] args, Control control) {
             if (args.length < 2) {
-                output.println("unsuccessful");
+                control.output.println("unsuccessful");
                 return;
             }
             File file = new File(args[1]);
@@ -701,12 +709,12 @@ public class Control implements ActionListener, MouseListener{
             try {
                 temp = new PrintStream(new FileOutputStream(file));
             } catch (Exception e) {
-                output.println("unsuccessful");
+                control.output.println("unsuccessful");
                 return;
             }
             System.out.println("output set to " + args[1]);
-            output.close();
-            output = temp;
+            control.output.close();
+            control.output = temp;
         }
     }
     /**
@@ -720,26 +728,27 @@ public class Control implements ActionListener, MouseListener{
          * A hiba fajt?j?t is ki?rja a felhaszn?l?nak.
          * Ha l?trej?tt a telepes, akkor ezt is jelzi a felhaszn?l?nak.
          * @param args A parancs parancssori argumentumai, a teljes sort meg kell adni, amely sz?k?z?kkel lett elv?lasztva.
+         * @param control
          */
-        public void execute(String[] args) {
+        public void execute(String[] args, Control control) {
             if (args.length < 2) {
-                output.println("all details must be specified");
+                control.output.println("all details must be specified");
                 return;
             }
-            Object asteroid = IDs.getOrDefault(args[1], null);
-            Sun sun = game.getSun();
+            Object asteroid = control.IDs.getOrDefault(args[1], null);
+            Sun sun = control.game.getSun();
             List<Asteroid> asteroids = sun.getAsteroids();
             if (asteroid == null || !asteroids.contains((Asteroid) asteroid)){
-                output.println("couldn't complete request\n" +
+                control.output.println("couldn't complete request\n" +
                         "selected ID not available\n");
             }else{
-                Settler s = new Settler((Asteroid) asteroid, game);
-                int n = maxIDs.get("settler");
-                maxIDs.replace("settler", n+1);
-                addID("s" + (n+1), s);
-                game.addSettler(s);
+                Settler s = new Settler((Asteroid) asteroid, control.game);
+                int n = control.maxIDs.get("settler");
+                control.maxIDs.replace("settler", n+1);
+                control.addID("s" + (n+1), s);
+                control.game.addSettler(s);
                 ((Asteroid) asteroid).placeTraveller(s);
-                output.println("settler s" + (n+1) + " added to asteroid: " + args[1]);
+                control.output.println("settler s" + (n+1) + " added to asteroid: " + args[1]);
             }
         }
     }
@@ -753,10 +762,11 @@ public class Control implements ActionListener, MouseListener{
          * Ha b?rmilyen hiba van, akkor jelzi a felhaszn?l?nak a hiba fajt?j?t.
          * Ha rendben volt minden, akkor ki?rja a felhaszn?l?nak az ?j aszteroida param?tereit.
          * @param args A parancs parancssori argumentumai, a teljes sort meg kell adni, amely sz?k?z?kkel lett elv?lasztva.
+         * @param control
          */
-        public void execute(String[] args) {
+        public void execute(String[] args, Control control) {
             if (args.length < 4) {
-                output.println("all details must be specified");
+                control.output.println("all details must be specified");
                 return;
             }
             int shell = Integer.parseInt(args[1]);
@@ -764,15 +774,15 @@ public class Control implements ActionListener, MouseListener{
             if (args[2].equals("1"))
                 cts = true;
             Mineral m = parseMineral(args[3]);
-            Asteroid asteroid = new Asteroid(shell, cts, m, game.getSun());
-            game.getSun().addAsteroid(asteroid);
-            int n = maxIDs.get("asteroid");
-            maxIDs.replace("asteroid", n+1);
-            addID("a" + (n+1), asteroid);
-            output.println("asteroid a" + (n+1) + " added");
-            output.println("shell: " + shell);
-            output.println("closetosun: " + (cts? "yes" : "no"));
-            output.println("core: " + args[3]);
+            Asteroid asteroid = new Asteroid(shell, cts, m, control.game.getSun());
+            control.game.getSun().addAsteroid(asteroid);
+            int n = control.maxIDs.get("asteroid");
+            control.maxIDs.replace("asteroid", n+1);
+            control.addID("a" + (n+1), asteroid);
+            control.output.println("asteroid a" + (n+1) + " added");
+            control.output.println("shell: " + shell);
+            control.output.println("closetosun: " + (cts? "yes" : "no"));
+            control.output.println("core: " + args[3]);
         }
     }
     /**
@@ -784,26 +794,27 @@ public class Control implements ActionListener, MouseListener{
          * A param?terk?nt megadott aszteroid?ra hozz?ad egy ?j robotot.
          * Ha nincs el?g param?ter, akkor hib?t jelez.
          * @param args A parancs parancssori argumentumai, a teljes sort meg kell adni, amely sz?k?z?kkel lett elv?lasztva.
+         * @param control
          */
-        public void execute(String[] args) {
+        public void execute(String[] args, Control control) {
             if (args.length < 2) {
-                output.println("all details must be specified");
+                control.output.println("all details must be specified");
                 return;
             }
-            Object asteroid = IDs.getOrDefault(args[1], null);
-            Sun sun = game.getSun();
+            Object asteroid = control.IDs.getOrDefault(args[1], null);
+            Sun sun = control.game.getSun();
             List<Asteroid> asteroids = sun.getAsteroids();
             if (asteroid == null || !asteroids.contains((Asteroid) asteroid)){
-                output.println("couldn't complete request\n" +
+                control.output.println("couldn't complete request\n" +
                         "    selected ID not available\n");
             }else{
-                Robot r = new Robot((Asteroid) asteroid, game);
-                int n = maxIDs.get("robot");
-                maxIDs.replace("robot", n+1);
-                addID("r" + (n+1), r);
-                game.addRobot(r);
+                Robot r = new Robot((Asteroid) asteroid, control.game);
+                int n = control.maxIDs.get("robot");
+                control.maxIDs.replace("robot", n+1);
+                control.addID("r" + (n+1), r);
+                control.game.addRobot(r);
                 ((Asteroid) asteroid).placeTraveller(r);
-                output.println("robot r" + (n+1) + " added to asteroid: " + args[1]);
+                control.output.println("robot r" + (n+1) + " added to asteroid: " + args[1]);
             }
         }
     }
@@ -816,26 +827,27 @@ public class Control implements ActionListener, MouseListener{
          * A param?terk?nt megadott aszteroid?ra elhelyez egy ?j uf?t.
          * Ha nincs el?g param?ter, akkor hib?t jelez.
          * @param args A parancs parancssori argumentumai, a teljes sort meg kell adni, amely sz?k?z?kkel lett elv?lasztva.
+         * @param control
          */
-        public void execute(String[] args) {
+        public void execute(String[] args, Control control) {
             if (args.length < 2) {
-                output.println("all details must be specified");
+                control.output.println("all details must be specified");
                 return;
             }
-            Object asteroid = IDs.getOrDefault(args[1], null);
-            Sun sun = game.getSun();
+            Object asteroid = control.IDs.getOrDefault(args[1], null);
+            Sun sun = control.game.getSun();
             List<Asteroid> asteroids = sun.getAsteroids();
             if (asteroid == null || !asteroids.contains((Asteroid) asteroid)){
-                output.println("couldn't complete request\n" +
+                control.output.println("couldn't complete request\n" +
                         "    selected ID not available\n");
             }else{
-                UFO ufo = new UFO((Asteroid) asteroid, game);
-                int n = maxIDs.get("ufo");
-                maxIDs.replace("ufo", n+1);
-                addID("u" + (n+1), ufo);
+                UFO ufo = new UFO((Asteroid) asteroid, control.game);
+                int n = control.maxIDs.get("ufo");
+                control.maxIDs.replace("ufo", n+1);
+                control.addID("u" + (n+1), ufo);
                 ((Asteroid) asteroid).placeTraveller(ufo);
-                game.addUFO(ufo);
-                output.println("ufo u" + (n+1) + " added to asteroid: " + args[1]);
+                control.game.addUFO(ufo);
+                control.output.println("ufo u" + (n+1) + " added to asteroid: " + args[1]);
             }
         }
     }
@@ -848,22 +860,23 @@ public class Control implements ActionListener, MouseListener{
          * A param?terk?nt megadott 2 aszteroid?t szomsz?dossa teszi egym?ssal.
          * Ha nincs el?g param?ter, vagy nem l?teznek az aszteroid?k, akkor hib?t jelez.
          * @param args A parancs parancssori argumentumai, a teljes sort meg kell adni, amely sz?k?z?kkel lett elv?lasztva.
+         * @param control
          */
-        public void execute(String[] args) {
+        public void execute(String[] args, Control control) {
             if (args.length < 3) {
-                output.println("all details must be specified");
+                control.output.println("all details must be specified");
                 return;
             }
-            Asteroid a1 = (Asteroid) IDs.getOrDefault(args[1], null);
-            Asteroid a2 = (Asteroid) IDs.getOrDefault(args[2], null);
+            Asteroid a1 = (Asteroid) control.IDs.getOrDefault(args[1], null);
+            Asteroid a2 = (Asteroid) control.IDs.getOrDefault(args[2], null);
             if (a1 == null || a2 == null){
-                output.println("couldn't complete request\n" +
+                control.output.println("couldn't complete request\n" +
                         "    selected ID not available\n");
                 return;
             }
             a1.addNeighbour(a2);
             a2.addNeighbour(a1);
-            output.println(args[1] + " and " + args[2] + " are neighbouring asteroids");
+            control.output.println(args[1] + " and " + args[2] + " are neighbouring asteroids");
         }
     }
     /**
@@ -880,31 +893,32 @@ public class Control implements ActionListener, MouseListener{
          * amelyre az akt?v telepest mozgatni akarja a felhaszn?l?.
          * Ha a megadott param?terek valami?rt hib?sak, akkor ezt jelzi a felhaszn?l?nak.
          * @param args A parancs parancssori argumentumai, a teljes sort meg kell adni, amely sz?k?z?kkel lett elv?lasztva.
+         * @param control
          */
-        public void execute(String[] args) {
-            if (!settlerCommandCheck(args, 1)) {
+        public void execute(String[] args, Control control) {
+            if (!control.settlerCommandCheck(args, 1)) {
                 return;
             }
             if (args.length < 2) {
-                for (int i = 0; i < activeSettler.getAsteroid().getNeighbourCount(); i++) {
-                    INeighbour n = activeSettler.getAsteroid().getNeighbourAt(i);
-                    String id = reverseIDs.get(n);
+                for (int i = 0; i < control.activeSettler.getAsteroid().getNeighbourCount(); i++) {
+                    INeighbour n = control.activeSettler.getAsteroid().getNeighbourAt(i);
+                    String id = control.reverseIDs.get(n);
                     String type = "";
                     if (id.charAt(0) == 'a')
                         type = "asteroid";
                     if (id.charAt(0) == 't')
                         type = "teleportgate";
-                    output.println(id + ": " + type);
+                    control.output.println(id + ": " + type);
                 }
                 return;
             }
             int index = Integer.parseInt(args[1]);
-            INeighbour n = activeSettler.getAsteroid().getNeighbourAt(index);       //átírva 0-tól indexelőre
-            String id = reverseIDs.getOrDefault(n, "");
-            if (activeSettler.move(index)) {
-                output.println("move to " + id + " successful");
+            INeighbour n = control.activeSettler.getAsteroid().getNeighbourAt(index);       //átírva 0-tól indexelőre
+            String id = control.reverseIDs.getOrDefault(n, "");
+            if (control.activeSettler.move(index)) {
+                control.output.println("move to " + id + " successful");
             } else {
-                output.println("move" + ("".equals(id) ? "" : " to ") + id + " unsuccessful");
+                control.output.println("move" + ("".equals(id) ? "" : " to ") + id + " unsuccessful");
             }
 
         }
@@ -917,18 +931,19 @@ public class Control implements ActionListener, MouseListener{
          * Az akt?v telepessel v?grehajt egy f?r?s m?veletet.
          * Ha valami t?rt?nt az akt?v telepessel, akkor jelzi a felhaszn?l?nak.
          * @param args A parancs parancssori argumentumai, a teljes sort meg kell adni, amely sz?k?z?kkel lett elv?lasztva.
+         * @param control
          */
-        public void execute(String[] args) {
-            if (!settlerCommandCheck(args, 1))
+        public void execute(String[] args, Control control) {
+            if (!control.settlerCommandCheck(args, 1))
                 return;
-            if (activeSettler.drill()) {
-                Asteroid a = activeSettler.getAsteroid();
+            if (control.activeSettler.drill()) {
+                Asteroid a = control.activeSettler.getAsteroid();
                 int shell = a.getShell();
-                output.println("drilling successful");
-                output.println("shell is now " + shell + " unit(s) thick");
+                control.output.println("drilling successful");
+                control.output.println("shell is now " + shell + " unit(s) thick");
             } else {
-                output.println("drilling unsuccessful");
-                output.println("the shell has already been drilled through");
+                control.output.println("drilling unsuccessful");
+                control.output.println("the shell has already been drilled through");
             }
         }
     }
@@ -940,27 +955,28 @@ public class Control implements ActionListener, MouseListener{
          * Az akt?v telepessel v?grehajt egy b?ny?sz?s m?veletet.
          * Jelzi a felhaszn?l?nak a m?velet eredm?ny?t.
          * @param args A parancs parancssori argumentumai, a teljes sort meg kell adni, amely sz?k?z?kkel lett elv?lasztva.
+         * @param control
          */
-        public void execute(String[] args) {
-            if (!settlerCommandCheck(args, 1))
+        public void execute(String[] args, Control control) {
+            if (!control.settlerCommandCheck(args, 1))
                 return;
-            Mineral m = activeSettler.getAsteroid().getCore();
-            if (activeSettler.mine()) {
-                output.println("mining successful");
-                output.println("one unit of " + m.toString() + " acquired");
-                output.println("asteroid is now empty");
+            Mineral m = control.activeSettler.getAsteroid().getCore();
+            if (control.activeSettler.mine()) {
+                control.output.println("mining successful");
+                control.output.println("one unit of " + m.toString() + " acquired");
+                control.output.println("asteroid is now empty");
             } else {
-                output.println("mining unsuccessful");
-                if (activeSettler.getAsteroid().getShell() > 0) {
-                    output.println("asteroid still has shell");
+                control.output.println("mining unsuccessful");
+                if (control.activeSettler.getAsteroid().getShell() > 0) {
+                    control.output.println("asteroid still has shell");
                     return;
                 }
                 if (m == null){
-                    output.println("asteroid is already empty");
+                    control.output.println("asteroid is already empty");
                     return;
                 }
-                if (activeSettler.getMinerals().size() == 10) {
-                    output.println("settler inventory too full");
+                if (control.activeSettler.getMinerals().size() == 10) {
+                    control.output.println("settler inventory too full");
                     return;
                 }
             }
@@ -983,55 +999,56 @@ public class Control implements ActionListener, MouseListener{
          * Ha ez robban?st okozott, akkor jelzi a felhaszn?l?nak, hogy a robban?s k?vetkezt?ben mi t?rt?nt.
          * (Megvizsg?lja, hogy mely telepesek, robotok, teleportkapuk haltak meg a robban?s miatt.)
          * @param args A parancs parancssori argumentumai, a teljes sort meg kell adni, amely sz?k?z?kkel lett elv?lasztva.
+         * @param control
          */
-        public void execute(String[] args) {
-            if (!settlerCommandCheck(args, 1))
+        public void execute(String[] args, Control control) {
+            if (!control.settlerCommandCheck(args, 1))
                 return;
             if (args.length == 1){
-                List<Mineral> minerals = activeSettler.getMinerals();
+                List<Mineral> minerals = control.activeSettler.getMinerals();
                 for (Mineral m : minerals)
-                    output.println(m.toString());
+                    control.output.println(m.toString());
                 return;
             }
             int i = Integer.parseInt(args[1]) -1;
-            Mineral core = activeSettler.getAsteroid().getCore();
-            List<Robot> robots = new ArrayList<Robot>(game.getRobots());
-            List<Settler> settlers = new ArrayList<Settler>(game.getSettlers());
-            List<UFO> UFOs = new ArrayList<UFO>(game.getUFOs());
-            List<Teleport> teleports = new ArrayList<Teleport>(game.getGates());
-            if (activeSettler.putMineralBack(i)) {
-                if (activeSettler.getAsteroid().getCore() != null);
-                    output.println(activeSettler.getAsteroid().getCore().toString() + " is now in the asteroid");
-                if (!game.getSun().getAsteroids().contains(activeSettler.getAsteroid())) {
-                    output.println("the returned uranium caused an explosion");
+            Mineral core = control.activeSettler.getAsteroid().getCore();
+            List<Robot> robots = new ArrayList<Robot>(control.game.getRobots());
+            List<Settler> settlers = new ArrayList<Settler>(control.game.getSettlers());
+            List<UFO> UFOs = new ArrayList<UFO>(control.game.getUFOs());
+            List<Teleport> teleports = new ArrayList<Teleport>(control.game.getGates());
+            if (control.activeSettler.putMineralBack(i)) {
+                if (control.activeSettler.getAsteroid().getCore() != null);
+                    control.output.println(control.activeSettler.getAsteroid().getCore().toString() + " is now in the asteroid");
+                if (!control.game.getSun().getAsteroids().contains(control.activeSettler.getAsteroid())) {
+                    control.output.println("the returned uranium caused an explosion");
                     for (Robot r : robots) {
-                        if (!game.getRobots().contains(r))
-                            output.println(reverseIDs.get(r) + " robot died");
+                        if (!control.game.getRobots().contains(r))
+                            control.output.println(control.reverseIDs.get(r) + " robot died");
                     }
                     for (Settler s : settlers) {
-                        if (!game.getSettlers().contains(s))
-                            output.println(reverseIDs.get(s) + " settler died");
+                        if (!control.game.getSettlers().contains(s))
+                            control.output.println(control.reverseIDs.get(s) + " settler died");
                     }
                     for (UFO u : UFOs) {
-                        if (!game.getUFOs().contains(u))
-                            output.println(reverseIDs.get(u) + " ufo died");
+                        if (!control.game.getUFOs().contains(u))
+                            control.output.println(control.reverseIDs.get(u) + " ufo died");
                     }
                     for (Teleport t : teleports) {
-                        if (!game.getGates().contains(t))
-                            output.println(reverseIDs.get(t) + " teleport perished");
+                        if (!control.game.getGates().contains(t))
+                            control.output.println(control.reverseIDs.get(t) + " teleport perished");
                     }
                 }
 
             } else {
-                output.println("putting back mineral unsuccessful");
-                if (activeSettler.getAsteroid().getShell() > 0){
-                    output.println("asteroid still has shell");
+                control.output.println("putting back mineral unsuccessful");
+                if (control.activeSettler.getAsteroid().getShell() > 0){
+                    control.output.println("asteroid still has shell");
                     JOptionPane.showMessageDialog(null, "The asteroid still has shell");
                 } else if (core != null){
-                    output.println("asteroid has other mineral");
+                    control.output.println("asteroid has other mineral");
                     JOptionPane.showMessageDialog(null, "The asteroid has other mineral");
                 } else {
-                    output.println("settler doesn't have the necessary mineral\n");
+                    control.output.println("settler doesn't have the necessary mineral\n");
                     JOptionPane.showMessageDialog(null, "There's no mineral to place");
                 }
             }
@@ -1046,18 +1063,19 @@ public class Control implements ActionListener, MouseListener{
          * Jelzi a felhaszn?l?nak a m?velet eredm?ny?t. Jelzi az elk?sz?tett robot azonos?t?j?t.
          * Ha hiba t?rt?nik, azt is jelzi.
          * @param args A parancs parancssori argumentumai, a teljes sort meg kell adni, amely sz?k?z?kkel lett elv?lasztva.
+         * @param control
          */
-        public void execute(String[] args) {
-            if (!settlerCommandCheck(args, 1))
+        public void execute(String[] args, Control control) {
+            if (!control.settlerCommandCheck(args, 1))
                 return;
-            if (activeSettler.craftRobot()) {
-                Robot newrobot = game.getRobots().get(game.getRobots().size()-1);
-                int n = maxIDs.get("robot");
-                maxIDs.replace("robot", n+1);
-                addID("r" + (n+1), newrobot);
-                output.println("new robot r" + (n+1) + " successfully crafted");
+            if (control.activeSettler.craftRobot()) {
+                Robot newrobot = control.game.getRobots().get(control.game.getRobots().size()-1);
+                int n = control.maxIDs.get("robot");
+                control.maxIDs.replace("robot", n+1);
+                control.addID("r" + (n+1), newrobot);
+                control.output.println("new robot r" + (n+1) + " successfully crafted");
             } else {
-                output.println("new robot couldn't be crafted, insufficient minerals");
+                control.output.println("new robot couldn't be crafted, insufficient minerals");
             }
         }
     }
@@ -1070,23 +1088,24 @@ public class Control implements ActionListener, MouseListener{
          * Jelzi a felhaszn?l?nak a m?velet eredm?ny?t. Jelzi az elk?sz?tett teleportkapuk azonos?t?j?t.
          * Ha hiba t?rt?nik, azt is jelzi.
          * @param args A parancs parancssori argumentumai, a teljes sort meg kell adni, amely sz?k?z?kkel lett elv?lasztva.
+         * @param control
          */
-        public void execute(String[] args) {
-            if (!settlerCommandCheck(args, 1))
+        public void execute(String[] args, Control control) {
+            if (!control.settlerCommandCheck(args, 1))
                 return;
-            if (activeSettler.craftTeleport()) {
-                Teleport t1 = game.getGates().get(game.getGates().size()-2);
-                Teleport t2 = game.getGates().get(game.getGates().size()-1);
-                int n = maxIDs.get("teleport");
-                addID("t" + (n+1), t1);
-                addID("t" + (n+2), t2);
-                maxIDs.replace("teleport", (n+2));
-                output.println("new pair of teleportgates t" + (n+1) + " and t" + (n+2) + " successfully crafted");
+            if (control.activeSettler.craftTeleport()) {
+                Teleport t1 = control.game.getGates().get(control.game.getGates().size()-2);
+                Teleport t2 = control.game.getGates().get(control.game.getGates().size()-1);
+                int n = control.maxIDs.get("teleport");
+                control.addID("t" + (n+1), t1);
+                control.addID("t" + (n+2), t2);
+                control.maxIDs.replace("teleport", (n+2));
+                control.output.println("new pair of teleportgates t" + (n+1) + " and t" + (n+2) + " successfully crafted");
             } else {
-                if (activeSettler.getTeleportgates().size() < 2)
-                    output.println("new pair of teleportgates couldn't be crafted, insufficient minerals");
+                if (control.activeSettler.getTeleportgates().size() < 2)
+                    control.output.println("new pair of teleportgates couldn't be crafted, insufficient minerals");
                 else
-                    output.println("new pair of teleportgates couldn't be crafted, inventory too full");
+                    control.output.println("new pair of teleportgates couldn't be crafted, inventory too full");
             }
         }
     }
@@ -1101,28 +1120,29 @@ public class Control implements ActionListener, MouseListener{
          * helyezni a felhaszn?l?. Param?ter n?lk?l kilist?zza a telepesn?l l?v? teleportkapukat.
          * Ha hiba t?rt?nik akkor jelzi a felhaszn?l?nak, k?l?nben ki?rja a lehelyez?s t?ny?t.
          * @param args A parancs parancssori argumentumai, a teljes sort meg kell adni, amely sz?k?z?kkel lett elv?lasztva.
+         * @param control
          */
-        public void execute(String[] args) {
-            if (!settlerCommandCheck(args, 2))
+        public void execute(String[] args, Control control) {
+            if (!control.settlerCommandCheck(args, 2))
                 return;
-            List<Teleport> gates = activeSettler.getTeleportgates();
+            List<Teleport> gates = control.activeSettler.getTeleportgates();
             if (gates.size() == 0){
-                output.println("there's no teleport to place");
+                control.output.println("there's no teleport to place");
                 JOptionPane.showMessageDialog(null, "There's no teleport to place");
                 return;
             }
             if (args.length == 1){
                 for (Teleport gate : gates)
-                    output.println(reverseIDs.get(gate));
+                    control.output.println(control.reverseIDs.get(gate));
             }
             int i = Integer.parseInt(args[1]);      //ez mar nullatol varja a cimzest
             if (i < 0 || i >= gates.size()) {
-                output.println("all details must be specified");
+                control.output.println("all details must be specified");
                 return;
             }
             Teleport t = gates.get(i);
-            activeSettler.placeTeleport(t);
-            output.println("teleport " + reverseIDs.get(t) + " placed");
+            control.activeSettler.placeTeleport(t);
+            control.output.println("teleport " + control.reverseIDs.get(t) + " placed");
 
         }
     }
@@ -1136,19 +1156,20 @@ public class Control implements ActionListener, MouseListener{
          * Az akt?v telepesnek ad egy, az els? param?terben meghat?rozott nyersanyagot.
          * Ha nem j?l adta meg a felhaszn?l?, akkor hib?t jelez.
          * @param args A parancs parancssori argumentumai, a teljes sort meg kell adni, amely sz?k?z?kkel lett elv?lasztva.
+         * @param control
          */
-        public void execute(String[] args) {
-            if (!settlerCommandCheck(args, 2))
+        public void execute(String[] args, Control control) {
+            if (!control.settlerCommandCheck(args, 2))
                 return;
             Mineral mineral = parseMineral(args[1]);
             if (mineral == null) {
-                output.println("all details must be specified");
+                control.output.println("all details must be specified");
                 return;
             }
-            if (activeSettler.addMineral(mineral))
-                output.println("settler " + reverseIDs.get(activeSettler) + " received one unit of " + mineral.toString());
+            if (control.activeSettler.addMineral(mineral))
+                control.output.println("settler " + control.reverseIDs.get(control.activeSettler) + " received one unit of " + mineral.toString());
             else
-                output.println("settler inventory too full");
+                control.output.println("settler inventory too full");
         }
     }
     /**
@@ -1161,16 +1182,17 @@ public class Control implements ActionListener, MouseListener{
          * Az els? ?s a m?sodik param?terben meghat?rozott aszteroid?ra lehelyez egy-egy teleportkaput, amelyek p?rt alkotnak.
          * Ha hiba t?rt?nik, jelez a felhaszn?l?nak, k?l?nben ki?rja a teleportkapuk l?trej?tt?nek t?ny?t.
          * @param args A parancs parancssori argumentumai, a teljes sort meg kell adni, amely sz?k?z?kkel lett elv?lasztva.
+         * @param control
          */
-        public void execute(String[] args) {
+        public void execute(String[] args, Control control) {
             if (args.length < 3) {
-                output.println("all details must be specified");
+                control.output.println("all details must be specified");
                 return;
             }
-            Asteroid a1 = (Asteroid) IDs.getOrDefault(args[1], null);
-            Asteroid a2 = (Asteroid) IDs.getOrDefault(args[2], null);
+            Asteroid a1 = (Asteroid) control.IDs.getOrDefault(args[1], null);
+            Asteroid a2 = (Asteroid) control.IDs.getOrDefault(args[2], null);
             if (a1 == null || a2 == null){
-                output.println("couldn't complete request\n" +
+                control.output.println("couldn't complete request\n" +
                         "    selected ID not available\n");
                 return;
             }
@@ -1180,13 +1202,13 @@ public class Control implements ActionListener, MouseListener{
             t2.setPair(t1);
             t1.setNeighbour(a1);
             t2.setNeighbour(a2);
-            int id = maxIDs.get("teleport");
-            addID("t" + (id+1), t1);
-            addID("t" + (id+2), t2);
-            maxIDs.replace("teleport", id+2);
-            game.addTeleport(t1);
-            game.addTeleport(t2);
-            output.println("connected teleportgates " + ("t" + (id+1)) +" " + ("t" + (id+2)) + " placed by " + args[1] + " and " + args[2]);
+            int id = control.maxIDs.get("teleport");
+            control.addID("t" + (id+1), t1);
+            control.addID("t" + (id+2), t2);
+            control.maxIDs.replace("teleport", id+2);
+            control.game.addTeleport(t1);
+            control.game.addTeleport(t2);
+            control.output.println("connected teleportgates " + ("t" + (id+1)) +" " + ("t" + (id+2)) + " placed by " + args[1] + " and " + args[2]);
         }
     }
     /**
@@ -1199,56 +1221,57 @@ public class Control implements ActionListener, MouseListener{
          * Minden megkerg?lt teleportkapu l?p, minden robot ?s uf? l?p.
          * A nap tesz egy l?p?st.
          * @param args A parancs parancssori argumentumai, a teljes sort meg kell adni, amely sz?k?z?kkel lett elv?lasztva.
+         * @param control
          */
-        public void execute(String[] args) {
-            for (Teleport t : game.getGates()) {
+        public void execute(String[] args, Control control) {
+            for (Teleport t : control.game.getGates()) {
                 if (t.getBamboozled()) {
                     Asteroid a = t.getNeighbour();
                     t.makeAction();
                     if (a.equals(t.getNeighbour()))
-                        output.println("teleport " + reverseIDs.get(t) + " couldn't move");
+                        control.output.println("teleport " + control.reverseIDs.get(t) + " couldn't move");
                     else
-                        output.println("teleport " + reverseIDs.get(t) + " moved to " + reverseIDs.get(t.getNeighbour()));
+                        control.output.println("teleport " + control.reverseIDs.get(t) + " moved to " + control.reverseIDs.get(t.getNeighbour()));
                 }
             }
-            if (random) {
-                for (Robot r : game.getRobots()) {
-                    commands.get("robotaction").execute(new String[]{"robotaction", reverseIDs.get(r)});
+            if (control.random) {
+                for (Robot r : control.game.getRobots()) {
+                    commands.get("robotaction").execute(new String[]{"robotaction", control.reverseIDs.get(r)}, control);
                 }
-                for (UFO u : game.getUFOs()) {
-                    commands.get("ufoaction").execute(new String[]{"ufoaction", reverseIDs.get(u)});
+                for (UFO u : control.game.getUFOs()) {
+                    commands.get("ufoaction").execute(new String[]{"ufoaction", control.reverseIDs.get(u)}, control);
                 }
-                commands.get("sunaction").execute(new String[]{"sunaction"});
+                commands.get("sunaction").execute(new String[]{"sunaction"}, control);
             } else {
-                for (Robot r : game.getRobots()) {
-                    output.println("enter a robotaction command for robot " + reverseIDs.get(r));
+                for (Robot r : control.game.getRobots()) {
+                    control.output.println("enter a robotaction command for robot " + control.reverseIDs.get(r));
                     String[] pieces;
-                    if (input.hasNextLine()) {
-                        pieces = input.nextLine().split(" ");
-                        if (pieces[0].equals("robotaction") && pieces[1].equals(reverseIDs.get(r))) {
-                            commands.get("robotaction").execute(pieces);
+                    if (control.input.hasNextLine()) {
+                        pieces = control.input.nextLine().split(" ");
+                        if (pieces[0].equals("robotaction") && pieces[1].equals(control.reverseIDs.get(r))) {
+                            commands.get("robotaction").execute(pieces, control);
                         } else {
-                            output.println("invalid command");
+                            control.output.println("invalid command");
                         }
                     }
                     else
                         return;
                 }
-                for (UFO u : game.getUFOs()) {
-                    output.println("enter a ufoaction command for robot " + reverseIDs.get(u));
+                for (UFO u : control.game.getUFOs()) {
+                    control.output.println("enter a ufoaction command for robot " + control.reverseIDs.get(u));
                     String[] pieces;
-                    if (input.hasNextLine()) {
-                        pieces = input.nextLine().split(" ");
-                        if (pieces[0].equals("ufoaction") && pieces[1].equals(reverseIDs.get(u))) {
-                            commands.get("ufoaction").execute(pieces);
+                    if (control.input.hasNextLine()) {
+                        pieces = control.input.nextLine().split(" ");
+                        if (pieces[0].equals("ufoaction") && pieces[1].equals(control.reverseIDs.get(u))) {
+                            commands.get("ufoaction").execute(pieces, control);
                         } else {
-                            output.println("invalid command");
+                            control.output.println("invalid command");
                         }
                     }
                     else
                         return;
                 }
-                commands.get("sunaction").execute(new String[]{"sunaction"});
+                commands.get("sunaction").execute(new String[]{"sunaction"}, control);
             }
         }
     }
@@ -1270,81 +1293,82 @@ public class Control implements ActionListener, MouseListener{
          * Ha valami hiba t?rt?nik, akkor jelzi a felhaszn?l? fel?.
          * Az esem?nyeket r?szletesen k?zli a felhaszn?l?val.
          * @param args A parancs parancssori argumentumai, a teljes sort meg kell adni, amely sz?k?z?kkel lett elv?lasztva.
+         * @param control
          */
-        public void execute(String[] args) {
-            if (random) {
+        public void execute(String[] args, Control control) {
+            if (control.random) {
                 if (args.length < 2) {
-                    output.println("robot must be specified");
+                    control.output.println("robot must be specified");
                     return;
                 }
-                Robot r = (Robot) IDs.get(args[1]);
+                Robot r = (Robot) control.IDs.get(args[1]);
                 Asteroid a = r.getAsteroid();
                 int shell = a.getShell();
                 if (args.length == 2) {
                     if (r.makeAction()) {
                         if (!a.equals(r.getAsteroid())) {
-                            output.println("robot " + args[1] + " moved to " + reverseIDs.get(r.getAsteroid()));
+                            control.output.println("robot " + args[1] + " moved to " + control.reverseIDs.get(r.getAsteroid()));
                             return;
                         }
                         if (shell != r.getAsteroid().getShell()){
-                            output.println("robot " + args[1] + " drilled on " + reverseIDs.get(a) + " shell is now " + r.getAsteroid().getShell());
+                            control.output.println("robot " + args[1] + " drilled on " + control.reverseIDs.get(a) + " shell is now " + r.getAsteroid().getShell());
                             return;
                         }
                     } else {
-                        output.println("robot " + args[1] + " couldn't make action");
+                        control.output.println("robot " + args[1] + " couldn't make action");
                     }
                     return;
                 }
                 if (args[2].equals("drill")) {
                     if (r.drill())
-                        output.println("robot " + args[1] + " drilled on " +
-                                reverseIDs.get(r.getAsteroid()) + "shell is now" + r.getAsteroid().getShell());
+                        control.output.println("robot " + args[1] + " drilled on " +
+                                control.reverseIDs.get(r.getAsteroid()) + "shell is now" + r.getAsteroid().getShell());
                     else
-                        output.println("robot " + args[1] + " couldn't drill");
+                        control.output.println("robot " + args[1] + " couldn't drill");
                 }
                 if (args[2].equals("move")) {
                     if (args.length < 4) {
                         if (a.getNeighbourCount() == 0) {
-                            output.println("robot " + args[1] + " couldn't move");
+                            control.output.println("robot " + args[1] + " couldn't move");
                             return;
                         }
                         int randNeighbour = rand.nextInt(a.getNeighbourCount())-1;
                         if (r.move(randNeighbour)) {
-                            output.println("robot " + args[1] + " moved to " + reverseIDs.get(r.getAsteroid()));
+                            control.output.println("robot " + args[1] + " moved to " + control.reverseIDs.get(r.getAsteroid()));
                         } else {
-                            output.println("robot couldn't move");
+                            control.output.println("robot couldn't move");
                         }
                         return;
                     }
                     int i = Integer.parseInt(args[3]) - 1;
                     if (r.move(i))
-                        output.println("robot " + args[1] + " moved to " + reverseIDs.get(r.getAsteroid()));
+                        control.output.println("robot " + args[1] + " moved to " + control.reverseIDs.get(r.getAsteroid()));
                     else
-                        output.println("robot couldn't move");
+                        control.output.println("robot couldn't move");
                 }
             } else {
                 if (args.length < 3) {
-                    output.println("all details must be specified");
+                    control.output.println("all details must be specified");
                     return;
                 }
-                Robot r = (Robot) IDs.get(args[1]);
+                Robot r = (Robot) control.IDs.get(args[1]);
                 if (args[2].equals("drill")) {
                     if (r.drill())
-                        output.println("robot " + args[1] + " drilled on " +
-                                reverseIDs.get(r.getAsteroid()) + "shell is now" + r.getAsteroid().getShell());
+                        control.output.println("robot " + args[1] + " drilled on " +
+                                control.reverseIDs.get(r.getAsteroid()) + "shell is now" + r.getAsteroid().getShell());
                     else
-                        output.println("robot " + args[1] + " couldn't drill");
+                        control.output.println("robot " + args[1] + " couldn't drill");
                 }
                 if (args[2].equals("move")) {
                     if (args.length < 4) {
-                        output.println("all details must be specified");
+                        control.output.println("all details must be specified");
                         return;
                     }
                     int i = Integer.parseInt(args[3]) - 1;
                     if (r.move(i))
-                        output.println("robot " + args[1] + " moved to " + reverseIDs.get(r.getAsteroid()));
+                        control.output.println("robot " + args[1] + " moved to " + control.reverseIDs.get(r.getAsteroid()));
                     else
-                        output.println("robot " + args[1] + " couldn't move");
+                        control.output.println("robot " + args[1] + " couldn't move");
                 }
             }
         }
@@ -1368,15 +1392,16 @@ public class Control implements ActionListener, MouseListener{
          * Az esetleges hib?kat a felhaszn?l?val k?zli.
          * A megt?rt?nt esem?nyeket r?szletesen k?zli a felhaszn?l? fel?.
          * @param args A parancs parancssori argumentumai, a teljes sort meg kell adni, amely sz?k?z?kkel lett elv?lasztva.
+         * @param control
          */
-        public void execute(String[] args) {
+        public void execute(String[] args, Control control) {
             if (args.length < 2 || (args.length == 3 && !"mine".equals(args[2])) || (args.length == 4 && !"move".equals(args[2]))){
-                output.println("all details must be specified");
+                control.output.println("all details must be specified");
                 return;
             }
-            UFO ufo = (UFO)IDs.getOrDefault(args[1], null);
+            UFO ufo = (UFO)control.IDs.getOrDefault(args[1], null);
             if (ufo == null) {
-                output.print("couldn't complete request\n" +
+                control.output.print("couldn't complete request\n" +
                         "selected ID not available\n");
                 return;
             }
@@ -1388,7 +1413,7 @@ public class Control implements ActionListener, MouseListener{
             if (args.length == 2){
                 ufo.makeAction();
                 if (a == ufo.getAsteroid() && core == a.getCore()){
-                    output.println("UFO " + args[1] + " couldn't make action");
+                    control.output.println("UFO " + args[1] + " couldn't make action");
                     return;
                 }
             }
@@ -1402,27 +1427,27 @@ public class Control implements ActionListener, MouseListener{
                 move = true;
             }
             if (a != ufo.getAsteroid()) {
-                output.println("UFO " + args[1] + " moved to " + reverseIDs.get(ufo.getAsteroid()));
+                control.output.println("UFO " + args[1] + " moved to " + control.reverseIDs.get(ufo.getAsteroid()));
                 return;
             }else if (move) {
-                output.println("UFO " + args[1] + " couldn't move");
+                control.output.println("UFO " + args[1] + " couldn't move");
                 return;
             }
 
             if (shell > 0){
-                output.println("UFO " + args[1] + " couldn't mine");
-                output.println("asteroid still has shell");
+                control.output.println("UFO " + args[1] + " couldn't mine");
+                control.output.println("asteroid still has shell");
                 return;
             }
             if (core == null){
-                output.println("UFO " + args[1] + " couldn't mine");
-                output.println("asteroid is already empty");
+                control.output.println("UFO " + args[1] + " couldn't mine");
+                control.output.println("asteroid is already empty");
                 return;
             }
             if (core != a.getCore()){
-                output.println("UFO " + args[1] + " mined on " + reverseIDs.get(a));
-                output.println("it got one unit of " + core.toString());
-                output.println("asteroid is now empty");
+                control.output.println("UFO " + args[1] + " mined on " + control.reverseIDs.get(a));
+                control.output.println("it got one unit of " + core.toString());
+                control.output.println("asteroid is now empty");
             }
         }
     }
@@ -1439,46 +1464,47 @@ public class Control implements ActionListener, MouseListener{
          * makeAction m?veletet. Ki?rja, hogy milyen esem?nyek k?vetkeztek be ennek hat?s?ra.
          * A robotok, telepesek, uf?k ?s a teleportkapuk v?ltoz?sait ellen?rzi ?s ezeket ki?rja.
          * @param args A parancs parancssori argumentumai, a teljes sort meg kell adni, amely sz?k?z?kkel lett elv?lasztva.
+         * @param control
          */
-        public void execute(String[] args) {
-            if (random) {
-                List<Robot> robots = new ArrayList<Robot>(game.getRobots());
-                List<Settler> settlers = new ArrayList<Settler>(game.getSettlers());
-                List<UFO> UFOs = new ArrayList<UFO>(game.getUFOs());
-                List<Teleport> teleports = new ArrayList<Teleport>(game.getGates());
+        public void execute(String[] args, Control control) {
+            if (control.random) {
+                List<Robot> robots = new ArrayList<Robot>(control.game.getRobots());
+                List<Settler> settlers = new ArrayList<Settler>(control.game.getSettlers());
+                List<UFO> UFOs = new ArrayList<UFO>(control.game.getUFOs());
+                List<Teleport> teleports = new ArrayList<Teleport>(control.game.getGates());
                 boolean[] b;
                 b = new boolean[teleports.size()];
                 for (int i = 0; i < teleports.size(); i++) {
                     b[i] = teleports.get(i).getBamboozled();
                 }
-                game.getSun().makeAction();
+                control.game.getSun().makeAction();
                 for (Settler s : settlers) {
-                    if (!game.getSettlers().contains(s))
-                        output.println(reverseIDs.get(s) + " settler died");
+                    if (!control.game.getSettlers().contains(s))
+                        control.output.println(control.reverseIDs.get(s) + " settler died");
                 }
                 for (Robot r : robots) {
-                    if (!game.getRobots().contains(r))
-                        output.println(reverseIDs.get(r) + " robot died");
+                    if (!control.game.getRobots().contains(r))
+                        control.output.println(control.reverseIDs.get(r) + " robot died");
                 }
                 for (UFO u : UFOs) {
-                    if (!game.getUFOs().contains(u))
-                        output.println(reverseIDs.get(u) + " ufo died");
+                    if (!control.game.getUFOs().contains(u))
+                        control.output.println(control.reverseIDs.get(u) + " ufo died");
                 }
                 for (int i = 0; i < teleports.size(); i++) {
-                    if (!game.getGates().contains(teleports.get(i))) {
-                        output.println(reverseIDs.get(teleports.get(i)) + " teleport perished");
+                    if (!control.game.getGates().contains(teleports.get(i))) {
+                        control.output.println(control.reverseIDs.get(teleports.get(i)) + " teleport perished");
                     } else {
                         if (!b[i] && teleports.get(i).getBamboozled()) {
-                            output.println(reverseIDs.get(teleports.get(i)) + " teleportgate gone mad");
+                            control.output.println(control.reverseIDs.get(teleports.get(i)) + " teleportgate gone mad");
                         }
                     }
                 }
             } else {
-                Asteroid a = game.getSun().getAsteroids().get(0);
+                Asteroid a = control.game.getSun().getAsteroids().get(0);
                 if (a == null)
                     return;
                 else {
-                    commands.get("solarwind").execute(new String[] {"solarwind", reverseIDs.get(a), "0"});
+                    commands.get("solarwind").execute(new String[] {"solarwind", control.reverseIDs.get(a), "0"}, control);
                 }
             }
         }
@@ -1494,109 +1520,113 @@ public class Control implements ActionListener, MouseListener{
          * A robotok, telepesek, ufok ?s teleportkapuk list?j?nak m?sol?s?val ellen?rzi, hogy a napvihar hat?s?ra
          * milyen esem?nyek t?rt?ntek.
          * @param args A parancs parancssori argumentumai, a teljes sort meg kell adni, amely sz?k?z?kkel lett elv?lasztva.
+         * @param control
          */
-        public void execute(String[] args) {
+        public void execute(String[] args, Control control) {
             if (args.length < 3) {
-                output.println("all details must be specified");
+                control.output.println("all details must be specified");
                 return;
             }
-            Asteroid a = (Asteroid) IDs.getOrDefault(args[1], null);
+            Asteroid a = (Asteroid) control.IDs.getOrDefault(args[1], null);
             if (a == null){
-                output.println("couldn't complete request\n" +
+                control.output.println("couldn't complete request\n" +
                         "    selected ID not available\n");
                 return;
             }
             int radius = Integer.parseInt(args[2]);
-            List<Robot> robots = new ArrayList<Robot>(game.getRobots());
-            List<Settler> settlers = new ArrayList<Settler>(game.getSettlers());
-            List<UFO> UFOs = new ArrayList<UFO>(game.getUFOs());
-            List<Teleport> teleports = new ArrayList<Teleport>(game.getGates());
+            List<Robot> robots = new ArrayList<Robot>(control.game.getRobots());
+            List<Settler> settlers = new ArrayList<Settler>(control.game.getSettlers());
+            List<UFO> UFOs = new ArrayList<UFO>(control.game.getUFOs());
+            List<Teleport> teleports = new ArrayList<Teleport>(control.game.getGates());
             boolean[] b;
             b = new boolean[teleports.size()];
             for (int i = 0; i < teleports.size(); i++) {
                 b[i] = teleports.get(i).getBamboozled();
             }
             a.solarWind(radius);
-            output.println("solarwind created with asteroid " + args[1] + " in the middle");
-            output.println("and a " + radius + " radius");
-            output.println("events caused:");
+            control.output.println("solarwind created with asteroid " + args[1] + " in the middle");
+            control.output.println("and a " + radius + " radius");
+            control.output.println("events caused:");
 
 
             for (Settler s : settlers) {
-                if (!game.getSettlers().contains(s))
-                    output.println(reverseIDs.get(s) + " settler died");
+                if (!control.game.getSettlers().contains(s))
+                    control.output.println(control.reverseIDs.get(s) + " settler died");
             }
             for (Robot r : robots) {
-                if (!game.getRobots().contains(r))
-                    output.println(reverseIDs.get(r) + " robot died");
+                if (!control.game.getRobots().contains(r))
+                    control.output.println(control.reverseIDs.get(r) + " robot died");
             }
             for (UFO u : UFOs) {
-                if (!game.getUFOs().contains(u))
-                    output.println(reverseIDs.get(u) + " ufo died");
+                if (!control.game.getUFOs().contains(u))
+                    control.output.println(control.reverseIDs.get(u) + " ufo died");
             }
             for (int i = 0; i < teleports.size(); i++) {
                 if (!b[i] && teleports.get(i).getBamboozled())
-                    output.println(reverseIDs.get(teleports.get(i)) + " teleportgate gone mad");
+                    control.output.println(control.reverseIDs.get(teleports.get(i)) + " teleportgate gone mad");
             }
         }
     }
     /**
-     * A checkwin parancshoz tartoz? oszt?ly. Ellen?rizteti a game-mel, hogy a j?t?kot megnyert?k-e m?r.
+     * A checkwin parancshoz tartoz? oszt?ly. Ellen?rizteti a control.game-mel, hogy a j?t?kot megnyert?k-e m?r.
      */
     private static class checkwinCommand implements Command{
         /**
          * ?rtes?ti a felhaszn?l?t arr?l, hogy megnyerte-e a j?t?kot.
          * @param args A parancs parancssori argumentumai, a teljes sort meg kell adni, amely sz?k?z?kkel lett elv?lasztva.
+         * @param control
          */
-        public void execute(String[] args) {
-            if (game.checkWin()) {
-                output.println("game won");
+        public void execute(String[] args, Control control) {
+            if (control.game.checkWin()) {
+                control.output.println("control.game won");
                 JOptionPane.showMessageDialog(null, "Game won!");
             } else {
-                output.println("win conditions not met");
+                control.output.println("win conditions not met");
                 JOptionPane.showMessageDialog(null, "Win conditions not met!");
             }
         }
     }
     /**
-     * A checklose parancshoz tartoz? oszt?ly. Ellen?rizteti a game-mel, hogy a j?t?kot elvesztett?k-e m?r.
+     * A checklose parancshoz tartoz? oszt?ly. Ellen?rizteti a control.game-mel, hogy a j?t?kot elvesztett?k-e m?r.
      */
     private static class checkloseCommand implements Command{
         /**
          * ?rtes?ti a felhaszn?l?t arr?l, hogy elvesztette-e a j?t?kot.
          * @param args A parancs parancssori argumentumai, a teljes sort meg kell adni, amely sz?k?z?kkel lett elv?lasztva.
+         * @param control
          */
-        public void execute(String[] args) {
-            if (game.checkLose()) {
-                output.println("game lost");
+        public void execute(String[] args, Control control) {
+            if (control.game.checkLose()) {
+                control.output.println("control.game lost");
                 JOptionPane.showMessageDialog(null, "Game lost!");
             }else {
-                output.println("losing conditions not met");
+                control.output.println("losing conditions not met");
                 JOptionPane.showMessageDialog(null, "Losing conditions not met!");
             }
         }
     }
     /**
-     * A newgame parancshoz tartoz? oszt?ly.
+     * A newcontrol.game parancshoz tartoz? oszt?ly.
      * L?trehoz a felhaszn?l? ?ltal megadott
      * sz?m? telepest, aszteroid?t ?s UFO-t,
-     * valamint egy napot a game init met?dusa
+     * valamint egy napot a control.game init met?dusa
      * seg?ts?g?vel. ?j randomiz?lt p?lya k?sz?t?s?re
      * haszn?lhat?
      */
     private static class newgameCommand implements Command{
 
         /**
-         * A newgame parancshoz tartoz? oszt?ly.
+         * A newcontrol.game parancshoz tartoz? oszt?ly.
          * L?trehoz a felhaszn?l? ?ltal megadott
          * sz?m? telepest, aszteroid?t ?s UFO-t,
-         * valamint egy napot a game init met?dusa
+         * valamint egy napot a control.game init met?dusa
          * seg?ts?g?vel. ?j randomiz?lt p?lya k?sz?t?s?re
          * haszn?lhat?
          * A param?terekben a telepesek ?s az aszteroid?k sz?m?t is meg kell adni.
          * @param args A parancs parancssori argumentumai, a teljes sort meg kell adni, amely sz?k?z?kkel lett elv?lasztva.
+         * @param control
          */
-        public void execute(String[] args) {
+        public void execute(String[] args, Control control) {
             int nSettler, nAsteroid, nUFO;
 
             String s = JOptionPane.showInputDialog("How many settlers?");
@@ -1604,7 +1634,7 @@ public class Control implements ActionListener, MouseListener{
                 return;
             nSettler = Integer.parseInt(s);
             if(nSettler <= 0){
-                JOptionPane.showMessageDialog(null, "Invalid amount of settlers to start the game");
+                JOptionPane.showMessageDialog(null, "Invalid amount of settlers to start the control.game");
                 return;
             }
 
@@ -1613,7 +1643,7 @@ public class Control implements ActionListener, MouseListener{
                 return;
             nAsteroid = Integer.parseInt(s);
             if(nAsteroid <= 0){
-                JOptionPane.showMessageDialog(null, "Invalid amount of asteroids to start the game");
+                JOptionPane.showMessageDialog(null, "Invalid amount of asteroids to start the control.game");
                 return;
             }
 
@@ -1627,41 +1657,41 @@ public class Control implements ActionListener, MouseListener{
             }
             //nUFO = 0;
 
-            game = new Game();
-            gameFrame.getLevelView().setGame(game);
-            activeSettler = null;
-            game.init(nSettler, nAsteroid, nUFO);
+            control.game = new Game();
+            control.gameFrame.getLevelView().setGame(control.game);
+            control.activeSettler = null;
+            control.game.init(nSettler, nAsteroid, nUFO);
 
-            resetIDs();         //ez nem tudom hogy jo-e
+            control.resetIDs();         //ez nem tudom hogy jo-e
 
-            List<Settler> allSettlers = game.getSettlers();
-            List<UFO> allUFOs = game.getUFOs();
-            List<Asteroid> allAsteroids = game.getSun().getAsteroids();
-            LevelView lv = gameFrame.getLevelView();
-            refreshActiveSettler();
+            List<Settler> allSettlers = control.game.getSettlers();
+            List<UFO> allUFOs = control.game.getUFOs();
+            List<Asteroid> allAsteroids = control.game.getSun().getAsteroids();
+            LevelView lv = control.gameFrame.getLevelView();
+            control.refreshActiveSettler();
 
-            maxIDs.replace("settler", allSettlers.size());
-            maxIDs.replace("ufo", allUFOs.size());
-            maxIDs.replace("asteroid", allAsteroids.size());
+            control.maxIDs.replace("settler", allSettlers.size());
+            control.maxIDs.replace("ufo", allUFOs.size());
+            control.maxIDs.replace("asteroid", allAsteroids.size());
 
             for(int i = 0; i < allSettlers.size(); i++) {
-                addID("s" + (i+1), allSettlers.get(i));
+                control.addID("s" + (i+1), allSettlers.get(i));
                 lv.addSettlerView(allSettlers.get(i));
             }
             for(int i = 0; i < allUFOs.size(); i++) {
-                addID("u" + (i+1), allUFOs.get(i));
+                control.addID("u" + (i+1), allUFOs.get(i));
                 lv.addUFOView(allUFOs.get(i));
             }
             int scale = 1 + (int)Math.sqrt(nAsteroid);
-            int xborder = (int)(gameFrame.getSize().width*0.1);
-            int yborder = (int)(gameFrame.getSize().height*0.1);
+            int xborder = (int)(control.gameFrame.getSize().width*0.1);
+            int yborder = (int)(control.gameFrame.getSize().height*0.1);
             for(int i = 0; i < allAsteroids.size(); i++) {
-                addID("a" + (i+1), allAsteroids.get(i));
-                lv.addAsteroidView(allAsteroids.get(i), i%scale*(gameFrame.getSize().width - 2*xborder)/scale+xborder, i/scale*(gameFrame.getSize().height-2*yborder)/scale+yborder);
+                control.addID("a" + (i+1), allAsteroids.get(i));
+                lv.addAsteroidView(allAsteroids.get(i), i%scale*(control.gameFrame.getSize().width - 2*xborder)/scale+xborder, i/scale*(control.gameFrame.getSize().height-2*yborder)/scale+yborder);
             }
             lv.Update();
 
-            output.println("new game created with " + allSettlers.size() + " settler" + (allSettlers.size() == 1 ? " " : "s ")
+            control.output.println("new control.game created with " + allSettlers.size() + " settler" + (allSettlers.size() == 1 ? " " : "s ")
                     + allAsteroids.size() + " asteroid" + (allAsteroids.size() == 1 ? " " : "s ") + "and " + allUFOs.size() +
                     " UFO" + (allUFOs.size() == 1 ? " " : "s "));
         }
@@ -1676,48 +1706,49 @@ public class Control implements ActionListener, MouseListener{
          * Ha nincs el?g argumentum, vagy nem l?tezik ilyen aszteroida, akkor hib?t jelez.
          * Az ?j closeToSun ?rt?ket ?gy kell megadni, hogy "0" ha hamis, "1", ha igaz legyen.
          * @param args A parancs parancssori argumentumai, a teljes sort meg kell adni, amely sz?k?z?kkel lett elv?lasztva.
+         * @param control
          */
-        public void execute(String[] args) {
+        public void execute(String[] args, Control control) {
             if (args.length < 3 || (!"0".equals(args[2]) && !"1".equals(args[2]))) {
-                output.println("all details must be specified");
+                control.output.println("all details must be specified");
                 return;
             }
-            Asteroid asteroid = (Asteroid)IDs.getOrDefault(args[1], null);
-            Sun sun = game.getSun();
+            Asteroid asteroid = (Asteroid)control.IDs.getOrDefault(args[1], null);
+            Sun sun = control.game.getSun();
             List<Asteroid> asteroids = sun.getAsteroids();
             if (asteroid == null || !asteroids.contains(asteroid)){
-                output.println("couldn't complete request\n" +
+                control.output.println("couldn't complete request\n" +
                         "    selected ID not available\n");
             }else{
                 boolean oldCloseToSun = asteroid.getCloseToSun();
                 boolean newCloseToSun = !"0".equals(args[2]) && ("1".equals(args[2]));
                 if (oldCloseToSun == newCloseToSun){
-                    output.println(args[1] + " already " + (oldCloseToSun ? "close to " : "far from ") + "sun, no change");
+                    control.output.println(args[1] + " already " + (oldCloseToSun ? "close to " : "far from ") + "sun, no change");
                 }else{
-                    output.println(args[1] + " set " + (newCloseToSun ? "close to " : "far from ") + "sun");
-                    List<Robot> robots = new ArrayList<Robot>(game.getRobots());
-                    List<Settler> settlers = new ArrayList<Settler>(game.getSettlers());
-                    List<UFO> UFOs = new ArrayList<UFO>(game.getUFOs());
-                    List<Teleport> teleports = new ArrayList<Teleport>(game.getGates());
+                    control.output.println(args[1] + " set " + (newCloseToSun ? "close to " : "far from ") + "sun");
+                    List<Robot> robots = new ArrayList<Robot>(control.game.getRobots());
+                    List<Settler> settlers = new ArrayList<Settler>(control.game.getSettlers());
+                    List<UFO> UFOs = new ArrayList<UFO>(control.game.getUFOs());
+                    List<Teleport> teleports = new ArrayList<Teleport>(control.game.getGates());
                     asteroid.setCloseToSun();
-                    if (newCloseToSun && !game.getSun().getAsteroids().contains(asteroid)) {
-                        output.println("events caused:");
-                        output.println(args[1] + " exploded");
+                    if (newCloseToSun && !control.game.getSun().getAsteroids().contains(asteroid)) {
+                        control.output.println("events caused:");
+                        control.output.println(args[1] + " exploded");
                         for (Robot r : robots) {
-                            if (!game.getRobots().contains(r))
-                                output.println(reverseIDs.get(r) + " robot died");
+                            if (!control.game.getRobots().contains(r))
+                                control.output.println(control.reverseIDs.get(r) + " robot died");
                         }
                         for (Settler s : settlers) {
-                            if (!game.getSettlers().contains(s))
-                                output.println(reverseIDs.get(s) + " settler died");
+                            if (!control.game.getSettlers().contains(s))
+                                control.output.println(control.reverseIDs.get(s) + " settler died");
                         }
                         for (UFO u : UFOs) {
-                            if (!game.getUFOs().contains(u))
-                                output.println(reverseIDs.get(u) + " ufo died");
+                            if (!control.game.getUFOs().contains(u))
+                                control.output.println(control.reverseIDs.get(u) + " ufo died");
                         }
                         for (Teleport t : teleports) {
-                            if (!game.getGates().contains(t))
-                                output.println(reverseIDs.get(t) + " teleport perished");
+                            if (!control.game.getGates().contains(t))
+                                control.output.println(control.reverseIDs.get(t) + " teleport perished");
                         }
                     }
                 }
@@ -1731,10 +1762,11 @@ public class Control implements ActionListener, MouseListener{
         /**
          * Feladja ?s befejezi a j?t?kot.
          * @param args A parancs parancssori argumentumai, a teljes sort meg kell adni, amely sz?k?z?kkel lett elv?lasztva.
+         * @param control
          */
-        public void execute(String[] args) {
-            game.setGameEnd(true);
-            output.println("game given up");
+        public void execute(String[] args, Control control) {
+            control.game.setGameEnd(true);
+            control.output.println("control.game given up");
         }
     }
 
@@ -1751,19 +1783,20 @@ public class Control implements ActionListener, MouseListener{
          * Ha nincs el?g param?ter vagy nem j? az azonos?t?, akkor jelzi a felhaszn?l?nak.
          * Az ?j bamboozled ?rt?ket ?gy kell megadni, hogy "0" ha hamis, "1", ha igaz legyen.
          * @param args A parancs parancssori argumentumai, a teljes sort meg kell adni, amely sz?k?z?kkel lett elv?lasztva.
+         * @param control
          */
-        public void execute(String[] args) {
+        public void execute(String[] args, Control control) {
             if (args.length < 3 || (!"0".equals(args[2]) && !"1".equals(args[2]))) {
-                output.println("all details must be specified");
+                control.output.println("all details must be specified");
                 return;
             }
-            Teleport teleport = (Teleport)IDs.getOrDefault(args[1], null);
-            if (game.getGates().contains(teleport)){
+            Teleport teleport = (Teleport)control.IDs.getOrDefault(args[1], null);
+            if (control.game.getGates().contains(teleport)){
                 boolean bamboozled = !"0".equals(args[2]) && ("1".equals(args[2]));
                 teleport.setBamboozled(bamboozled);
-                output.println(args[1] + " teleportgate " + (bamboozled ? "" : "not ") + "bamboozled");
+                control.output.println(args[1] + " teleportgate " + (bamboozled ? "" : "not ") + "bamboozled");
             }else{
-                output.print("couldn't complete request\n" +
+                control.output.print("couldn't complete request\n" +
                         "selected ID not available\n");
             }
         }
@@ -1774,7 +1807,7 @@ public class Control implements ActionListener, MouseListener{
      * @param argscnt H?ny parancssori argumentumot v?r a parancs.
      * @return Igaz, ha megfelel? sz?m? argumentum van ?s az akt?v telepes m?g nem halt meg. K?l?nben hamis.
      */
-    private static boolean settlerCommandCheck(String[] args, int argscnt){
+    private boolean settlerCommandCheck(String[] args, int argscnt){
         if (args.length < argscnt){
             output.println("all details must be specified");
             return false;
@@ -1799,7 +1832,7 @@ public class Control implements ActionListener, MouseListener{
     /**
      * Inicializ?lja a parancsokat. Hozz?adja az ?sszes el?rhet? parancsot a parancs n?v- parancsobjektum ?sszerendel?shez.
      */
-    public static void initializeCommands(){
+    public void initializeCommands(){
         commands = new HashMap<>();
         commands.put("load", new loadCommand()); commands.put("save", new saveCommand()); commands.put("input", new inputCommand());
         commands.put("output", new outputCommand()); //commands.put("setrandom", new setrandomCommand());
@@ -1846,7 +1879,7 @@ public class Control implements ActionListener, MouseListener{
     /**
      * Ellen?rzi, hogy meghalt-e az akt?v telepes. Ha igen, akkor jelzi a felhaszn?l?nak.
      */
-    private static boolean checkActiveSettlerDied(){
+    private boolean checkActiveSettlerDied(){
         if (activeSettler != null && !game.getSettlers().contains(activeSettler)){
             output.println("active settler died");
             return true;
@@ -1858,7 +1891,7 @@ public class Control implements ActionListener, MouseListener{
      * Megpr?b?l egy parancsot kiolvasni a bemenet k?vetkez? sor?b?l.
      * @return Hamis, ha a bemenet legutols? sor?t b?r beolvast?k. Igaz, ha m?g nem pr?b?ltak a legutols? sor ut?n olvasni.
      */
-    private static boolean parseCommand(){
+    private boolean parseCommand(){
         String[] pieces;
         if (input.hasNextLine())
             pieces = input.nextLine().split(" ");
@@ -1873,11 +1906,11 @@ public class Control implements ActionListener, MouseListener{
             output.println("invalid command");
             return true;
         }
-        if (!"newgame".equals(pieces[0]) && game.getGameEnd()){
-            output.println("game ended");
+        if (!"newcontrol.game".equals(pieces[0]) && game.getGameEnd()){
+            output.println("control.game ended");
             return true;
         }
-        cmd.execute(pieces);
+        cmd.execute(pieces, this);
         checkActiveSettlerDied();
         return true;
     }
@@ -1885,7 +1918,7 @@ public class Control implements ActionListener, MouseListener{
     /**
      * Inicializ?lja 0-val a maxID ?sszerendel?seket.
      */
-    private static void initializeMaxIDs(){
+    private void initializeMaxIDs(){
         maxIDs.put("asteroid", 0);
         maxIDs.put("teleport", 0);
         maxIDs.put("settler", 0);
@@ -1909,27 +1942,27 @@ public class Control implements ActionListener, MouseListener{
      */
     public static void main(String[] args){
         Control control = new Control();                     //ez nem jóóóó kizárólag a Julcsi tesztje
-        initializeCommands();
-        initializeMaxIDs();
-        gameFrame = new GameFrame(control, game);
+        control.initializeCommands();
+        control.initializeMaxIDs();
+        control.gameFrame = new GameFrame(control, control.game);
         //commands.get("load").execute(new String[]{"load", "test.txt"});
         //control.init();
-        //control.actionPerformed(new ActionEvent(control, 0, "load game1.txt"));
+        //control.actionPerformed(new ActionEvent(control, 0, "load control.game1.txt"));
 
-        gameFrame.getLevelView().setActiveSettler(activeSettler);
-        gameFrame.pack();
-        gameFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        gameFrame.setVisible(true);
+        control.gameFrame.getLevelView().setActiveSettler(control.activeSettler);
+        control.gameFrame.pack();
+        control.gameFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        control.gameFrame.setVisible(true);
         if (args.length >= 2){
             String[] cmdargs = new String[2];
             cmdargs[1] = args[0];
-            commands.get("input").execute(cmdargs);
+            commands.get("input").execute(cmdargs, control);
             cmdargs[1] = args[1];
-            commands.get("output").execute(cmdargs);
+            commands.get("output").execute(cmdargs, control);
         }
         boolean hasNext = true;
         while (hasNext){
-            hasNext = parseCommand();
+            hasNext = control.parseCommand();
         }
     }
 }
