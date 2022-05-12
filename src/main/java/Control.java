@@ -28,18 +28,6 @@ public class Control implements ActionListener, MouseListener{
             System.out.print(" " + actionCommand[1]);
         System.out.println();
         commands.get(actionCommand[0]).execute(actionCommand);      //move még kérdéses
-        /*if (actionCommand[0].equals("load")){
-            activeSettler = game.getSettlers().get(0);
-            LevelView lv = gameFrame.getLevelView();
-            refreshActiveSettler();
-            lv.setActiveSettler(activeSettler);
-            lv.Update();
-            lv.repaint();
-            lv.getInventory().repaint();
-        }*/
-        /*if(actionCommand[0].equals("save") || actionCommand[0].equals("load") || actionCommand[0].equals("giveup")){
-
-        } else {*/
         if (actionCommand[0].equals("save") || actionCommand[0].equals("giveup") ||
                 actionCommand[0].equals("checkwin") || actionCommand[0].equals("checklose")|| actionCommand[0].equals("newgame")) {
 
@@ -68,13 +56,8 @@ public class Control implements ActionListener, MouseListener{
     public void mouseClicked(MouseEvent e){
         LevelView lv = gameFrame.getLevelView();
         INeighbour neighbour = lv.click(e.getX(), e.getY());
-        //System.out.println(e.getY() + " " + e.getY());
-        //System.out.println(neighbour);
         if(neighbour != null){
             List<INeighbour> neighbours = activeSettler.getAsteroid().getNeighbours();
-            //for (INeighbour n : neighbours){
-            //    System.out.println(n);
-            //}
             if(neighbours.contains(neighbour)){
                 for(int i = 0; i < neighbours.size(); i++){
                     if(neighbours.get(i).equals(neighbour)){
@@ -320,8 +303,6 @@ public class Control implements ActionListener, MouseListener{
             File file;
             if (args.length < 2) {
                 file = showDialog();
-                //output.println("load unsuccessful");
-                //return;
             }else{
                 file = new File(args[1]);
             }
@@ -552,13 +533,9 @@ public class Control implements ActionListener, MouseListener{
             File file;
             if (args.length < 2) {
                 file = showDialog();
-                //output.println("save unsuccessful");
-                //return;
             }else{
                 file = new File(args[1]);
             }
-
-            //File file = new File(args[1]);
             try {
                 fileOutput = new PrintWriter(file);
                 saveAsteroidTeleport();
@@ -572,7 +549,6 @@ public class Control implements ActionListener, MouseListener{
                 return;
             }
             fileOutput.close();
-           // output.println("saved to " + args[1]);
         }
 
         /**
@@ -1802,10 +1778,10 @@ public class Control implements ActionListener, MouseListener{
     public static void initializeCommands(){
         commands = new HashMap<>();
         commands.put("load", new loadCommand()); commands.put("save", new saveCommand()); commands.put("input", new inputCommand());
-        commands.put("output", new outputCommand()); //commands.put("setrandom", new setrandomCommand());
+        commands.put("output", new outputCommand());
         commands.put("addsettler", new addsettlerCommand()); commands.put("addasteroid", new addasteroidCommand());
         commands.put("addrobot", new addrobotCommand()); commands.put("addufo", new addufoCommand());
-        commands.put("connectasteroid", new connectasteroidCommand()); //commands.put("selectsettler", new selectsettlerCommand());
+        commands.put("connectasteroid", new connectasteroidCommand());
         commands.put("move", new moveCommand()); commands.put("drill", new drillCommand()); commands.put("mine", new mineCommand());
         commands.put("putmineralback", new putmineralbackCommand()); commands.put("craftrobot", new craftrobotCommand());
         commands.put("craftteleport", new craftteleportCommand()); commands.put("placeteleport", new placeteleportCommand());
@@ -1816,7 +1792,6 @@ public class Control implements ActionListener, MouseListener{
         commands.put("newgame", new newgameCommand()); commands.put("setclosetosun", new setclosetosunCommand());
         commands.put("giveup", new giveupCommand()); commands.put("ufoaction", new ufoactionCommand());
         commands.put("bamboozleteleport", new bamboozleteleportCommand());
-        //commands.put("exit", new exitCommand());
     }
 
     /**
@@ -1912,9 +1887,6 @@ public class Control implements ActionListener, MouseListener{
         initializeCommands();
         initializeMaxIDs();
         gameFrame = new GameFrame(control, game);
-        //commands.get("load").execute(new String[]{"load", "test.txt"});
-        //control.init();
-        //control.actionPerformed(new ActionEvent(control, 0, "load game1.txt"));
 
         gameFrame.getLevelView().setActiveSettler(activeSettler);
         gameFrame.pack();
