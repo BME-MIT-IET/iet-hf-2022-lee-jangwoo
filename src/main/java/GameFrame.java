@@ -4,32 +4,32 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
- * A levelview és az inventoryview paneleket tartalmazza. A menüt is tartalmazza.
+ * A levelview ï¿½s az inventoryview paneleket tartalmazza. A menï¿½t is tartalmazza.
  */
 public class GameFrame extends JFrame {
     /**
-     * A levelview objektum, ami használatban van.
+     * A levelview objektum, ami hasznï¿½latban van.
      */
     private LevelView lv;
 
     /**
-     * Az inventoryview objektum, ami használatban van.
+     * Az inventoryview objektum, ami hasznï¿½latban van.
      */
     private InventoryView iv;
 
     /**
-     * A menü.
+     * A menï¿½.
      */
-    private JMenuBar menuBar = new JMenuBar();
+    private JMenuBar menuB = new JMenuBar();
 
     /**
-     * Az eseménykezelõ, akit ismer.
+     * Az esemï¿½nykezelï¿½, akit ismer.
      */
     private ActionListener actionListener;
 
     /**
-     * Inicializálja a menüt a megfelelõmenüpontokkal.
-     * Beállítja a hozzájuk tartozó actionCommand-ot.
+     * Inicializï¿½lja a menï¿½t a megfelelï¿½menï¿½pontokkal.
+     * Beï¿½llï¿½tja a hozzï¿½juk tartozï¿½ actionCommand-ot.
      */
     private void initMenu(){
         JMenu file = new JMenu("File");
@@ -49,7 +49,7 @@ public class GameFrame extends JFrame {
         temp.setActionCommand("giveup");
         temp.addActionListener(actionListener);
         file.add(temp);
-        menuBar.add(file);
+        menuB.add(file);
 
         JMenu check = new JMenu("Check");
         temp = new JMenuItem("Check Win");
@@ -60,20 +60,20 @@ public class GameFrame extends JFrame {
         temp.setActionCommand("checklose");
         temp.addActionListener(actionListener);
         check.add(temp);
-        menuBar.add(check);
+        menuB.add(check);
     }
 
     /**
-     * Beállítja az ablak méretét, elkészíti a levelview-t és az inventoryviewt.
+     * Beï¿½llï¿½tja az ablak mï¿½retï¿½t, elkï¿½szï¿½ti a levelview-t ï¿½s az inventoryviewt.
      * @param c A kontroller.
-     * @param game A játák.
+     * @param game A jï¿½tï¿½k.
      */
     public GameFrame(Control c, Game game) {
         super();
         actionListener = c;
         setTitle("Asteroid Game");
         initMenu();
-        setJMenuBar(menuBar);
+        setJMenuBar(menuB);
         setMinimumSize(new Dimension(1000, 600));
         setPreferredSize(new Dimension(1000, 600));
         lv = new LevelView(game);
@@ -85,7 +85,7 @@ public class GameFrame extends JFrame {
     }
 
     /**
-     * Getter a levelview attríbútumhoz.
+     * Getter a levelview attrï¿½bï¿½tumhoz.
      * @return A levelview.
      */
     public LevelView getLevelView(){
