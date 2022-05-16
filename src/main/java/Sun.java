@@ -19,18 +19,23 @@ public class Sun {
     private List<Asteroid> asteroids;
 
     /**
-     * Ha napvihar a random feltétel igaz, akkor egy random aszteroidára meghívja a solarWind metódust. 
-     * Ez után végigmegyünk az összes aszteroidán, megkérdezzük, hogy az legyen-e napközelben, ha azt a 
+     * A játékban randomizált napvihar legyen-e, vagy ne.
+     */
+    private final boolean is_random_enabled = false;
+
+    /**
+     * Ha napvihar a random feltétel igaz, akkor egy random aszteroidára meghívja a solarWind metódust.
+     * Ez után végigmegyünk az összes aszteroidán, megkérdezzük, hogy az legyen-e napközelben, ha azt a
      * választ kapja, hogy igen, akkor meghívja rajta a setCloseToSun metódust
      */
     public void makeAction() {
-    	Random rand = new Random();     //napvihar/setclosetosun
-        if(rand.nextInt() % 5 == 0) {
-        	asteroids.get(rand.nextInt(asteroids.size())).solarWind(rand.nextInt()%5+1);
+        Random rand = new Random();     //napvihar/setclosetosun
+        if(is_random_enabled && rand.nextInt() % 5 == 0) {
+            asteroids.get(rand.nextInt(asteroids.size())).solarWind(rand.nextInt()%5+1);
         }
-        for(int i = 0; i < asteroids.size(); i++) {
-            if(rand.nextInt() % 2 == 1) {
-                asteroids.get(i).setCloseToSun();
+        for (Asteroid asteroid : asteroids) {
+            if (rand.nextInt() % 2 == 1) {
+                asteroid.setCloseToSun();
             }
         }
     }
@@ -48,7 +53,7 @@ public class Sun {
      * @param asteroids aszteroidákból álló lista, amit beállít a saját asteroids listájának
      */
     public void addAsteroids(List<Asteroid> asteroids) {
-    	this.asteroids=asteroids;
+        this.asteroids=asteroids;
     }
 
     /**
