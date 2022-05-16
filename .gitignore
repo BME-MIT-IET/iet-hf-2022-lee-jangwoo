@@ -2,5 +2,10 @@
 .gradle
 .idea
 .metadata
-# Ignore Gradle build output directory
+compare_tests.py
+de_facto_output_files
+output_files
+readme_compare_tests.txt
+target
+org.jetbrains.plugins.cucumber.java.run.CucumberJvmSMFormatter
 build
