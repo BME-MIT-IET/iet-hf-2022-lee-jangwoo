@@ -11,7 +11,9 @@ public class Ice extends Mineral {
     /**
      * Default constructor
      */
-    public Ice() {}
+    public Ice() {
+        // No parameters to set in the constructor
+    }
 
     /**
      * Ez egy örökölt, ám felülírt metódus. A paraméterül kapott aszteroidára meghívja

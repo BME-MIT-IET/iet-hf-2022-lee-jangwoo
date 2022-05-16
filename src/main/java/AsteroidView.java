@@ -128,10 +128,7 @@ public class AsteroidView implements View {
      * @return IGAZ, ha a körön belül van a kattintás, HAMIS, ha nem.
      */
     public boolean clicked(int xClicked, int yClicked) {
-        if((pow((xClicked - x), 2)+pow((yClicked - y), 2))<=pow(radius, 2)){
-            return true;
-        }
-        return false;
+        return ((pow((xClicked - x), 2)+pow((yClicked - y), 2))<=pow(radius, 2));
     }
 
     /**

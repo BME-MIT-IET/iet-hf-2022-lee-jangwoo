@@ -94,7 +94,7 @@ public class Control implements ActionListener, MouseListener{
                     if(neighbours.get(i).equals(neighbour)){
                         commands.get("move").execute(new String[]{"move", Integer.toString(i)}, this);
                         if(refreshActiveSettler()){
-                            commands.get(Commands.nextTurn).execute(new String[]{Commands.nextTurn});
+                            commands.get(Commands.nextTurn).execute(new String[]{Commands.nextTurn}, this);
                             if(checkActiveSettlerDied())
                                 refreshActiveSettler();
                             JOptionPane.showMessageDialog(null, "Turn ended, next turn starts.");
@@ -1926,7 +1926,7 @@ public class Control implements ActionListener, MouseListener{
     /**
      * Inicializ?lja 0-val a maxID ?sszerendel?seket.
      */
-    private static void initializeMaxIDs(){
+    private void initializeMaxIDs(){
         maxIDs.put(Entities.asteroid, 0);
         maxIDs.put(Entities.teleport, 0);
         maxIDs.put(Entities.settler, 0);
