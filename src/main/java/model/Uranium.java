@@ -45,7 +45,7 @@ public class Uranium extends Mineral {
      */
     @Override
     public String toString() { 
-    	return "uranium("+String.valueOf(exposedToSunCounter)+")";
+    	return "uranium("+ exposedToSunCounter +")";
     }
 
 }
