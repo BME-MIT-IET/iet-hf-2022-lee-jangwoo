@@ -994,7 +994,7 @@ public class Control implements ActionListener, MouseListener{
             List<Teleport> teleports = new ArrayList<Teleport>(game.getGates());
             if (activeSettler.putMineralBack(i)) {
                 if (activeSettler.getAsteroid().getCore() != null);
-                    output.println(activeSettler.getAsteroid().getCore().toString() + " is now in the asteroid");
+                    // output.println(activeSettler.getAsteroid().getCore().toString() + " is now in the asteroid");
                 if (!game.getSun().getAsteroids().contains(activeSettler.getAsteroid())) {
                     output.println("the returned uranium caused an explosion");
                     for (Robot r : robots) {
@@ -1884,7 +1884,7 @@ public class Control implements ActionListener, MouseListener{
                 commands.get("nextturn").execute(new String[]{"nextturn"});
                 if (checkActiveSettlerDied())
                     refreshActiveSettler();
-                JOptionPane.showMessageDialog(null, "Turn ended, next turn starts.");
+                // JOptionPane.showMessageDialog(null, "Turn ended, next turn starts.");
             }
         }
         LevelView lv = gameFrame.getLevelView();
