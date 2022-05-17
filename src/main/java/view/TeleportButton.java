@@ -1,5 +1,9 @@
+package view;
+
 import javax.swing.*;
 import java.awt.*;
+
+import model.Teleport;
 
 /**
  * Egy teleportkapuhoz tartozó gomb. A teleportkapu-pároknak megfelelõ színû.

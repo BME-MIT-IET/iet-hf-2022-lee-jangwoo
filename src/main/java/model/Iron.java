@@ -1,4 +1,4 @@
-
+package model;
 
 /**
  * A vas nyersanyagot reprezentálja, a nyersanyagból származik le. Használható Robotok és

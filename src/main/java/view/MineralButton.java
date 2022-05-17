@@ -1,5 +1,9 @@
+package view;
+
 import javax.swing.*;
 import java.awt.*;
+
+import model.Mineral;
 
 /**
  * Egy nyersanyaghoz tartozó gomb. A nyersanyagnak megfelelõ színû.

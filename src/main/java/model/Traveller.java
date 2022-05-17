@@ -1,13 +1,14 @@
+package model;
 
 /**
  * Absztrakt oszt�ly. Felel�ss�ge nyilv�ntartani a jelenlegi aszteroid�j�t, 
- * �s egy Game objektumot. Biztos�tania kell virtu�lis f�ggv�nyeket a t�le 
+ * �s egy model.Game objektumot. Biztos�tania kell virtu�lis f�ggv�nyeket a t�le
  * �r�kl� oszt�lyoknak. Mozognia kell tudni aszteroid�r�l aszteroid�ra, 
  * ak�r k�ztes teleportkapuval, ak�r an�lk�l. Tudnia kell aszteroid�t f�rni.
  */
 public abstract class Traveller {
     /**
-     * Traveller konstruktora, ahol param�terben kapja azt az aszteroid�t ahol elhelyezz�k.
+     * model.Traveller konstruktora, ahol param�terben kapja azt az aszteroid�t ahol elhelyezz�k.
      * @param a traveller helye
      * @param g a j�t�k amelyben a traveller van
      */

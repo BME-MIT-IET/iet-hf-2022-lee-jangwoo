@@ -1,4 +1,4 @@
-
+package model;
 
 /**
  * Az urán nyersanyagot reprezentálja. Az aszteroidát fel kell robbantania, 

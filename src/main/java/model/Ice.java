@@ -1,5 +1,4 @@
-
-import java.util.*;
+package model;
 
 /**
  * A vízjég nyersanyagot reprezentálja, a nyersanyagból származik le. Használható teleportkapuk

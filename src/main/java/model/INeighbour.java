@@ -1,6 +1,7 @@
+package model;
 
 /**
- * Interfészt biztosít az Aszteroida és Teleport osztályoknak. Ezzel valósul meg a telepes vagy robot 
+ * Interfészt biztosít az Aszteroida és model.Teleport osztályoknak. Ezzel valósul meg a telepes vagy robot
  * mozgatása aszteroidáról aszteroidára akár teleporton keresztül, vagy anélkül. Ennek segítségével van kiépítve az 
  * aszteroidák és teleportkapuk szomszédsági hálója. Segítségével el lehet távolítani szomszédokat. Tudja napszél érni.
  */

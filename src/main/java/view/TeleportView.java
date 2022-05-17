@@ -1,5 +1,9 @@
+package view;
 
 import java.awt.*;
+
+import model.Teleport;
+import model.Asteroid;
 
 /**
  * Az osztály felelőssége, hogy az általa mutatott teleportkapu objektumhoz tartozó képernyő

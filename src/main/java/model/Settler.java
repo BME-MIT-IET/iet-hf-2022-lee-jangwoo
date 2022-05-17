@@ -1,3 +1,4 @@
+package model;
 
 import java.util.*;
 
@@ -8,7 +9,7 @@ import java.util.*;
  * Képes bányászni, ezzel eltenni a kibányászott nyersanyagot,
  * új dolgokat építeni, például teleportkaput és robotot,
  * valamint teleportkaput elhelyezni. Ha napvihar vagy robbanás éri,
- * felelõssége értesíteni a Game-et és a saját aszteroidáját,
+ * felelõssége értesíteni a model.Game-et és a saját aszteroidáját,
  * hogy vegyék ki a nyilvántartásból, aztán meghalni.
  */
 public class Settler extends Traveller {
@@ -185,7 +186,7 @@ public class Settler extends Traveller {
     /**
      * A telepes egy nála lévõ nyersanyagot elhelyez
      * az éppen aktuális aszteroida magjában
-     * @param m A visszahelyezendõ nyersanyag
+     * @param i A visszahelyezendõ nyersanyag indexe
      * @return bool aszerint, hogy a visszahelyezés sikeres volt-e
      */
     public boolean putMineralBack(int i) {

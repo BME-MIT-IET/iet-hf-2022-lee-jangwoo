@@ -1,10 +1,13 @@
+package view;
 
 import java.awt.*;
+
+import model.Traveller;
 
 /**
  * Az absztrakt osztály felelőssége, hogy a belőle leszármazó objektumoknak egy közös őst biztosítson,
  * a hozzájuk tartozó képernyő koordinátákat eltárolja.
- * A View interfészt valósítja meg.
+ * A view.View interfészt valósítja meg.
  */
 public abstract class TravellerView implements View {
 

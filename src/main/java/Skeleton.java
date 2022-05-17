@@ -1,4 +1,5 @@
-import javax.swing.*;
+import model.*;
+
 import java.io.*;
 import java.util.*;
 
@@ -758,7 +759,7 @@ public class Skeleton {
             List<UFO> UFOs = new ArrayList<UFO>(game.getUFOs());
             List<Teleport> teleports = new ArrayList<Teleport>(game.getGates());
             if (activeSettler.putMineralBack(i)) {
-                output.println(activeSettler.asteroid.getCore().toString() + " is now in the asteroid");
+                output.println(activeSettler.getAsteroid().getCore().toString() + " is now in the asteroid");
                 if (!game.getSun().getAsteroids().contains(activeSettler.getAsteroid())) {
                     output.println("the returned uranium caused an explosion");
                     for (Robot r : robots) {
@@ -1141,7 +1142,7 @@ public class Skeleton {
             if (args.length == 2){
                 ufo.makeAction();
                 if (a == ufo.getAsteroid() && core == a.getCore()){
-                    output.println("UFO " + args[1] + " couldn't make action");
+                    output.println("model.UFO " + args[1] + " couldn't make action");
                     return;
                 }
             }
@@ -1155,25 +1156,25 @@ public class Skeleton {
                 move = true;
             }
             if (a != ufo.getAsteroid()) {
-                output.println("UFO " + args[1] + " moved to " + reverseIDs.get(ufo.getAsteroid()));
+                output.println("model.UFO " + args[1] + " moved to " + reverseIDs.get(ufo.getAsteroid()));
                 return;
             }else if (move) {
-                output.println("UFO " + args[1] + " couldn't move");
+                output.println("model.UFO " + args[1] + " couldn't move");
                 return;
             }
 
             if (shell > 0){
-                output.println("UFO " + args[1] + " couldn't mine");
+                output.println("model.UFO " + args[1] + " couldn't mine");
                 output.println("asteroid still has shell");
                 return;
             }
             if (core == null){
-                output.println("UFO " + args[1] + " couldn't mine");
+                output.println("model.UFO " + args[1] + " couldn't mine");
                 output.println("asteroid is already empty");
                 return;
             }
             if (core != a.getCore()){
-                output.println("UFO " + args[1] + " mined on " + reverseIDs.get(a));
+                output.println("model.UFO " + args[1] + " mined on " + reverseIDs.get(a));
                 output.println("it got one unit of " + core.toString());
                 output.println("asteroid is now empty");
             }
@@ -1326,7 +1327,7 @@ public class Skeleton {
      /**
      * A newgame parancshoz tartoz� oszt�ly.
      * L�trehoz a felhaszn�l� �ltal megadott
-     * sz�m� telepest, aszteroid�t �s UFO-t,
+     * sz�m� telepest, aszteroid�t �s model.UFO-t,
      * valamint egy napot a game init met�dusa
      * seg�ts�g�vel. �j randomiz�lt p�lya k�sz�t�s�re
      * haszn�lhat�
@@ -1336,7 +1337,7 @@ public class Skeleton {
          /**
           * A newgame parancshoz tartoz� oszt�ly.
           * L�trehoz a felhaszn�l� �ltal megadott
-          * sz�m� telepest, aszteroid�t �s UFO-t,
+          * sz�m� telepest, aszteroid�t �s model.UFO-t,
           * valamint egy napot a game init met�dusa
           * seg�ts�g�vel. �j randomiz�lt p�lya k�sz�t�s�re
           * haszn�lhat�
@@ -1382,7 +1383,7 @@ public class Skeleton {
             
             output.println("new game created with " + allSettlers.size() + " settler" + (allSettlers.size() == 1 ? " " : "s ") 
             		+ allAsteroids.size() + " asteroid" + (allAsteroids.size() == 1 ? " " : "s ") + "and " + allUFOs.size() +
-            		"UFO" + (allUFOs.size() == 1 ? " " : "s "));
+            		"model.UFO" + (allUFOs.size() == 1 ? " " : "s "));
         }
     }
     /**
@@ -1634,7 +1635,7 @@ public class Skeleton {
      * @param args parancssori argumentumok
      */
     /*public static void main(String[] args){
-        GameFrame f = new GameFrame(new Control());
+        view.GameFrame f = new view.GameFrame(new controller.Control());
         f.pack();
         f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         f.setVisible(true);

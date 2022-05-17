@@ -1,10 +1,10 @@
-
+package model;
 
 /**
- * A szén nyersanyagot reprezentálja, a Mineral származik le. 
+ * A szén nyersanyagot reprezentálja, a model.Mineral származik le.
  * Használható Robotok építésére,valamint még bővíthető további funkciókkal vagy attribútumokkal.
- * Kibányászható aszteroidákból Settlerilletve UFO által, valamint eltárolásra kerülhet egy
- * Settler hátizsákjában.
+ * Kibányászható aszteroidákból Settlerilletve model.UFO által, valamint eltárolásra kerülhet egy
+ * model.Settler hátizsákjában.
  */
 public class Coal extends Mineral {
 

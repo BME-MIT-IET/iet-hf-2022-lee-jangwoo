@@ -1,17 +1,22 @@
+package view;
 
 import java.awt.*;
+
+import model.Robot;
+import model.Traveller;
+import model.Asteroid;
 
 /**
  * Az osztály felelőssége, hogy az általa mutatott robot objektumhoz tartozó képernyő koordinátákat eltárolja,
  * és az általa mutatott robot grafikus megjelenítésével kapcsolatos feladatokat végezze/menedzselje.
- * A TravellerView leszármazottja, így a View interfészt ő is megvalósítja.
+ * A view.TravellerView leszármazottja, így a view.View interfészt ő is megvalósítja.
  */
 public class RobotView extends TravellerView {
 
     /**
-     * Az osztály konstruktora, bemeneti paraméter az r, amit a mutatott Robot attribútumának ad értékül.
-     * Meghívja az ős (TravellerView) konstruktorát. (az x y koordináta az Update hívással lesz inicializálva)
-     * @param r a mutatott Robot objektum.
+     * Az osztály konstruktora, bemeneti paraméter az r, amit a mutatott model.Robot attribútumának ad értékül.
+     * Meghívja az ős (view.TravellerView) konstruktorát. (az x y koordináta az Update hívással lesz inicializálva)
+     * @param r a mutatott model.Robot objektum.
      */
     public RobotView(Robot r, LevelView lv) {
         super(lv);
@@ -24,7 +29,7 @@ public class RobotView extends TravellerView {
     private Robot robot;
 
     /**
-     * Négyzetet rajzol Robot-nak megfelelő módon (szürke) az örökölt x,y attribútumok szerinti koordinátákra.
+     * Négyzetet rajzol model.Robot-nak megfelelő módon (szürke) az örökölt x,y attribútumok szerinti koordinátákra.
      * @param g Graphics típusú objektum a rajzoláshoz.
      */
     @Override
@@ -35,8 +40,8 @@ public class RobotView extends TravellerView {
 
     /**
      * A getAsteroid metódussal elkéri a robot-tól az aszteroidáját. 
-     * Az örökölt levelView-tól elkéri az aszteroida View objektumát a getAsteroidView metódussal. 
-     * A kapott AsteroidView objektumra meghívja a getTravellerX és Y metódusokat magát adva paraméterül,
+     * Az örökölt levelView-tól elkéri az aszteroida view.View objektumát a getAsteroidView metódussal.
+     * A kapott view.AsteroidView objektumra meghívja a getTravellerX és Y metódusokat magát adva paraméterül,
      * majd a kapott értékeket beírja az x és y attribútumaiba.
      */
     @Override
@@ -48,9 +53,9 @@ public class RobotView extends TravellerView {
     }
 
     /**
-     * A paraméterben megadott Traveller t objektummal összehasonlítja robot-tal,
+     * A paraméterben megadott model.Traveller t objektummal összehasonlítja robot-tal,
      * és ha megegyeznek akkor true, ha nem, akkor false a visszatérési értéke.
-     * @param t a Traveller, amivel összehasonlítjuk.
+     * @param t a model.Traveller, amivel összehasonlítjuk.
      * @return igaz vagy hamis aszerint, hogy a paraméterben megadott traveller megegyezik-e this objektummal.
      */
     @Override

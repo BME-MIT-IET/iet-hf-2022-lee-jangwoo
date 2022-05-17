@@ -1,3 +1,5 @@
+package model;
+
 import java.util.*;
 
 /**
@@ -9,7 +11,7 @@ import java.util.*;
  * Nyilván kell tartania szomszédait (ezek lehetnek aszteroidák és teleportkapuk), és vissza is kell adnia
  * egy szomszédjának objektumát, ha az utazó mozogni szeretne. Ha napközelben van és felszínre kerül a nyersanyag,
  * akkor ezt jeleznie kell a nyersanyag felé.
- * Megvalósítja az INeighbour interfészt (ahogy a Teleport osztály is).
+ * Megvalósítja az model.INeighbour interfészt (ahogy a model.Teleport osztály is).
  */
 public class Asteroid implements INeighbour {
 
@@ -85,7 +87,7 @@ public class Asteroid implements INeighbour {
      * Ha a shell 0, a nyersanyag, amely van, vagy nincs az aszteroida magjában "kibányászódik".
      * Ha volt nyersanyag, akkor visszaadja visszatérési értékként a core-t, amennyiben nem is volt,
      *  vagy a shell nem 0, akkor null-al tér vissza. Ha volt benne nyersanyag, akkor azt null-ra állítja.
-     * @return a kibányászott nyersanyag, Mineral/null
+     * @return a kibányászott nyersanyag, model.Mineral/null
      */
     public Mineral onMine() {
         if (shell == 0) {
@@ -97,7 +99,7 @@ public class Asteroid implements INeighbour {
     }
 
     /**
-     * Meghívja minden Traveller-re a travellers listában a hitByBlast metódusukat, 
+     * Meghívja minden model.Traveller-re a travellers listában a hitByBlast metódusukat,
      * ezután minden szomszédjára a removeNeighbour függvényt magával paraméterként. 
      * Ezután a sun-nak meghívja a removeAsteroid metódusát magával paraméterként.
      */
@@ -120,9 +122,9 @@ public class Asteroid implements INeighbour {
     }
 
     /**
-     * Megpróbálja betenni a core-ba a paraméterül kapott Mineral-t. Ez akkor sikerül, ha a core üres,
+     * Megpróbálja betenni a core-ba a paraméterül kapott model.Mineral-t. Ez akkor sikerül, ha a core üres,
      * és az aszteroidának ki van fúrva a kérge. Ha sikerül, akkor true-val tér vissza, egyébként false-al,
-     * nem módosítja a core-ban lévő Mineral-t.
+     * nem módosítja a core-ban lévő model.Mineral-t.
      * @param m az aszteroida magjába (core) betenni kívánt nyersanyag
      * @return bool a nyersanyag viszzatevésének sikerességéről
      */
@@ -218,8 +220,8 @@ public class Asteroid implements INeighbour {
 	}
     
     /**
-     * Ha a core nem üres, vagy a shell nem 0, az összes Traveller-re a travellers listában meghívja
-     * a Traveller die metódusát. 
+     * Ha a core nem üres, vagy a shell nem 0, az összes model.Traveller-re a travellers listában meghívja
+     * a model.Traveller die metódusát.
      * Ha az i nem egyenlő 0-val, akkor az összes szomszédjára meghívja a solarWind metódust eggyel 
      * csökkentett i-vel. (ez egy szélességi bejárás).
      * @param i napszél mélysége (hogy mekkora területet ér majd el)

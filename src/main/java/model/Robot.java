@@ -1,8 +1,9 @@
+package model;
 
 /**
  * Folyamatosan fúr, vagy mozog. Felelõssége meghalni, ha napvihar éri, 
  * vagy másik aszteroidára kerülni, ha radioaktív robbanás történik az 
- * aszteroidáján. Ha meghal, el kell távolíttatnia magát a Game 
+ * aszteroidáján. Ha meghal, el kell távolíttatnia magát a model.Game
  * listájából, valamint a saját aszteroidájáról.
  */
 public class Robot extends Traveller {
@@ -10,7 +11,7 @@ public class Robot extends Traveller {
     /**
      * Konstruktor amely a traveller ősre meghívja a konstruktort.
      * @param a az aszteroida ahol az objektum lesz.
-     * @param g a Game objektum, ami tartalmazza a robotot
+     * @param g a model.Game objektum, ami tartalmazza a robotot
      */
     public Robot(Asteroid a, Game g) {
         super(a, g);

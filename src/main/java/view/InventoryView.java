@@ -1,7 +1,13 @@
+package view;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
+
+import model.Teleport;
+import model.Mineral;
+
+import controller.Control;
 
 /**
  * Az osztály felelőssége hogy az éppen aktív telepesnél található nyersanyagok grafikus
@@ -71,10 +77,10 @@ public class InventoryView extends JPanel {
         Mine = new JButton("Mine");
         Mine.addActionListener(c);
         Mine.setActionCommand("mine");
-        CraftTeleport = new JButton("Craft Teleport");
+        CraftTeleport = new JButton("Craft model.Teleport");
         CraftTeleport.addActionListener(c);
         CraftTeleport.setActionCommand("craftteleport");
-        CraftRobot = new JButton("Craft Robot");
+        CraftRobot = new JButton("Craft model.Robot");
         CraftRobot.addActionListener(c);
         CraftRobot.setActionCommand("craftrobot");
 

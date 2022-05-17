@@ -1,3 +1,9 @@
+package controller;
+
+import model.*;
+import model.Robot;
+import view.*;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -212,7 +218,7 @@ public class Control implements ActionListener, MouseListener {
     private List<Settler> ControlSettlers;// = ... ArrayList ctor clone
 
     /**
-     * GameFrame, ami tárolja a paneleket.
+     * view.GameFrame, ami tárolja a paneleket.
      */
     private GameFrame gameFrame;
     /**
@@ -423,7 +429,7 @@ public class Control implements ActionListener, MouseListener {
                 Asteroid a = (Asteroid) control.IDs.getOrDefault(pieces[1], null);
                 if (a == null)
                     throw new Exception();
-                Robot r = new Robot(a, control.game);
+                model.Robot r = new model.Robot(a, control.game);
                 String ID = pieces[0].substring(0, pieces[0].length() - 1);
                 updateMaxID(Entities.robot, ID);
                 control.addID(ID, r);
@@ -638,7 +644,7 @@ public class Control implements ActionListener, MouseListener {
          * Kimenti a f?jlba a robotokat ?s az uf?kat.
          */
         private void saverobotsUFOs() {
-            for (Robot r : control.game.getRobots())
+            for (model.Robot r : control.game.getRobots())
                 fileOutput.println(control.reverseIDs.get(r) + ": " + control.reverseIDs.get(r.getAsteroid()));
             for (UFO ufo : control.game.getUFOs())
                 fileOutput.println(control.reverseIDs.get(ufo) + ": " + control.reverseIDs.get(ufo.getAsteroid()));
@@ -849,7 +855,7 @@ public class Control implements ActionListener, MouseListener {
                 control.output.println(Commands.couldNotComplete +
                         "    selected ID not available\n");
             } else {
-                Robot r = new Robot((Asteroid) asteroid, control.game);
+                model.Robot r = new model.Robot((Asteroid) asteroid, control.game);
                 int n = control.maxIDs.get(Entities.robot);
                 control.maxIDs.replace(Entities.robot, n + 1);
                 control.addID("r" + (n + 1), r);
@@ -1065,7 +1071,7 @@ public class Control implements ActionListener, MouseListener {
             }
             int i = Integer.parseInt(args[1]) - 1;
             Mineral core = control.activeSettler.getAsteroid().getCore();
-            List<Robot> robots = new ArrayList<>(control.game.getRobots());
+            List<model.Robot> robots = new ArrayList<>(control.game.getRobots());
             List<Settler> settlers = new ArrayList<>(control.game.getSettlers());
             List<UFO> UFOs = new ArrayList<>(control.game.getUFOs());
             List<Teleport> teleports = new ArrayList<>(control.game.getGates());
@@ -1074,7 +1080,7 @@ public class Control implements ActionListener, MouseListener {
                 control.output.println(control.activeSettler.getAsteroid().getCore().toString() + " is now in the asteroid");
                 if (!control.game.getSun().getAsteroids().contains(control.activeSettler.getAsteroid())) {
                     control.output.println("the returned uranium caused an explosion");
-                    for (Robot r : robots) {
+                    for (model.Robot r : robots) {
                         if (!control.game.getRobots().contains(r))
                             control.output.println(control.reverseIDs.get(r) + Commands.rDied);
                     }
@@ -1124,7 +1130,7 @@ public class Control implements ActionListener, MouseListener {
             if (!control.settlerCommandCheck(args, 1))
                 return;
             if (control.activeSettler.craftRobot()) {
-                Robot newrobot = control.game.getRobots().get(control.game.getRobots().size() - 1);
+                model.Robot newrobot = control.game.getRobots().get(control.game.getRobots().size() - 1);
                 int n = control.maxIDs.get(Entities.robot);
                 control.maxIDs.replace(Entities.robot, n + 1);
                 control.addID("r" + (n + 1), newrobot);
@@ -1300,7 +1306,7 @@ public class Control implements ActionListener, MouseListener {
                 }
             }
             if (control.random) {
-                for (Robot r : control.game.getRobots()) {
+                for (model.Robot r : control.game.getRobots()) {
                     commands.get(Commands.rAction).execute(new String[]{Commands.rAction, control.reverseIDs.get(r)}, control);
                 }
                 for (UFO u : control.game.getUFOs()) {
@@ -1308,7 +1314,7 @@ public class Control implements ActionListener, MouseListener {
                 }
                 commands.get(Commands.sAction).execute(new String[]{Commands.sAction}, control);
             } else {
-                for (Robot r : control.game.getRobots()) {
+                for (model.Robot r : control.game.getRobots()) {
                     control.output.println("enter a robotaction command for robot " + control.reverseIDs.get(r));
                     String[] pieces;
                     if (control.input.hasNextLine()) {
@@ -1366,7 +1372,7 @@ public class Control implements ActionListener, MouseListener {
                     control.output.println("robot must be specified");
                     return;
                 }
-                Robot r = (Robot) control.IDs.get(args[1]);
+                model.Robot r = (model.Robot) control.IDs.get(args[1]);
                 Asteroid a = r.getAsteroid();
                 int shell = a.getShell();
                 if (args.length == 2) {
@@ -1416,7 +1422,7 @@ public class Control implements ActionListener, MouseListener {
                     control.output.println(Commands.mustBeSpecified);
                     return;
                 }
-                Robot r = (Robot) control.IDs.get(args[1]);
+                model.Robot r = (model.Robot) control.IDs.get(args[1]);
                 if (args[2].equals("drill")) {
                     if (r.drill())
                         control.output.println(Entities.robot + " " + args[1] + Commands.drilled +
@@ -1479,7 +1485,7 @@ public class Control implements ActionListener, MouseListener {
             if (args.length == 2) {
                 ufo.makeAction();
                 if (a == ufo.getAsteroid() && core == a.getCore()) {
-                    control.output.println("UFO " + args[1] + " couldn't make action");
+                    control.output.println("model.UFO " + args[1] + " couldn't make action");
                     return;
                 }
             }
@@ -1493,25 +1499,25 @@ public class Control implements ActionListener, MouseListener {
                 move = true;
             }
             if (a != ufo.getAsteroid()) {
-                control.output.println("UFO " + args[1] + Commands.moved + control.reverseIDs.get(ufo.getAsteroid()));
+                control.output.println("model.UFO " + args[1] + Commands.moved + control.reverseIDs.get(ufo.getAsteroid()));
                 return;
             } else if (move) {
-                control.output.println("UFO " + args[1] + Commands.couldNotMove);
+                control.output.println("model.UFO " + args[1] + Commands.couldNotMove);
                 return;
             }
 
             if (shell > 0) {
-                control.output.println("UFO " + args[1] + " couldn't mine");
+                control.output.println("model.UFO " + args[1] + " couldn't mine");
                 control.output.println(Commands.stillHasShell);
                 return;
             }
             if (core == null) {
-                control.output.println("UFO " + args[1] + " couldn't mine");
+                control.output.println("model.UFO " + args[1] + " couldn't mine");
                 control.output.println("asteroid is already empty");
                 return;
             }
             if (core != a.getCore()) {
-                control.output.println("UFO " + args[1] + " mined on " + control.reverseIDs.get(a));
+                control.output.println("model.UFO " + args[1] + " mined on " + control.reverseIDs.get(a));
                 control.output.println("it got one unit of " + core.toString());
                 control.output.println("asteroid is now empty");
             }
@@ -1535,7 +1541,7 @@ public class Control implements ActionListener, MouseListener {
          */
         public void execute(String[] args, Control control) {
             if (control.random) {
-                List<Robot> robots = new ArrayList<>(control.game.getRobots());
+                List<model.Robot> robots = new ArrayList<>(control.game.getRobots());
                 List<Settler> settlers = new ArrayList<>(control.game.getSettlers());
                 List<UFO> UFOs = new ArrayList<>(control.game.getUFOs());
                 List<Teleport> teleports = new ArrayList<>(control.game.getGates());
@@ -1549,7 +1555,7 @@ public class Control implements ActionListener, MouseListener {
                     if (!control.game.getSettlers().contains(s))
                         control.output.println(control.reverseIDs.get(s) + Commands.sDied);
                 }
-                for (Robot r : robots) {
+                for (model.Robot r : robots) {
                     if (!control.game.getRobots().contains(r))
                         control.output.println(control.reverseIDs.get(r) + Commands.rDied);
                 }
@@ -1622,7 +1628,7 @@ public class Control implements ActionListener, MouseListener {
                 if (!control.game.getSettlers().contains(s))
                     control.output.println(control.reverseIDs.get(s) + Commands.sDied);
             }
-            for (Robot r : robots) {
+            for (model.Robot r : robots) {
                 if (!control.game.getRobots().contains(r))
                     control.output.println(control.reverseIDs.get(r) + Commands.rDied);
             }
@@ -1650,7 +1656,7 @@ public class Control implements ActionListener, MouseListener {
         public void execute(String[] args, Control control) {
             if (control.game.checkWin()) {
                 control.output.println("control.game won");
-                JOptionPane.showMessageDialog(null, "Game won!");
+                JOptionPane.showMessageDialog(null, "model.Game won!");
             } else {
                 control.output.println("win conditions not met");
                 JOptionPane.showMessageDialog(null, "Win conditions not met!");
@@ -1671,7 +1677,7 @@ public class Control implements ActionListener, MouseListener {
         public void execute(String[] args, Control control) {
             if (control.game.checkLose()) {
                 control.output.println("control.game lost");
-                JOptionPane.showMessageDialog(null, "Game lost!");
+                JOptionPane.showMessageDialog(null, "model.Game lost!");
             } else {
                 control.output.println("losing conditions not met");
                 JOptionPane.showMessageDialog(null, "Losing conditions not met!");
@@ -1682,7 +1688,7 @@ public class Control implements ActionListener, MouseListener {
     /**
      * A newcontrol.game parancshoz tartoz? oszt?ly.
      * L?trehoz a felhaszn?l? ?ltal megadott
-     * sz?m? telepest, aszteroid?t ?s UFO-t,
+     * sz?m? telepest, aszteroid?t ?s model.UFO-t,
      * valamint egy napot a control.game init met?dusa
      * seg?ts?g?vel. ?j randomiz?lt p?lya k?sz?t?s?re
      * haszn?lhat?
@@ -1692,7 +1698,7 @@ public class Control implements ActionListener, MouseListener {
         /**
          * A newcontrol.game parancshoz tartoz? oszt?ly.
          * L?trehoz a felhaszn?l? ?ltal megadott
-         * sz?m? telepest, aszteroid?t ?s UFO-t,
+         * sz?m? telepest, aszteroid?t ?s model.UFO-t,
          * valamint egy napot a control.game init met?dusa
          * seg?ts?g?vel. ?j randomiz?lt p?lya k?sz?t?s?re
          * haszn?lhat?
@@ -1768,7 +1774,7 @@ public class Control implements ActionListener, MouseListener {
 
             control.output.println("new control.game created with " + allSettlers.size() + " settler" + (allSettlers.size() == 1 ? " " : "s ")
                     + allAsteroids.size() + " asteroid" + (allAsteroids.size() == 1 ? " " : "s ") + "and " + allUFOs.size() +
-                    " UFO" + (allUFOs.size() == 1 ? " " : "s "));
+                    " model.UFO" + (allUFOs.size() == 1 ? " " : "s "));
         }
     }
 
@@ -1803,7 +1809,7 @@ public class Control implements ActionListener, MouseListener {
                     control.output.println(args[1] + " already " + (oldCloseToSun ? "close to " : "far from ") + "sun, no change");
                 } else {
                     control.output.println(args[1] + " set " + (newCloseToSun ? "close to " : "far from ") + "sun");
-                    List<Robot> robots = new ArrayList<>(control.game.getRobots());
+                    List<model.Robot> robots = new ArrayList<>(control.game.getRobots());
                     List<Settler> settlers = new ArrayList<>(control.game.getSettlers());
                     List<UFO> UFOs = new ArrayList<>(control.game.getUFOs());
                     List<Teleport> teleports = new ArrayList<>(control.game.getGates());
@@ -1811,7 +1817,7 @@ public class Control implements ActionListener, MouseListener {
                     if (newCloseToSun && !control.game.getSun().getAsteroids().contains(asteroid)) {
                         control.output.println("events caused:");
                         control.output.println(args[1] + " exploded");
-                        for (Robot r : robots) {
+                        for (model.Robot r : robots) {
                             if (!control.game.getRobots().contains(r))
                                 control.output.println(control.reverseIDs.get(r) + Commands.rDied);
                         }

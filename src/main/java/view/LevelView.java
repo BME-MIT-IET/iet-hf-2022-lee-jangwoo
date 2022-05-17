@@ -1,3 +1,8 @@
+package view;
+
+import model.*;
+import model.Robot;
+import model.Settler;
 
 import javax.swing.*;
 import java.awt.*;
@@ -142,7 +147,7 @@ public class LevelView extends JPanel implements View {
      * asteroidView koordinátáit getterekkel, és ezek közé vonalat húz. Ha ezzel a belsõ
      * ciklussal végzett, a teleportkapu nézeteken (teleportViews) iterál végig, ezekre
      * meghívja az isThisYourNeighbour metódust a currAsteroid-ot adva paraméterül, és ha
-     * ez igazzal tér vissza, akkor elkéri a TeleportView koordinátáit getterekkel, és vonalat
+     * ez igazzal tér vissza, akkor elkéri a view.TeleportView koordinátáit getterekkel, és vonalat
      * rajzol közéjük. Ezen metódus végeztével az összes szomszédság vonal be van húzva.
      */
     private void drawNeighbourLines(Graphics g) {
@@ -179,7 +184,7 @@ public class LevelView extends JPanel implements View {
 
     /**
      * A paraméterként kapott teleportot
-     * kulcsként használva elkéri az ehhez tartozó TeleportView-t a teleportViews
+     * kulcsként használva elkéri az ehhez tartozó view.TeleportView-t a teleportViews
      * HashMapbõl, és ezt visszaadja.
      * @param t A teleport, amihez kell a nézet
      * @return A teleporthoz tartozó nézet
@@ -190,7 +195,7 @@ public class LevelView extends JPanel implements View {
 
     /**
      * A paraméterként kapott aszteroidát
-     * kulcsként használva elkéri az ehhez tartozó AsteroidView-t az asteroidViews
+     * kulcsként használva elkéri az ehhez tartozó view.AsteroidView-t az asteroidViews
      * HashMapbõl, és ezt visszaadja.
      * @param a Az aszteroida, amihez kell a nézet
      * @return Az aszteroidához tartozó nézet
@@ -225,9 +230,9 @@ public class LevelView extends JPanel implements View {
     /**
      * Végigiterál a teleportViews listán, és
      * mindegyikre meghívja az isPair metódust. Ha valamelyik igazzal tér vissza, elkéri tõle
-     * a színét a getColor metódussal, és létrehoz egy TeleportView objektumot a
+     * a színét a getColor metódussal, és létrehoz egy view.TeleportView objektumot a
      * paraméterül kapott teleporttal, és a megkapott színnel. Ha nem talál ilyet, akkor egy
-     * randomizált színt ad meg a TeleportView-nek. Ezután ezt beteszi a teleportViews
+     * randomizált színt ad meg a view.TeleportView-nek. Ezután ezt beteszi a teleportViews
      * HashMap-jébe a paraméterül kapott teleportot használva kulcsként.
      * @param t A teleportkapu, amihez kell a nézet
      */
@@ -321,15 +326,15 @@ public class LevelView extends JPanel implements View {
     /**
      * Hívja a game getSettlers, getUFOs és getRobots
      * metódusát. A travellerViews listán meghívja az összes elemre az identify metódust az
-     * összes settler-, robot- és UFO-val paraméterül. Az egyszer is true-val visszatérõ
-     * TravellerView objektumokból listát készítünk, és ezt kivesszük a travellerViews
+     * összes settler-, robot- és model.UFO-val paraméterül. Az egyszer is true-val visszatérõ
+     * view.TravellerView objektumokból listát készítünk, és ezt kivesszük a travellerViews
      * listából (csak hogy gyorsabb legyen a bejárás). Ha volt olyan robot, melynél egy
-     * identify metódus sem tért vissza true-val, akkor létrehoz egy RobotView objektumot a
-     * robottal paraméterként, és ezt hozzáfûzi az új TravellerView típusú listához. Ha
-     * végigért, akkor az újonnan készített TravellerView listát értékül adja a
+     * identify metódus sem tért vissza true-val, akkor létrehoz egy view.RobotView objektumot a
+     * robottal paraméterként, és ezt hozzáfûzi az új view.TravellerView típusú listához. Ha
+     * végigért, akkor az újonnan készített view.TravellerView listát értékül adja a
      * travellerViews-nek. (Azaz ha létrejött új robot, azaz eddig nem volt rá nézet, akkor
-     * csinálunk neki, és befûzzük a listánkba, a meghal UFO, Settler és Robotokat pedig
-     * kiszûrjük azzal, hogy az õ View-jukat már nem tesszük bele az új listába. Az újonnan
+     * csinálunk neki, és befûzzük a listánkba, a meghal model.UFO, model.Settler és Robotokat pedig
+     * kiszûrjük azzal, hogy az õ view.View-jukat már nem tesszük bele az új listába. Az újonnan
      * létrehozott robot majd az Update metódus végén kap koordinátát.)
      */
     private void updateTravellerView() {
@@ -364,9 +369,9 @@ public class LevelView extends JPanel implements View {
     /**
      * Hívja a game a getSettlers metódusát. Végigiterál a
      * settlerViews listán, és meghívja mindegyikre az identify metódust, minden kapott
-     * Settlerrel. Ha a SettlerView objektum identify metódusa egyszer is true-val tér vissza,
-     * akkor befûzzük egy új SettlerView listába. A végül elkészült új SettlerView listát
-     * értékül adjuk a settlerViews attribútumnak. (A meghalt Settler-ek kikerülnek a game
+     * Settlerrel. Ha a view.SettlerView objektum identify metódusa egyszer is true-val tér vissza,
+     * akkor befûzzük egy új view.SettlerView listába. A végül elkészült új view.SettlerView listát
+     * értékül adjuk a settlerViews attribútumnak. (A meghalt model.Settler-ek kikerülnek a game
      * settlers listájából. Ezzel az update-el kiszûrjük a már meghalt Settlerek nézetét, hogy
      * azokat már ne ábrázoljuk)
      */
@@ -387,7 +392,7 @@ public class LevelView extends JPanel implements View {
 
     /**
      * A game-re meghívjuk a getSun metódust, majd a
-     * kapott Sun-ra a getAsteroids metódust. A kapott aszteroidákból, és nézeteikbõl új
+     * kapott model.Sun-ra a getAsteroids metódust. A kapott aszteroidákból, és nézeteikbõl új
      * HashMap-et készítünk (az asteroidViews segítségével), majd ha végeztünk, a kapott
      * HashMap-et értékül adjuk az asteroidViews attribútumnak.
      */
