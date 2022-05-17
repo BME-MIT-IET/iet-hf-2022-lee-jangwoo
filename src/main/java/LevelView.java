@@ -303,8 +303,8 @@ public class LevelView extends JPanel implements View {
      */
     private void updateTeleportView() {
         List<Teleport> gates = game.getGates();
-        HashMap<Teleport, TeleportView> remainingViews = new HashMap<Teleport, TeleportView>();
-        ArrayList<Teleport> noView = new ArrayList<Teleport>();
+        HashMap<Teleport, TeleportView> remainingViews = new HashMap<>();
+        ArrayList<Teleport> noView = new ArrayList<>();
         for (Teleport t : gates) {
             if (!teleportViews.containsKey(t) && t.getNeighbour() != null)
                 noView.add(t);
@@ -336,8 +336,8 @@ public class LevelView extends JPanel implements View {
         List<Settler> settlers = game.getSettlers();
         List<UFO> UFOs = game.getUFOs();
         List<Robot> robots = game.getRobots();
-        Set<Robot> notFoundRobot = new HashSet<Robot>(robots);
-        ArrayList<TravellerView> remainingViews = new ArrayList<TravellerView>();
+        Set<Robot> notFoundRobot = new HashSet<>(robots);
+        ArrayList<TravellerView> remainingViews = new ArrayList<>();
         for (TravellerView tv : travellerViews){
             boolean didIdentify = false;
             for (Settler s : settlers) {
@@ -372,7 +372,7 @@ public class LevelView extends JPanel implements View {
      */
     private void updateSettlerView() {
         List<Settler> settlers = game.getSettlers();
-        ArrayList<SettlerView> remainingViews = new ArrayList<SettlerView>();
+        ArrayList<SettlerView> remainingViews = new ArrayList<>();
         for (SettlerView sv : settlerViews){
             boolean didIdentify = false;
             for (Settler s : settlers){
@@ -394,7 +394,7 @@ public class LevelView extends JPanel implements View {
     private void updateAsteroidView() {
         Sun sun = game.getSun();
         List<Asteroid> asteroids = sun.getAsteroids();
-        HashMap<Asteroid, AsteroidView> remaining = new HashMap<Asteroid, AsteroidView>();
+        HashMap<Asteroid, AsteroidView> remaining = new HashMap<>();
         for (Asteroid a : asteroids)
             remaining.put(a, asteroidViews.get(a));
         asteroidViews = remaining;
@@ -485,6 +485,7 @@ public class LevelView extends JPanel implements View {
      * a paraméterként megadott Graphics objektum.
      * @param g A Graphics objektum, amire a rajzolás történik.
      */
+    @Override
     protected void paintComponent(Graphics g){
         super.paintComponent(g);
         draw(g);

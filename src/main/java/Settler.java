@@ -15,12 +15,12 @@ public class Settler extends Traveller {
     /**
      * A telepesnél található nyersanyagok listája.
      */
-    private List<Mineral> minerals = new ArrayList<Mineral>();
+    private List<Mineral> minerals = new ArrayList<>();
 
     /**
      * A telepesnél található teleportkapuk listája.
      */
-    private List<Teleport> teleportgates = new ArrayList<Teleport>();
+    private List<Teleport> teleportgates = new ArrayList<>();
 
     /**
      * Konstruktor amely a traveller ősre meghívja a konstruktort
@@ -97,7 +97,7 @@ public class Settler extends Traveller {
         int ironCount = 0;
         int uraniumCount = 0;
         int i = 0;
-        ArrayList<Mineral> removeMinerals = new ArrayList<Mineral>();
+        ArrayList<Mineral> removeMinerals = new ArrayList<>();
         while((coalCount < 1 || ironCount < 1 || uraniumCount < 1) && i < minerals.size()){
             if(minerals.get(i).toString().contains("uranium") && uraniumCount < 1){
             	++uraniumCount;
@@ -133,7 +133,7 @@ public class Settler extends Traveller {
             int ironCount = 0;
             int uraniumCount = 0;
             int i = 0;
-            ArrayList<Mineral> removeMinerals = new ArrayList<Mineral>();
+            ArrayList<Mineral> removeMinerals = new ArrayList<>();
             while ((iceCount < 1 || ironCount < 2 || uraniumCount < 1) && i < minerals.size()) {
                 if (minerals.get(i).toString().contains("uranium") && uraniumCount < 1) {
                     ++uraniumCount;

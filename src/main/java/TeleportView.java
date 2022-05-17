@@ -1,6 +1,5 @@
 
 import java.awt.*;
-import java.util.*;
 
 /**
  * Az osztály felelőssége, hogy az általa mutatott teleportkapu objektumhoz tartozó képernyő

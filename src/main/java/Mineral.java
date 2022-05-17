@@ -15,7 +15,7 @@ public abstract class Mineral {
      * Az összes elérhető nyersanyag listáját inicializáló metódus.
      */
     static public void Init() {
-    	AllMinerals = new ArrayList<Mineral>();
+    	AllMinerals = new ArrayList<>();
         AllMinerals.add(new Uranium(0));
         AllMinerals.add(new Iron());
         AllMinerals.add(new Ice());

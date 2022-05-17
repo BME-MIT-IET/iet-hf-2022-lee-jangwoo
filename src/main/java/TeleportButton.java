@@ -1,6 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-import java.util.logging.Level;
 
 /**
  * Egy teleportkapuhoz tartozó gomb. A teleportkapu-pároknak megfelelõ színû.

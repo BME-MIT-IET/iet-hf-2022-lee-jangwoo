@@ -1,6 +1,5 @@
 
 import java.awt.*;
-import java.util.*;
 
 /**
  * Az absztrakt osztály felelőssége, hogy a belőle leszármazó objektumoknak egy közös őst biztosítson,

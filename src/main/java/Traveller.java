@@ -1,6 +1,4 @@
 
-import java.util.*;
-
 /**
  * Absztrakt oszt�ly. Felel�ss�ge nyilv�ntartani a jelenlegi aszteroid�j�t, 
  * �s egy Game objektumot. Biztos�tania kell virtu�lis f�ggv�nyeket a t�le 

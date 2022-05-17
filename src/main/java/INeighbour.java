@@ -1,4 +1,3 @@
-import java.util.*;
 
 /**
  * Interfészt biztosít az Aszteroida és Teleport osztályoknak. Ezzel valósul meg a telepes vagy robot 

@@ -1,5 +1,4 @@
 
-import java.util.*;
 
 /**
  * Az urán nyersanyagot reprezentálja. Az aszteroidát fel kell robbantania, 

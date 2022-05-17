@@ -1,4 +1,3 @@
-import java.util.*;
 
 /**
  * Folyamatosan fúr, vagy mozog. Felelõssége meghalni, ha napvihar éri, 

@@ -10,7 +10,7 @@ public class Sun {
      * Default constructor
      */
     public Sun() {
-        asteroids = new ArrayList<Asteroid>();
+        asteroids = new ArrayList<>();
     }
 
     /**

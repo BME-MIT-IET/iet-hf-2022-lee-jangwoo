@@ -1,5 +1,4 @@
 
-import java.util.*;
 
 /**
  * A szén nyersanyagot reprezentálja, a Mineral származik le. 

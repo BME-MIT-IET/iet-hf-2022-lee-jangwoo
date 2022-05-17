@@ -1,11 +1,5 @@
-
-
 import java.awt.*;
-import java.util.*;
-import javax.swing.*;
-import java.math.*;
 import java.util.List;
-import java.util.logging.Level;
 
 import static java.lang.Math.pow;
 
