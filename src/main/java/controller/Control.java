@@ -349,7 +349,7 @@ public class Control implements ActionListener, MouseListener{
             }else{
                 file = new File(args[1]);
             }
-            if (!file.exists()){
+            if (file == null || !file.exists()){
                 control.output.println("load unsuccessful");
                 return;
             }
@@ -1783,7 +1783,8 @@ public class Control implements ActionListener, MouseListener{
          */
         public void execute(String[] args, Control control) {
             control.game.setGameEnd(true);
-            control.output.println("control.game given up");
+            control.output.println("game given up");
+            JOptionPane.showMessageDialog(null, "Game given up");
         }
     }
 
