@@ -3,7 +3,7 @@
 | Tester      | Jankó Júlia |
 | ----------- | ----------- |
 | Purpose      | Find bugs and issues in the gameplay.       |
-| Test Start   | 2022.05.16.     |
+| Test Start   | 2022.05.16. 11:00    |
 | Timebox | Normal (60-90 min)|
 
 ## Classify the bugs

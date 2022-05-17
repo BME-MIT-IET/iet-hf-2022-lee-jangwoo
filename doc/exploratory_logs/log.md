@@ -3,7 +3,7 @@
 - load test1.txt
 - click on unreachable asteroid
 
-#2 Mine asteroid we shouldn't be able to
+#2 Mine asteroid with layer
 - load test1.txt
 - mine
 
@@ -52,7 +52,44 @@
 - load test8.txt
 - click uranium(2) (dark green)
 
+#12 Put back mineral to not empty asteroid
+- load test2.txt
+- move to coal asteroid
+- click on ice
+
+#13 Create game from not savefile
+- new game
+- 5 settlers
+- 13 asteroids
+- 4 UFOs
+- drill
+- move
+- drill
+- move
+
+#14 Load then cancel it
+- load
+- cancel
+
+#15 Save and reload maps and check
+- new game
+- 5 settlers
+- 5 asteroids
+- 2 ufos
+- save as test9.txt
+- load test9.txt
+
 ## Output Data Files
+
+**#15:**
+
+Before save:
+
+![](test_15_before.png)
+
+After load:
+
+![](test_15_after.png)
 
 **#500:**
 
@@ -84,6 +121,12 @@ Exception:
 
 ![](bug_1000_exception.png)
 
+**#1001:**
+
+Console:
+
+![](bug_1001.png)
+
 ## Issues
 > Starting from #500
 
@@ -103,3 +146,7 @@ Exception:
 - #5 test
 - Robot's asteroid returns null
 - UI freezes (must be because of the exception) 
+
+**#1001** Nullpointer exception
+- #14 test
+- file is null ----> generates exception
