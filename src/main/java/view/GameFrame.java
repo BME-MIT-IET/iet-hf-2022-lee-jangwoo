@@ -26,7 +26,7 @@ public class GameFrame extends JFrame {
     /**
      * A men�.
      */
-    private JMenuBar menuBar = new JMenuBar();
+    private JMenuBar menuB = new JMenuBar();
 
     /**
      * Az esem�nykezel�, akit ismer.
@@ -55,7 +55,7 @@ public class GameFrame extends JFrame {
         temp.setActionCommand("giveup");
         temp.addActionListener(actionListener);
         file.add(temp);
-        menuBar.add(file);
+        menuB.add(file);
 
         JMenu check = new JMenu("Check");
         temp = new JMenuItem("Check Win");
@@ -66,7 +66,7 @@ public class GameFrame extends JFrame {
         temp.setActionCommand("checklose");
         temp.addActionListener(actionListener);
         check.add(temp);
-        menuBar.add(check);
+        menuB.add(check);
     }
 
     /**
@@ -79,7 +79,7 @@ public class GameFrame extends JFrame {
         actionListener = c;
         setTitle("model.Asteroid model.Game");
         initMenu();
-        setJMenuBar(menuBar);
+        setJMenuBar(menuB);
         setMinimumSize(new Dimension(1000, 600));
         setPreferredSize(new Dimension(1000, 600));
         lv = new LevelView(game);

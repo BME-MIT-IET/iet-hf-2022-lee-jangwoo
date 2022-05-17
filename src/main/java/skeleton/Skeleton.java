@@ -1,7 +1,4 @@
-package skeleton;
-
-import model.*;
-
+import javax.swing.*;
 import java.io.*;
 import java.util.*;
 
@@ -28,6 +25,11 @@ public class Skeleton {
     private static boolean random = false;
 
     /**
+     * Random objektum
+     */
+    private Random rand = new Random();
+
+    /**
      * A game objektum, amivel �ppen t�rt�nik a j�t�k.
      */
     private static Game game = new Game();
@@ -36,7 +38,6 @@ public class Skeleton {
      * Az a settler, amelyikkel �ppen j�tszik a felhaszn�l�. Ez a settler kapja majd a settlereknek f�z�tt kommentek.
      */
     private static Settler activeSettler = null;
-
 
     /**
      * T�rolja, hogy a j�t�kban azonos�t�val ell�tott objektumok k�z�l,
@@ -757,7 +758,7 @@ public class Skeleton {
             List<UFO> UFOs = new ArrayList<UFO>(game.getUFOs());
             List<Teleport> teleports = new ArrayList<Teleport>(game.getGates());
             if (activeSettler.putMineralBack(i)) {
-                output.println(activeSettler.getAsteroid().getCore().toString() + " is now in the asteroid");
+                output.println(activeSettler.asteroid.getCore().toString() + " is now in the asteroid");
                 if (!game.getSun().getAsteroids().contains(activeSettler.getAsteroid())) {
                     output.println("the returned uranium caused an explosion");
                     for (Robot r : robots) {
@@ -1140,7 +1141,7 @@ public class Skeleton {
             if (args.length == 2){
                 ufo.makeAction();
                 if (a == ufo.getAsteroid() && core == a.getCore()){
-                    output.println("model.UFO " + args[1] + " couldn't make action");
+                    output.println("UFO " + args[1] + " couldn't make action");
                     return;
                 }
             }
@@ -1154,25 +1155,25 @@ public class Skeleton {
                 move = true;
             }
             if (a != ufo.getAsteroid()) {
-                output.println("model.UFO " + args[1] + " moved to " + reverseIDs.get(ufo.getAsteroid()));
+                output.println("UFO " + args[1] + " moved to " + reverseIDs.get(ufo.getAsteroid()));
                 return;
             }else if (move) {
-                output.println("model.UFO " + args[1] + " couldn't move");
+                output.println("UFO " + args[1] + " couldn't move");
                 return;
             }
 
             if (shell > 0){
-                output.println("model.UFO " + args[1] + " couldn't mine");
+                output.println("UFO " + args[1] + " couldn't mine");
                 output.println("asteroid still has shell");
                 return;
             }
             if (core == null){
-                output.println("model.UFO " + args[1] + " couldn't mine");
+                output.println("UFO " + args[1] + " couldn't mine");
                 output.println("asteroid is already empty");
                 return;
             }
             if (core != a.getCore()){
-                output.println("model.UFO " + args[1] + " mined on " + reverseIDs.get(a));
+                output.println("UFO " + args[1] + " mined on " + reverseIDs.get(a));
                 output.println("it got one unit of " + core.toString());
                 output.println("asteroid is now empty");
             }
@@ -1325,7 +1326,7 @@ public class Skeleton {
      /**
      * A newgame parancshoz tartoz� oszt�ly.
      * L�trehoz a felhaszn�l� �ltal megadott
-     * sz�m� telepest, aszteroid�t �s model.UFO-t,
+     * sz�m� telepest, aszteroid�t �s UFO-t,
      * valamint egy napot a game init met�dusa
      * seg�ts�g�vel. �j randomiz�lt p�lya k�sz�t�s�re
      * haszn�lhat�
@@ -1335,7 +1336,7 @@ public class Skeleton {
          /**
           * A newgame parancshoz tartoz� oszt�ly.
           * L�trehoz a felhaszn�l� �ltal megadott
-          * sz�m� telepest, aszteroid�t �s model.UFO-t,
+          * sz�m� telepest, aszteroid�t �s UFO-t,
           * valamint egy napot a game init met�dusa
           * seg�ts�g�vel. �j randomiz�lt p�lya k�sz�t�s�re
           * haszn�lhat�
@@ -1381,7 +1382,7 @@ public class Skeleton {
             
             output.println("new game created with " + allSettlers.size() + " settler" + (allSettlers.size() == 1 ? " " : "s ") 
             		+ allAsteroids.size() + " asteroid" + (allAsteroids.size() == 1 ? " " : "s ") + "and " + allUFOs.size() +
-            		"model.UFO" + (allUFOs.size() == 1 ? " " : "s "));
+            		"UFO" + (allUFOs.size() == 1 ? " " : "s "));
         }
     }
     /**
@@ -1622,4 +1623,33 @@ public class Skeleton {
         maxIDs.put("robot", 0);
         maxIDs.put("ufo", 0);
     }
+
+
+    /**
+     * Inicializ�lja a parancsokat �s a maxID-ket.
+     * Ha van elegend� parancssori argumentum, akkor az els�re �t�r�ny�tja a bemenetet, a m�sodikra a kimenetet.
+     * A program bel�p�si pontja, ki�rja a men�pontokat �s bek�ri a felhasz�l�t�l a v�lasztott men�pontot a menu()
+     * f�ggv�nnyel, amihez megh�vja a megfelel� inicializ�l� f�ggv�nyt.
+     * Ezt addig ism�tli, am�g a felhaszn�l� ki nem l�p a programb�l.
+     * @param args parancssori argumentumok
+     */
+    /*public static void main(String[] args){
+        GameFrame f = new GameFrame(new Control());
+        f.pack();
+        f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        f.setVisible(true);
+        initializeCommands();
+        initializeMaxIDs();
+        if (args.length >= 2){
+            String[] cmdargs = new String[2];
+            cmdargs[1] = args[0];
+            commands.get("input").execute(cmdargs);
+            cmdargs[1] = args[1];
+            commands.get("output").execute(cmdargs);
+        }
+        boolean hasNext = true;
+        while (hasNext){
+            hasNext = parseCommand();
+        }
+    }*/
 }

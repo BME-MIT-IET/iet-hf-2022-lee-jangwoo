@@ -1,7 +1,6 @@
-package model;
 
 /**
- * Nyilvántartani a teleportkapu párját, valamint egy model.INeighbour interfészt megvalósító
+ * Nyilvántartani a teleportkapu párját, valamint egy INeighbour interfészt megvalósító
  * objektumot. Ez a szomszédja, mellyel az utazók áthaladását biztosítja a másik teleportkapun
  * át. Ha a szomszéd aszteroidán robbanás történik, azaz megszûnik ez a szomszéd, akkor a rajta
  * lévõ kapunak is meg kell szûnnie. Ha egy kapu megszûnik, a párjának is meg kell.
@@ -189,7 +188,6 @@ public class Teleport implements INeighbour {
     				return;
     			}
     			if(temp.moveTeleport(this)) {
-    				//neighbour = (model.Asteroid)temp;
     				old.removeNeighbour(this);
     				placed = true;
     			}

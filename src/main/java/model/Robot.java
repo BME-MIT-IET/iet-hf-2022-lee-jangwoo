@@ -25,8 +25,7 @@ public class Robot extends Traveller {
      */
     @Override
     public void hitByBlast() {
-        Random rand = new Random();
-        int randNeighbour = rand.nextInt(asteroid.getNeighbourCount());
+        int randNeighbour = Game.rand.nextInt(asteroid.getNeighbourCount());
         INeighbour neighbour = asteroid.getNeighbourAt(randNeighbour);
         if(neighbour != null){
             neighbour.placeTraveller(this);
@@ -58,8 +57,7 @@ public class Robot extends Traveller {
      * @return a visszaadott érték azt jelzi, hogy sikeresen fúrt/mozgott, vagy sem.
      */
     public boolean makeAction() {
-        Random rand = new Random();
-        boolean randDecision = rand.nextBoolean();
+        boolean randDecision = Game.rand.nextBoolean();
     	if (randDecision) {
     	    if (drill()) {
     	        return true;
@@ -67,7 +65,7 @@ public class Robot extends Traveller {
     	}
     	if (asteroid.getNeighbourCount() == 0)
     	    return false;
-        int randNeighbour = rand.nextInt(asteroid.getNeighbourCount());
+        int randNeighbour = Game.rand.nextInt(asteroid.getNeighbourCount());
         return move(randNeighbour);
     }
 

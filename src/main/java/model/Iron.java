@@ -9,7 +9,9 @@ public class Iron extends Mineral {
     /**
      * Default constructor
      */
-    public Iron() {}
+    public Iron() {
+        // No parameters to set in the constructor
+    }
     
     /**
      * Az adott nyersanyag tipusát adja vissza Stringben. 

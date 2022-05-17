@@ -1,11 +1,12 @@
-package view;
 
-import model.Asteroid;
-import model.INeighbour;
-import model.Mineral;
-import model.Traveller;
+
 import java.awt.*;
+import java.util.*;
+import javax.swing.*;
+import java.math.*;
 import java.util.List;
+import java.util.logging.Level;
+
 import static java.lang.Math.pow;
 
 /**
@@ -28,17 +29,17 @@ public class AsteroidView implements View {
     /**
      * A kör középpontjának x koordinátája
      */
-    private final int x;
+    private int x;
 
     /**
      * A kör középpontjának y koordinátája
      */
-    private final int y;
+    private int y;
 
     /**
      * A kör sugara
      */
-    private final int radius = 30;
+    private int radius = 30;
 
     /**
      * A mutatott aszteroida objektum, akinek a rajzolásáért felel
@@ -69,15 +70,16 @@ public class AsteroidView implements View {
      * getTravellers metódussal. Visszaadja a paraméterként megadott traveller y
      * koordinátáját a képernyőn, kiszámolva a travellers listában elfoglalt helyéből, és az
      * aszteroida középpontjából.
+     * @param t Az utazó, akinek az x koordinátája kell
      * @return Az y koordináta
      */
-    public int getTravellerY() {
+    public int getTravellerY(Traveller t) {
         return y - radius - 20;
     }
 
     /**
      * Visszaadja az asteroid tagváltozót
-     * @return az aszteroida
+     * @return
      */
     public Asteroid getAsteroid() {
         return asteroid;
@@ -85,7 +87,7 @@ public class AsteroidView implements View {
 
     /**
      * Elkéri az asteroid-tól a szomszédait a
-     * getNeighbours metódussal. Ezen az model.INeighbour listán végigiterál, és ha ez
+     * getNeighbours metódussal. Ezen az INeighbour listán végigiterál, és ha ez
      * megegyezik a paraméterül kapott a aszteroidával, akkor igazzal tér vissza, egyébként
      * hamissal.
      * @param a A kérdezett aszteroida.
@@ -93,18 +95,17 @@ public class AsteroidView implements View {
      */
     public boolean isThisYourNeighbour(Asteroid a) {
         List<INeighbour> neighbours = asteroid.getNeighbours();
-        for (INeighbour neighbour : neighbours) {
-            if (neighbour == a) {
+        for(int i = 0; i < neighbours.size(); ++i){
+            if(neighbours.get(i) == a){
                 return true;
             }
         }
         return false;
-        //return neighbours.contains(a);
     }
 
     /**
      * Visszaadja az x tagváltozót
-     * @return x
+     * @return
      */
     public int getX() {
         return x;
@@ -112,7 +113,7 @@ public class AsteroidView implements View {
 
     /**
      * Visszaadja az y tagváltozót
-     * @return y
+     * @return
      */
     public int getY() {
         return y;
@@ -127,7 +128,7 @@ public class AsteroidView implements View {
      * @return IGAZ, ha a körön belül van a kattintás, HAMIS, ha nem.
      */
     public boolean clicked(int xClicked, int yClicked) {
-        return (pow((xClicked - x), 2) + pow((yClicked - y), 2)) <= pow(radius, 2);
+        return ((pow((xClicked - x), 2)+pow((yClicked - y), 2))<=pow(radius, 2));
     }
 
     /**
@@ -146,21 +147,9 @@ public class AsteroidView implements View {
             Mineral aCore = asteroid.getCore();
             g.setColor(LevelView.mineralColor(aCore));
             g.fillOval(x - radius + 2, y - radius + 2, radius * 2 - 4, radius * 2 - 4);
-            //if(aCloseToSun){
-                //g.setColor(new Color(255, 201, 14));      //s�rga
-
-               // g.setColor(new Color(255, 255, 255));       //feh�r
-
-                //g.setColor(new Color(0, 0, 0));     //fekete
-                //g.drawString(aShell, x-(fontMetrics.stringWidth(aShell)/2), y-(fontMetrics.getHeight()/2));
 
         }else{
-            //model.Mineral aCore = asteroid.getCore();
-            //g.setColor(new Color(0, 0, 0));       //fekete
-            //g.fillOval(x, y, radius*2, radius*2);
-            //g.setColor(mineralColor(aCore));
             g.setColor(Color.WHITE);
-            //g.drawString(aShell, x-(fontMetrics.stringWidth(aShell)/2), y-(fontMetrics.getHeight()/2));
             g.fillOval(x - radius + 2, y - radius + 2, radius * 2 - 4, radius * 2 - 4);
             g.setColor(Color.BLACK);
             g.setFont(Font.getFont("Arial"));
