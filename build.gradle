@@ -10,3 +10,14 @@ sonarqube {
     property "sonar.host.url", "https://sonarcloud.io"
   }
 }
+
+dependencies {
+    implementation 'junit:junit:4.13.1'
+    testImplementation 'io.cucumber:cucumber-java:7.0.0'
+    testImplementation group: 'info.cukes', name: 'cucumber-junit', version: '1.2.6', ext: 'pom'
+
+}
+
+repositories {
+    mavenCentral()
+}
