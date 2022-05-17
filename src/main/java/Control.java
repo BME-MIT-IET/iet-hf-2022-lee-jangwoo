@@ -1773,7 +1773,8 @@ public class Control implements ActionListener, MouseListener{
          */
         public void execute(String[] args, Control control) {
             control.game.setGameEnd(true);
-            control.output.println("control.game given up");
+            control.output.println("game given up");
+            JOptionPane.showMessageDialog(null, "Game given up");
         }
     }
 
