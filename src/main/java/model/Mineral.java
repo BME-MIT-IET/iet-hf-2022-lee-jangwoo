@@ -11,12 +11,12 @@ public abstract class Mineral {
     /**
      * Az összes elérhető nyersanyagot tartalmazó lista.
      */
-    static private List<Mineral> AllMinerals;
+    private static List<Mineral> AllMinerals;
 
     /**
      * Az összes elérhető nyersanyag listáját inicializáló metódus.
      */
-    static public void Init() {
+    public static void Init() {
     	AllMinerals = new ArrayList<>();
         AllMinerals.add(new Uranium(0));
         AllMinerals.add(new Iron());
@@ -26,7 +26,7 @@ public abstract class Mineral {
     /**
      * Default constructor
      */
-        public Mineral() {}
+        protected Mineral() {}
     /**
      * Napközelbe kerüléskor meghívódó (jelenleg üres) függvény. A leszármazottak
      * újraimplementálhatják, ha szükséges(pl. jég, radioaktív nyersanyagok).

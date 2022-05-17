@@ -73,14 +73,6 @@ public class Teleport implements INeighbour {
     }
 
     /**
-     * Visszaadja, hogy igaz-e hogy a kapu bamboozled
-     * @return bool aszerint hogy a kapu bamboozled vagy nem
-     */
-    public boolean isBamboozled() {
-        return bamboozled;
-    }
-
-    /**
      * A teleport párját null-ra állítja, és ha a neighbour nem null (
      * azaz már le van rakva a teleportkapu), akkor a neighbour removeNeighbour metódusát meghívja
      */
@@ -90,7 +82,6 @@ public class Teleport implements INeighbour {
         	neighbour.removeNeighbour(this);
         	neighbour = null;
         }
-        return;
     }
 
     /**
@@ -130,7 +121,7 @@ public class Teleport implements INeighbour {
 
     /**
      * Meghívja a pair-nek a perish metódusát.
-     * @param neighbour
+     * @param neighbour a megszűnt szomszéd
      */
     @Override
     public void removeNeighbour(INeighbour neighbour){

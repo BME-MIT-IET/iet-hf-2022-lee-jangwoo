@@ -23,7 +23,7 @@ public class Game {
     /**
      * A játékban lévõ robotok listája.
      */
-    private List<Robot> robots = new ArrayList<>();
+    private final List<Robot> robots = new ArrayList<>();
 
     /**
      * A játékban lévõ model.UFO-k listája.
@@ -38,14 +38,14 @@ public class Game {
     /**
      * A játékban lévő lehelyezett teleportkapuk. Amik a játékos zsebében vannak, azokat is tárolja.
      */
-    private List<Teleport> gates = new ArrayList<>();
+    private final List<Teleport> gates = new ArrayList<>();
 
     /**
      * Random objektum.
      */
     public static final Random rand = new Random();
 
-    private static String uranium = "uranium";
+    private static final String uranium = "uranium";
 
     /**
      * Konstruktor, meghívja a model.Mineral osztály egy statikus függvényét,
@@ -200,7 +200,7 @@ public class Game {
      * Ha már nincsen telepes játékban (mindegyik meghalt),
      * elvesztették, egyébként folytatódik a játék.
      *
-     * @return
+     * @return vesztettek-e
      */
     public boolean checkLose() {
         gameEnd = true;

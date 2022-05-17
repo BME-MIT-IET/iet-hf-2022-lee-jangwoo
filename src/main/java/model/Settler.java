@@ -16,12 +16,12 @@ public class Settler extends Traveller {
     /**
      * A telepesnél található nyersanyagok listája.
      */
-    private List<Mineral> minerals = new ArrayList<>();
+    private final List<Mineral> minerals = new ArrayList<>();
 
     /**
      * A telepesnél található teleportkapuk listája.
      */
-    private List<Teleport> teleportgates = new ArrayList<>();
+    private final List<Teleport> teleportgates = new ArrayList<>();
 
     /**
      * Konstruktor amely a traveller ősre meghívja a konstruktort

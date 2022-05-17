@@ -30,12 +30,12 @@ public class Asteroid implements INeighbour {
      * Az aszteroida szomszédainak listája, ezen keresztül tudja értesíteni őket felrobbanásakor.
      * Valamint létezése lehetővé teszi, hogy az utazó lekérje egy szomszédját.
      */
-    private List<INeighbour> neighbours = new ArrayList<>();
+    private final List<INeighbour> neighbours = new ArrayList<>();
 
     /**
      * Az aszteroidán lévő utazók listája. Ezen keresztül értesíti őket az azteroida, ha napszél éri, vagy felrobban.
      */
-    private List<Traveller> travellers = new ArrayList<>();
+    private final List<Traveller> travellers = new ArrayList<>();
     
     /**
      * Mielőtt az aszteroida felrobban értesíti a napot, hogy fel fog robbanni.
@@ -104,10 +104,8 @@ public class Asteroid implements INeighbour {
      * Ezután a sun-nak meghívja a removeAsteroid metódusát magával paraméterként.
      */
     public void radioactiveBlast() {
-    	for (int i = 0; i < travellers.size(); i++)
-    		travellers.get(i).hitByBlast();
-    	for (int i = 0; i < neighbours.size(); i++)
-    		neighbours.get(i).removeNeighbour(this);
+        for (Traveller traveller : travellers) traveller.hitByBlast();
+        for (INeighbour neighbour : neighbours) neighbour.removeNeighbour(this);
     	sun.removeAsteroid(this);
     }
 
@@ -229,11 +227,9 @@ public class Asteroid implements INeighbour {
     @Override
     public void solarWind(int i) {
         if (core != null || shell != 0)
-        	for (int j = 0; j < travellers.size(); j++)
-        		travellers.get(j).die();
+            for (Traveller traveller : travellers) traveller.die();
         if (i > 0)
-        	for (int j = 0; j < neighbours.size(); j++)
-        		neighbours.get(j).solarWind(i - 1);
+            for (INeighbour neighbour : neighbours) neighbour.solarWind(i - 1);
     }
 
     /**
