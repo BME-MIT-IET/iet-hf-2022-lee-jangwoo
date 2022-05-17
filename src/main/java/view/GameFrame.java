@@ -45,7 +45,7 @@ public class GameFrame extends JFrame {
         temp.setActionCommand("save");
         temp.addActionListener(actionListener);
         file.add(temp);
-        temp = new JMenuItem("New model.Game");
+        temp = new JMenuItem("New Game");
         temp.setActionCommand("newgame");
         temp.addActionListener(actionListener);
         file.add(temp);
@@ -75,7 +75,7 @@ public class GameFrame extends JFrame {
     public GameFrame(Control c, Game game) {
         super();
         actionListener = c;
-        setTitle("model.Asteroid model.Game");
+        setTitle("Asteroid Game");
         initMenu();
         setJMenuBar(menuB);
         setMinimumSize(new Dimension(1000, 600));
