@@ -1,4 +1,4 @@
-
+package model;
 /**
  * Nyilvántartani a teleportkapu párját, valamint egy INeighbour interfészt megvalósító
  * objektumot. Ez a szomszédja, mellyel az utazók áthaladását biztosítja a másik teleportkapun

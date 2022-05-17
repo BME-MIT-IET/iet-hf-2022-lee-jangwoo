@@ -1,8 +1,5 @@
 package view;
-
-import model.Asteroid;
-import model.Settler;
-import model.Traveller;
+import model.*;
 
 import java.awt.*;
 

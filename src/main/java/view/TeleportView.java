@@ -1,8 +1,6 @@
 package view;
 
-import model.Asteroid;
-import model.Teleport;
-
+import model.*;
 import java.awt.*;
 
 /**

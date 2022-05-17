@@ -1,7 +1,6 @@
 package view;
 
-import model.Teleport;
-import view.LevelView;
+import model.*;
 
 import javax.swing.*;
 import java.awt.*;

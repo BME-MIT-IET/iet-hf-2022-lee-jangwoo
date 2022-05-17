@@ -2,8 +2,6 @@ package view;
 
 import controller.Control;
 import model.Game;
-import view.InventoryView;
-import view.LevelView;
 
 import javax.swing.*;
 import java.awt.*;

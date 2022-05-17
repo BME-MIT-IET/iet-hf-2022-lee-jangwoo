@@ -1938,7 +1938,7 @@ public class Control implements ActionListener, MouseListener{
 
         } else {
             if (refreshActiveSettler()) {
-                commands.get("nextturn").execute(new String[]{"nextturn"});
+                commands.get("nextturn").execute(new String[]{"nextturn"}, this);
                 if (checkActiveSettlerDied())
                     refreshActiveSettler();
                 // JOptionPane.showMessageDialog(null, "Turn ended, next turn starts.");
@@ -2013,7 +2013,7 @@ public class Control implements ActionListener, MouseListener{
 
     public void parseCommandTest(String[] pieces) {
         Control.Command cmd = Control.getCommands().getOrDefault(pieces[0], null);
-        cmd.execute(pieces);
+        cmd.execute(pieces, this);
         checkActiveSettlerDied();
 
         if (pieces[0].equals("save") || pieces[0].equals("giveup") ||
@@ -2021,7 +2021,7 @@ public class Control implements ActionListener, MouseListener{
 
         } else {
             if (refreshActiveSettler()) {
-                commands.get("nextturn").execute(new String[]{"nextturn"});
+                commands.get("nextturn").execute(new String[]{"nextturn"}, this);
                 if (checkActiveSettlerDied())
                     refreshActiveSettler();
                 JOptionPane.showMessageDialog(null, "Turn ended, next turn starts.");

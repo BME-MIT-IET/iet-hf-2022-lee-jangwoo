@@ -1,5 +1,6 @@
 package view;
 
+import model.*;
 import java.awt.*;
 import java.util.*;
 

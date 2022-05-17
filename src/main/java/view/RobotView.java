@@ -1,8 +1,8 @@
 package view;
 
-import model.Asteroid;
-import model.Robot;
 import model.*;
+import model.Robot;
+
 import java.awt.*;
 
 /**

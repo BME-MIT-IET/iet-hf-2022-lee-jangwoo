@@ -1,7 +1,6 @@
 package view;
 
-import model.Traveller;
-
+import model.*;
 import java.awt.*;
 
 /**

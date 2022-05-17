@@ -1,7 +1,5 @@
 package model;
 
-import model.Asteroid;
-import model.Game;
 
 /**
  * Absztrakt oszt�ly. Felel�ss�ge nyilv�ntartani a jelenlegi aszteroid�j�t, 

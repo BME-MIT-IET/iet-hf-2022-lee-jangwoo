@@ -1,4 +1,4 @@
-
+package model;
 /**
  * A Traveller leszármazottja. Képes bányászni és mozogni. Felelõssége csinálnia ezek közül
  * valamit körönként. Meg kell halnia, ha napszél éri, vagy ha felrobban az aszteroidája.
