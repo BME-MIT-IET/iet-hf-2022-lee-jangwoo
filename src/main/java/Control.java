@@ -339,7 +339,7 @@ public class Control implements ActionListener, MouseListener{
             }else{
                 file = new File(args[1]);
             }
-            if (!file.exists()){
+            if (file == null || !file.exists()){
                 control.output.println("load unsuccessful");
                 return;
             }
