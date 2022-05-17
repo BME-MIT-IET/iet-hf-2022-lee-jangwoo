@@ -6,20 +6,20 @@ import java.awt.*;
 import model.Teleport;
 
 /**
- * Egy teleportkapuhoz tartozó gomb. A teleportkapu-pároknak megfelelõ színû.
+ * Egy teleportkapuhoz tartozï¿½ gomb. A teleportkapu-pï¿½roknak megfelelï¿½ szï¿½nï¿½.
  */
 public class TeleportButton extends JButton {
 
     /**
      * A teleportkapu, akit ismer.
      */
-    private Teleport teleport;
+    private transient Teleport teleport;
 
     private LevelView levelView;
 
     /**
-     * Inicializálja a gomb méreteit.
-     * @param lv A levelview, amely a játékot kirajzolja.
+     * Inicializï¿½lja a gomb mï¿½reteit.
+     * @param lv A levelview, amely a jï¿½tï¿½kot kirajzolja.
      */
     public TeleportButton(LevelView lv) {
         super();
@@ -42,8 +42,8 @@ public class TeleportButton extends JButton {
     }
 
     /**
-     * Beállítja az ismert teleportkaput.
-     * @param t Az új teleportkapu.
+     * Beï¿½llï¿½tja az ismert teleportkaput.
+     * @param t Az ï¿½j teleportkapu.
      */
     public void setTeleport(Teleport t) {
         this.teleport = t;

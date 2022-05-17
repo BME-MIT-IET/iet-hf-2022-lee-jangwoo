@@ -29,7 +29,7 @@ public class GameFrame extends JFrame {
     /**
      * Az esem�nykezel�, akit ismer.
      */
-    private ActionListener actionListener;
+    private transient ActionListener actionListener;
 
     /**
      * Inicializ�lja a men�t a megfelel�men�pontokkal.

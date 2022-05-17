@@ -111,10 +111,7 @@ public class TeleportView implements View {
      * @return igaz, ha bel�l van, egy�bk�nt hamis
      */
     public boolean clicked(int xClicked, int yClicked) {
-        if((xClicked<x+10 && xClicked>x-10)&&(yClicked<y+18 && yClicked>y-18)){
-            return true;
-        }
-        return false;
+        return (xClicked<x+10 && xClicked>x-10)&&(yClicked<y+18 && yClicked>y-18);
     }
 
     /**
@@ -123,10 +120,7 @@ public class TeleportView implements View {
      * @return ha egyezik igaz, ha nem akkor hamis
      */
     public boolean isPair(Teleport t) {
-        if(teleport.getPair() == t){
-            return true;
-        }
-        return false;
+        return teleport.getPair() == t;
     }
 
 }

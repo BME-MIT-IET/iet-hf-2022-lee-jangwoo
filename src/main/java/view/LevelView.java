@@ -26,9 +26,9 @@ public class LevelView extends JPanel implements View {
     private Random random = new Random();
 
     /**
-     * Megmondja, hogy az adott nyersanyaghoz milyen szín tartozik.
+     * Megmondja, hogy az adott nyersanyaghoz milyen szï¿½n tartozik.
      * @param m A nyersanyag
-     * @return A szín, ami a nyersanyaghoz tartozik
+     * @return A szï¿½n, ami a nyersanyaghoz tartozik
      */
 
     public static Color mineralColor(Mineral m) {
@@ -46,109 +46,109 @@ public class LevelView extends JPanel implements View {
     }
 
     /**
-    * A háttéren elhelyezett nap betöltése
+    * A hï¿½ttï¿½ren elhelyezett nap betï¿½ltï¿½se
     */
     ImageIcon img = new ImageIcon("sun.png"); //nap betoltese
     
     /**
-     * Az urán 0. állapotának színe.
+     * Az urï¿½n 0. ï¿½llapotï¿½nak szï¿½ne.
      */
     public static Color uranium0Color = new Color(15, 147, 71);
 
     /**
-     * Az urán 1. állapotának színe.
+     * Az urï¿½n 1. ï¿½llapotï¿½nak szï¿½ne.
      */
     public static Color uranium1Color = new Color(16, 105, 55);
 
     /**
-     * Az urán 2. állapotának színe.
+     * Az urï¿½n 2. ï¿½llapotï¿½nak szï¿½ne.
      */
     public static Color uranium2Color = new Color(2, 73, 34);
 
     /**
-     * A jég színe.
+     * A jï¿½g szï¿½ne.
      */
     public static Color iceColor = new Color(195, 255, 255);
 
     /**
-     * A szén színe.
+     * A szï¿½n szï¿½ne.
      */
     public static Color coalColor = new Color(0, 0, 0);
 
     /**
-     * A vas színe.
+     * A vas szï¿½ne.
      */
     public static Color ironColor = new Color(179, 179, 179);
 
     /**
-     * Az aktív telepes, az aki most lép.
+     * Az aktï¿½v telepes, az aki most lï¿½p.
      */
-    private Settler activeSettler;
+    private transient Settler activeSettler;
 
     /**
-     * A játék, amelyik éppen zajlik.
+     * A jï¿½tï¿½k, amelyik ï¿½ppen zajlik.
      */
-    private Game game;
+    private transient Game game;
 
     /**
-     * A telepesek nézeteinek listája.
+     * A telepesek nï¿½zeteinek listï¿½ja.
      */
-    private ArrayList<SettlerView> settlerViews = new ArrayList<>();
+    private transient ArrayList<SettlerView> settlerViews = new ArrayList<>();
 
     /**
-     * Az utazók nézeteinek listája.
+     * Az utazï¿½k nï¿½zeteinek listï¿½ja.
      */
-    private ArrayList<TravellerView> travellerViews = new ArrayList<>();
+    private transient ArrayList<TravellerView> travellerViews = new ArrayList<>();
 
     /**
-     * A felületen lévõ inventoryview.
+     * A felï¿½leten lï¿½vï¿½ inventoryview.
      */
     private InventoryView inventory;
 
     /**
-     * Az aszteroidák és a hozzájuk tartozó nézetek összerendelése.
+     * Az aszteroidï¿½k ï¿½s a hozzï¿½juk tartozï¿½ nï¿½zetek ï¿½sszerendelï¿½se.
      */
-    private HashMap<Asteroid, AsteroidView> asteroidViews = new HashMap<>();
+    private transient HashMap<Asteroid, AsteroidView> asteroidViews = new HashMap<>();
 
     /**
-     * Az teleportkapuk és a hozzájuk tartozó nézetek összerendelése.
+     * Az teleportkapuk ï¿½s a hozzï¿½juk tartozï¿½ nï¿½zetek ï¿½sszerendelï¿½se.
      */
-    private HashMap<Teleport, TeleportView> teleportViews = new HashMap<>();
+    private transient HashMap<Teleport, TeleportView> teleportViews = new HashMap<>();
 
 
     /**
-     * A teleportkapuk és a hozzájuk tartozó teleportkapu színek összerendelése.
+     * A teleportkapuk ï¿½s a hozzï¿½juk tartozï¿½ teleportkapu szï¿½nek ï¿½sszerendelï¿½se.
      */
-    private HashMap<Teleport, Color> teleportcolors = new HashMap<>();
+    private transient HashMap<Teleport, Color> teleportcolors = new HashMap<>();
 
     /**
-     * Konstruktor, a játékot kell megadni.
-     * @param game A játék
+     * Konstruktor, a jï¿½tï¿½kot kell megadni.
+     * @param game A jï¿½tï¿½k
      */
     LevelView(Game game){
         this.game = game;
     }
 
     /**
-     * Setter a game attríbútumhoz
-     * @param game Az új játék
+     * Setter a game attrï¿½bï¿½tumhoz
+     * @param game Az ï¿½j jï¿½tï¿½k
      */
     public void setGame(Game game){
         this.game = game;
     }
 
     /**
-     * Végigiterál az asteroidViews listán (a HashMap-bõl
-     * elkéri a values-t), a jelenleg kiválasztott aszteroida nézetnek elkéri az aszteroidáját a
-     * getAsteroid metódussal, és a koordinátáit a getterekkel. Az aszteroidát nevezzük
-     * mondjuk currAsteroid-nak. Egy belsõ ciklusban végigiterál, a listában ezután
-     * következõ aszteroida nézeteken, és meghívja rájuk az isThisYourNeighbour metódust
-     * a currAsteroid-ot paraméterül adva. Ha igazzal tér vissza, akkor elkéri ezen
-     * asteroidView koordinátáit getterekkel, és ezek közé vonalat húz. Ha ezzel a belsõ
-     * ciklussal végzett, a teleportkapu nézeteken (teleportViews) iterál végig, ezekre
-     * meghívja az isThisYourNeighbour metódust a currAsteroid-ot adva paraméterül, és ha
-     * ez igazzal tér vissza, akkor elkéri a view.TeleportView koordinátáit getterekkel, és vonalat
-     * rajzol közéjük. Ezen metódus végeztével az összes szomszédság vonal be van húzva.
+     * Vï¿½gigiterï¿½l az asteroidViews listï¿½n (a HashMap-bï¿½l
+     * elkï¿½ri a values-t), a jelenleg kivï¿½lasztott aszteroida nï¿½zetnek elkï¿½ri az aszteroidï¿½jï¿½t a
+     * getAsteroid metï¿½dussal, ï¿½s a koordinï¿½tï¿½it a getterekkel. Az aszteroidï¿½t nevezzï¿½k
+     * mondjuk currAsteroid-nak. Egy belsï¿½ ciklusban vï¿½gigiterï¿½l, a listï¿½ban ezutï¿½n
+     * kï¿½vetkezï¿½ aszteroida nï¿½zeteken, ï¿½s meghï¿½vja rï¿½juk az isThisYourNeighbour metï¿½dust
+     * a currAsteroid-ot paramï¿½terï¿½l adva. Ha igazzal tï¿½r vissza, akkor elkï¿½ri ezen
+     * asteroidView koordinï¿½tï¿½it getterekkel, ï¿½s ezek kï¿½zï¿½ vonalat hï¿½z. Ha ezzel a belsï¿½
+     * ciklussal vï¿½gzett, a teleportkapu nï¿½zeteken (teleportViews) iterï¿½l vï¿½gig, ezekre
+     * meghï¿½vja az isThisYourNeighbour metï¿½dust a currAsteroid-ot adva paramï¿½terï¿½l, ï¿½s ha
+     * ez igazzal tï¿½r vissza, akkor elkï¿½ri a view.TeleportView koordinï¿½tï¿½it getterekkel, ï¿½s vonalat
+     * rajzol kï¿½zï¿½jï¿½k. Ezen metï¿½dus vï¿½geztï¿½vel az ï¿½sszes szomszï¿½dsï¿½g vonal be van hï¿½zva.
      */
     private void drawNeighbourLines(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
@@ -175,39 +175,39 @@ public class LevelView extends JPanel implements View {
     }
 
     /**
-     * Beállítja az inventoryview-t.
-     * @param inventory Az inventory új értéke
+     * Beï¿½llï¿½tja az inventoryview-t.
+     * @param inventory Az inventory ï¿½j ï¿½rtï¿½ke
      */
     public void setInventory(InventoryView inventory) {
         this.inventory = inventory;
     }
 
     /**
-     * A paraméterként kapott teleportot
-     * kulcsként használva elkéri az ehhez tartozó view.TeleportView-t a teleportViews
-     * HashMapbõl, és ezt visszaadja.
-     * @param t A teleport, amihez kell a nézet
-     * @return A teleporthoz tartozó nézet
+     * A paramï¿½terkï¿½nt kapott teleportot
+     * kulcskï¿½nt hasznï¿½lva elkï¿½ri az ehhez tartozï¿½ view.TeleportView-t a teleportViews
+     * HashMapbï¿½l, ï¿½s ezt visszaadja.
+     * @param t A teleport, amihez kell a nï¿½zet
+     * @return A teleporthoz tartozï¿½ nï¿½zet
      */
     public TeleportView getTeleportView(Teleport t) {
         return teleportViews.get(t);
     }
 
     /**
-     * A paraméterként kapott aszteroidát
-     * kulcsként használva elkéri az ehhez tartozó view.AsteroidView-t az asteroidViews
-     * HashMapbõl, és ezt visszaadja.
-     * @param a Az aszteroida, amihez kell a nézet
-     * @return Az aszteroidához tartozó nézet
+     * A paramï¿½terkï¿½nt kapott aszteroidï¿½t
+     * kulcskï¿½nt hasznï¿½lva elkï¿½ri az ehhez tartozï¿½ view.AsteroidView-t az asteroidViews
+     * HashMapbï¿½l, ï¿½s ezt visszaadja.
+     * @param a Az aszteroida, amihez kell a nï¿½zet
+     * @return Az aszteroidï¿½hoz tartozï¿½ nï¿½zet
      */
     public AsteroidView getAsteroidView(Asteroid a) {
         return asteroidViews.get(a);
     }
 
     /**
-     * Hívja magára az updateAsteroidView, updateTeleportView,
-     * updateSettlerView, updateTravellerView metódusokat. A travellerViews listában
-     * meghívja mindenkire az Update metódust.
+     * Hï¿½vja magï¿½ra az updateAsteroidView, updateTeleportView,
+     * updateSettlerView, updateTravellerView metï¿½dusokat. A travellerViews listï¿½ban
+     * meghï¿½vja mindenkire az Update metï¿½dust.
      */
     public void Update() {
         updateAsteroidView();
@@ -220,7 +220,7 @@ public class LevelView extends JPanel implements View {
     }
 
     /**
-     * Getter az inventory attribútumhoz.
+     * Getter az inventory attribï¿½tumhoz.
      * @return Az inventory.
      */
     public InventoryView getInventory() {
@@ -228,20 +228,18 @@ public class LevelView extends JPanel implements View {
     }
 
     /**
-     * Végigiterál a teleportViews listán, és
-     * mindegyikre meghívja az isPair metódust. Ha valamelyik igazzal tér vissza, elkéri tõle
-     * a színét a getColor metódussal, és létrehoz egy view.TeleportView objektumot a
-     * paraméterül kapott teleporttal, és a megkapott színnel. Ha nem talál ilyet, akkor egy
-     * randomizált színt ad meg a view.TeleportView-nek. Ezután ezt beteszi a teleportViews
-     * HashMap-jébe a paraméterül kapott teleportot használva kulcsként.
-     * @param t A teleportkapu, amihez kell a nézet
+     * Vï¿½gigiterï¿½l a teleportViews listï¿½n, ï¿½s
+     * mindegyikre meghï¿½vja az isPair metï¿½dust. Ha valamelyik igazzal tï¿½r vissza, elkï¿½ri tï¿½le
+     * a szï¿½nï¿½t a getColor metï¿½dussal, ï¿½s lï¿½trehoz egy view.TeleportView objektumot a
+     * paramï¿½terï¿½l kapott teleporttal, ï¿½s a megkapott szï¿½nnel. Ha nem talï¿½l ilyet, akkor egy
+     * randomizï¿½lt szï¿½nt ad meg a view.TeleportView-nek. Ezutï¿½n ezt beteszi a teleportViews
+     * HashMap-jï¿½be a paramï¿½terï¿½l kapott teleportot hasznï¿½lva kulcskï¿½nt.
+     * @param t A teleportkapu, amihez kell a nï¿½zet
      */
     private void addTeleportView(Teleport t) {
-        boolean found = false;
         Color color = new Color(random.nextFloat(), random.nextFloat(), random.nextFloat());
         for (TeleportView tv : teleportViews.values())
             if (tv != null && tv.isPair(t)){
-                found = true;
                 color = tv.getColor();
                 break;
             }
@@ -258,9 +256,9 @@ public class LevelView extends JPanel implements View {
     }
 
     /**
-     * Megadja, hogy a paraméterként adott teleportkapunak milyen színe van.
-     * @param t A kérdéses teleportkapu
-     * @return A teleportkapu színe
+     * Megadja, hogy a paramï¿½terkï¿½nt adott teleportkapunak milyen szï¿½ne van.
+     * @param t A kï¿½rdï¿½ses teleportkapu
+     * @return A teleportkapu szï¿½ne
      */
     public Color getTeleportColor(Teleport t ){
         if (teleportcolors.containsKey(t))
@@ -275,16 +273,16 @@ public class LevelView extends JPanel implements View {
     }
 
     /**
-     * Megmondja, hogy ki az aktív telepes.
-     * @return Az aktív telepes.
+     * Megmondja, hogy ki az aktï¿½v telepes.
+     * @return Az aktï¿½v telepes.
      */
     public Settler getActiveSettler() {
         return activeSettler;
     }
 
     /**
-     * Beállítja az aktív telepes értékét.
-     * @param s Az új aktív telepes.
+     * Beï¿½llï¿½tja az aktï¿½v telepes ï¿½rtï¿½kï¿½t.
+     * @param s Az ï¿½j aktï¿½v telepes.
      */
     public void setActiveSettler(Settler s) {
         for (SettlerView sv : settlerViews){
@@ -298,13 +296,13 @@ public class LevelView extends JPanel implements View {
     }
 
     /**
-     * Hívja a game getGates metódusát. A megkapott
-     * teleportkapukat kulcsként használva a teleportViews mapjén kigyûjti az élõ teleportok
-     * nézetét, ezekbõl csinál egy új HashMap-et és értékül adja a teleportViews-nek. Ha
-     * volt olyan teleport, melyet kulcsként használva nem volt találat, meghívja rá az
-     * addTeleportView metódust. (A felrobbant teleportkapuk kikerülnek a game gates
-     * listájából. Ezzel az update-el kiszûrjük a már felrobbant kapuk nézetét, hogy azokat
-     * már ne ábrázoljuk)
+     * Hï¿½vja a game getGates metï¿½dusï¿½t. A megkapott
+     * teleportkapukat kulcskï¿½nt hasznï¿½lva a teleportViews mapjï¿½n kigyï¿½jti az ï¿½lï¿½ teleportok
+     * nï¿½zetï¿½t, ezekbï¿½l csinï¿½l egy ï¿½j HashMap-et ï¿½s ï¿½rtï¿½kï¿½l adja a teleportViews-nek. Ha
+     * volt olyan teleport, melyet kulcskï¿½nt hasznï¿½lva nem volt talï¿½lat, meghï¿½vja rï¿½ az
+     * addTeleportView metï¿½dust. (A felrobbant teleportkapuk kikerï¿½lnek a game gates
+     * listï¿½jï¿½bï¿½l. Ezzel az update-el kiszï¿½rjï¿½k a mï¿½r felrobbant kapuk nï¿½zetï¿½t, hogy azokat
+     * mï¿½r ne ï¿½brï¿½zoljuk)
      */
     private void updateTeleportView() {
         List<Teleport> gates = game.getGates();
@@ -324,18 +322,18 @@ public class LevelView extends JPanel implements View {
     }
 
     /**
-     * Hívja a game getSettlers, getUFOs és getRobots
-     * metódusát. A travellerViews listán meghívja az összes elemre az identify metódust az
-     * összes settler-, robot- és model.UFO-val paraméterül. Az egyszer is true-val visszatérõ
-     * view.TravellerView objektumokból listát készítünk, és ezt kivesszük a travellerViews
-     * listából (csak hogy gyorsabb legyen a bejárás). Ha volt olyan robot, melynél egy
-     * identify metódus sem tért vissza true-val, akkor létrehoz egy view.RobotView objektumot a
-     * robottal paraméterként, és ezt hozzáfûzi az új view.TravellerView típusú listához. Ha
-     * végigért, akkor az újonnan készített view.TravellerView listát értékül adja a
-     * travellerViews-nek. (Azaz ha létrejött új robot, azaz eddig nem volt rá nézet, akkor
-     * csinálunk neki, és befûzzük a listánkba, a meghal model.UFO, model.Settler és Robotokat pedig
-     * kiszûrjük azzal, hogy az õ view.View-jukat már nem tesszük bele az új listába. Az újonnan
-     * létrehozott robot majd az Update metódus végén kap koordinátát.)
+     * Hï¿½vja a game getSettlers, getUFOs ï¿½s getRobots
+     * metï¿½dusï¿½t. A travellerViews listï¿½n meghï¿½vja az ï¿½sszes elemre az identify metï¿½dust az
+     * ï¿½sszes settler-, robot- ï¿½s model.UFO-val paramï¿½terï¿½l. Az egyszer is true-val visszatï¿½rï¿½
+     * view.TravellerView objektumokbï¿½l listï¿½t kï¿½szï¿½tï¿½nk, ï¿½s ezt kivesszï¿½k a travellerViews
+     * listï¿½bï¿½l (csak hogy gyorsabb legyen a bejï¿½rï¿½s). Ha volt olyan robot, melynï¿½l egy
+     * identify metï¿½dus sem tï¿½rt vissza true-val, akkor lï¿½trehoz egy view.RobotView objektumot a
+     * robottal paramï¿½terkï¿½nt, ï¿½s ezt hozzï¿½fï¿½zi az ï¿½j view.TravellerView tï¿½pusï¿½ listï¿½hoz. Ha
+     * vï¿½gigï¿½rt, akkor az ï¿½jonnan kï¿½szï¿½tett view.TravellerView listï¿½t ï¿½rtï¿½kï¿½l adja a
+     * travellerViews-nek. (Azaz ha lï¿½trejï¿½tt ï¿½j robot, azaz eddig nem volt rï¿½ nï¿½zet, akkor
+     * csinï¿½lunk neki, ï¿½s befï¿½zzï¿½k a listï¿½nkba, a meghal model.UFO, model.Settler ï¿½s Robotokat pedig
+     * kiszï¿½rjï¿½k azzal, hogy az ï¿½ view.View-jukat mï¿½r nem tesszï¿½k bele az ï¿½j listï¿½ba. Az ï¿½jonnan
+     * lï¿½trehozott robot majd az Update metï¿½dus vï¿½gï¿½n kap koordinï¿½tï¿½t.)
      */
     private void updateTravellerView() {
         List<Settler> settlers = game.getSettlers();
@@ -355,8 +353,10 @@ public class LevelView extends JPanel implements View {
             }
             for (Robot r : robots) {
                 if (didIdentify) break;
-                if(didIdentify = tv.identify(r))
+                if(tv.identify(r)) {
                     notFoundRobot.remove(r);
+                    didIdentify = true;
+                }
             }
             if (didIdentify)
                 remainingViews.add(tv);
@@ -367,13 +367,13 @@ public class LevelView extends JPanel implements View {
     }
 
     /**
-     * Hívja a game a getSettlers metódusát. Végigiterál a
-     * settlerViews listán, és meghívja mindegyikre az identify metódust, minden kapott
-     * Settlerrel. Ha a view.SettlerView objektum identify metódusa egyszer is true-val tér vissza,
-     * akkor befûzzük egy új view.SettlerView listába. A végül elkészült új view.SettlerView listát
-     * értékül adjuk a settlerViews attribútumnak. (A meghalt model.Settler-ek kikerülnek a game
-     * settlers listájából. Ezzel az update-el kiszûrjük a már meghalt Settlerek nézetét, hogy
-     * azokat már ne ábrázoljuk)
+     * Hï¿½vja a game a getSettlers metï¿½dusï¿½t. Vï¿½gigiterï¿½l a
+     * settlerViews listï¿½n, ï¿½s meghï¿½vja mindegyikre az identify metï¿½dust, minden kapott
+     * Settlerrel. Ha a view.SettlerView objektum identify metï¿½dusa egyszer is true-val tï¿½r vissza,
+     * akkor befï¿½zzï¿½k egy ï¿½j view.SettlerView listï¿½ba. A vï¿½gï¿½l elkï¿½szï¿½lt ï¿½j view.SettlerView listï¿½t
+     * ï¿½rtï¿½kï¿½l adjuk a settlerViews attribï¿½tumnak. (A meghalt model.Settler-ek kikerï¿½lnek a game
+     * settlers listï¿½jï¿½bï¿½l. Ezzel az update-el kiszï¿½rjï¿½k a mï¿½r meghalt Settlerek nï¿½zetï¿½t, hogy
+     * azokat mï¿½r ne ï¿½brï¿½zoljuk)
      */
     private void updateSettlerView() {
         List<Settler> settlers = game.getSettlers();
@@ -391,10 +391,10 @@ public class LevelView extends JPanel implements View {
     }
 
     /**
-     * A game-re meghívjuk a getSun metódust, majd a
-     * kapott model.Sun-ra a getAsteroids metódust. A kapott aszteroidákból, és nézeteikbõl új
-     * HashMap-et készítünk (az asteroidViews segítségével), majd ha végeztünk, a kapott
-     * HashMap-et értékül adjuk az asteroidViews attribútumnak.
+     * A game-re meghï¿½vjuk a getSun metï¿½dust, majd a
+     * kapott model.Sun-ra a getAsteroids metï¿½dust. A kapott aszteroidï¿½kbï¿½l, ï¿½s nï¿½zeteikbï¿½l ï¿½j
+     * HashMap-et kï¿½szï¿½tï¿½nk (az asteroidViews segï¿½tsï¿½gï¿½vel), majd ha vï¿½geztï¿½nk, a kapott
+     * HashMap-et ï¿½rtï¿½kï¿½l adjuk az asteroidViews attribï¿½tumnak.
      */
     private void updateAsteroidView() {
         Sun sun = game.getSun();
@@ -406,10 +406,10 @@ public class LevelView extends JPanel implements View {
     }
 
     /**
-     * Hozzáad egy új asteroidview-t a megadott aszteroidához, a megadott koordinátákkal.
+     * Hozzï¿½ad egy ï¿½j asteroidview-t a megadott aszteroidï¿½hoz, a megadott koordinï¿½tï¿½kkal.
      * @param a Az aszteroida
-     * @param x Az x koordináta
-     * @param y Az y koordináta
+     * @param x Az x koordinï¿½ta
+     * @param y Az y koordinï¿½ta
      */
     public void addAsteroidView(Asteroid a, int x, int y){
         asteroidViews.put(a, new AsteroidView(a, x, y));
@@ -417,10 +417,10 @@ public class LevelView extends JPanel implements View {
 
 
     /**
-     * Hozzáad egy új teleportview-t a megadott teleportkapuhoz, a megadott koordinátákkal.
+     * Hozzï¿½ad egy ï¿½j teleportview-t a megadott teleportkapuhoz, a megadott koordinï¿½tï¿½kkal.
      * @param t A teleportkapu
-     * @param x Az x koordináta
-     * @param y Az y koordináta
+     * @param x Az x koordinï¿½ta
+     * @param y Az y koordinï¿½ta
      */
     public void addTeleportView(Teleport t, Color c, int x, int y){
         TeleportView tv = new TeleportView(t,c, x, y);
@@ -431,8 +431,8 @@ public class LevelView extends JPanel implements View {
     }
 
     /**
-     * Készít egy settlerview-t a megadott telepeshez.
-     * @param s A telepes, amihez kell a nézet.
+     * Kï¿½szï¿½t egy settlerview-t a megadott telepeshez.
+     * @param s A telepes, amihez kell a nï¿½zet.
      */
     public void addSettlerView(Settler s){
         SettlerView sv = new SettlerView(s, this);
@@ -441,20 +441,20 @@ public class LevelView extends JPanel implements View {
     }
 
     /**
-     * Készít egy ufoview-t a megadott telepeshez.
-     * @param ufo Az ufo, amihez kell a nézet.
+     * Kï¿½szï¿½t egy ufoview-t a megadott telepeshez.
+     * @param ufo Az ufo, amihez kell a nï¿½zet.
      */
     public void addUFOView(UFO ufo){
         travellerViews.add(new UFOView(ufo, this));
     }
 
     /**
-     * Végigkérdezi a teleportview-kat és az asteroidview-kat, hogy
-     * melyikre történt a kattintás. Visszatér azzal a
-     * teleportkapuval/aszteroidával, amelyik nézetére kattintottak.
-     * Ha nem történt egyikre sem kattintás, akkor null-nal tér vissza.
-     * @param  x A kattintás x koordinátáka.
-     * @param  y A kattintás y koordinátája.
+     * Vï¿½gigkï¿½rdezi a teleportview-kat ï¿½s az asteroidview-kat, hogy
+     * melyikre tï¿½rtï¿½nt a kattintï¿½s. Visszatï¿½r azzal a
+     * teleportkapuval/aszteroidï¿½val, amelyik nï¿½zetï¿½re kattintottak.
+     * Ha nem tï¿½rtï¿½nt egyikre sem kattintï¿½s, akkor null-nal tï¿½r vissza.
+     * @param  x A kattintï¿½s x koordinï¿½tï¿½ka.
+     * @param  y A kattintï¿½s y koordinï¿½tï¿½ja.
      */
     public INeighbour click(int x, int y) {
         for(TeleportView tv : teleportViews.values())
@@ -468,8 +468,8 @@ public class LevelView extends JPanel implements View {
     }
 
     /**
-     * Kirajzolja a nézeteket.
-     * @param g  A Graphics objektum, amire a rajzolás történik.
+     * Kirajzolja a nï¿½zeteket.
+     * @param g  A Graphics objektum, amire a rajzolï¿½s tï¿½rtï¿½nik.
      */
     public void draw(Graphics g) {
         g.setColor(new Color(27, 20, 100)); //hatterszin beallitasa
@@ -486,9 +486,9 @@ public class LevelView extends JPanel implements View {
     }
 
     /**
-     * Õsbõl származó metódus, kirajzolja a komponenst
-     * a paraméterként megadott Graphics objektum.
-     * @param g A Graphics objektum, amire a rajzolás történik.
+     * ï¿½sbï¿½l szï¿½rmazï¿½ metï¿½dus, kirajzolja a komponenst
+     * a paramï¿½terkï¿½nt megadott Graphics objektum.
+     * @param g A Graphics objektum, amire a rajzolï¿½s tï¿½rtï¿½nik.
      */
     @Override
     protected void paintComponent(Graphics g){
@@ -497,16 +497,16 @@ public class LevelView extends JPanel implements View {
     }
 
     /**
-     * Getter az aszteroidák és nézeteinek összerendeléseihez.
-     * @return Az aszteroidák és a nézetek hashmap-je.
+     * Getter az aszteroidï¿½k ï¿½s nï¿½zeteinek ï¿½sszerendelï¿½seihez.
+     * @return Az aszteroidï¿½k ï¿½s a nï¿½zetek hashmap-je.
      */
     public HashMap<Asteroid, AsteroidView> getAsteroidViews() {
         return asteroidViews;
     }
 
     /**
-     * Getter az teleportkapuk és nézeteinek összerendeléseihez.
-     * @return A teleportkapuk és a nézetek hashmap-je.
+     * Getter az teleportkapuk ï¿½s nï¿½zeteinek ï¿½sszerendelï¿½seihez.
+     * @return A teleportkapuk ï¿½s a nï¿½zetek hashmap-je.
      */
     public HashMap<Teleport, TeleportView> getTeleportViews() {
         return teleportViews;

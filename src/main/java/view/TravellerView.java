@@ -14,7 +14,7 @@ public abstract class TravellerView implements View {
     /**
      * Default constructor
      */
-    public TravellerView(LevelView lv) {
+    protected TravellerView(LevelView lv) {
         levelView = lv;
     }
 

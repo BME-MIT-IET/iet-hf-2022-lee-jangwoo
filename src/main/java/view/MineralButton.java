@@ -13,7 +13,7 @@ public class MineralButton extends JButton {
     /**
      * A nyersanyag, amit ismer.
      */
-    private Mineral mineral;
+    private transient Mineral mineral;
 
     /**
      * Inicializálja a gomb méreteit.
