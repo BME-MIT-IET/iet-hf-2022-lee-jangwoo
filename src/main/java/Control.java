@@ -291,7 +291,7 @@ public class Control implements ActionListener, MouseListener{
         /**
          * Egy filechooser dialógusablak, amiből a felhasználó a fájlt választhatja ki.
          */
-        private JFileChooser fileChooser = new JFileChooser();
+        private JFileChooser fileChooser = new JFileChooser(System.getProperty("user.dir"));
 
         /**
          * Egy JFileChooser dialógusablak segítségével lekéri a felhasználótól az útvonalat.
