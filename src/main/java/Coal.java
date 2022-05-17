@@ -12,7 +12,9 @@ public class Coal extends Mineral {
     /**
      * Default constructor
      */
-    public Coal() {}
+    public Coal() {
+        // No parameters to set in the constructor
+    }
     
     /**
      * Az adott nyersanyag tipusát adja vissza Stringben. 

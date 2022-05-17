@@ -1,6 +1,4 @@
 
-import java.util.*;
-
 /**
  * Nyilvántartani a teleportkapu párját, valamint egy INeighbour interfészt megvalósító
  * objektumot. Ez a szomszédja, mellyel az utazók áthaladását biztosítja a másik teleportkapun
@@ -190,7 +188,6 @@ public class Teleport implements INeighbour {
     				return;
     			}
     			if(temp.moveTeleport(this)) {
-    				//neighbour = (Asteroid)temp;
     				old.removeNeighbour(this);
     				placed = true;
     			}

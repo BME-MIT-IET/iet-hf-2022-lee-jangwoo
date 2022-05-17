@@ -103,11 +103,11 @@ public class Settler extends Traveller {
             	++uraniumCount;
                 removeMinerals.add(minerals.get(i));
             }
-            else if(minerals.get(i).toString() == "iron" && ironCount < 1){
+            else if("iron".equals(minerals.get(i).toString()) && ironCount < 1){
                 ++ironCount;
                 removeMinerals.add(minerals.get(i));
             }
-            else if(minerals.get(i).toString() == "coal"  && coalCount < 1){
+            else if("coal".equals(minerals.get(i).toString())  && coalCount < 1){
                 ++coalCount;
                 removeMinerals.add(minerals.get(i));
             }

@@ -28,12 +28,12 @@ public class Asteroid implements INeighbour {
      * Az aszteroida szomszédainak listája, ezen keresztül tudja értesíteni őket felrobbanásakor.
      * Valamint létezése lehetővé teszi, hogy az utazó lekérje egy szomszédját.
      */
-    private List<INeighbour> neighbours = new ArrayList<INeighbour>();
+    private List<INeighbour> neighbours = new ArrayList<>();
 
     /**
      * Az aszteroidán lévő utazók listája. Ezen keresztül értesíti őket az azteroida, ha napszél éri, vagy felrobban.
      */
-    private List<Traveller> travellers = new ArrayList<Traveller>();
+    private List<Traveller> travellers = new ArrayList<>();
     
     /**
      * Mielőtt az aszteroida felrobban értesíti a napot, hogy fel fog robbanni.

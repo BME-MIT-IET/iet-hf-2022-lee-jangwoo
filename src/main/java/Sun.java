@@ -19,12 +19,17 @@ public class Sun {
     private List<Asteroid> asteroids;
 
     /**
+     * Random objektum.
+     */
+    private Random rand = new Random();
+
+    /**
      * Ha napvihar a random feltétel igaz, akkor egy random aszteroidára meghívja a solarWind metódust. 
      * Ez után végigmegyünk az összes aszteroidán, megkérdezzük, hogy az legyen-e napközelben, ha azt a 
      * választ kapja, hogy igen, akkor meghívja rajta a setCloseToSun metódust
      */
     public void makeAction() {
-    	Random rand = new Random();     //napvihar/setclosetosun
+    	//napvihar/setclosetosun
         if(rand.nextInt() % 5 == 0) {
         	asteroids.get(rand.nextInt(asteroids.size())).solarWind(rand.nextInt()%5+1);
         }
