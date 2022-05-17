@@ -16,6 +16,11 @@ public class LevelView extends JPanel implements View {
     }
 
     /**
+     * Random objektum.
+     */
+    private Random random = new Random();
+
+    /**
      * Megmondja, hogy az adott nyersanyaghoz milyen szín tartozik.
      * @param m A nyersanyag
      * @return A szín, ami a nyersanyaghoz tartozik
@@ -127,40 +132,6 @@ public class LevelView extends JPanel implements View {
         this.game = game;
     }
 
-    /*public void init(){
-        Random random = new Random();
-        List<Asteroid> asteroids = game.getSun().getAsteroids();
-        for(Asteroid a : asteroids){
-            asteroidViews.put(a, new AsteroidView(a, 20,20));   //próbaértékek, megváltoztatandó
-        }
-        List<Teleport> teleports = game.getGates();
-        if(teleports.size() != 0){
-            for(Teleport t : teleports){
-                Color color = new Color(random.nextFloat(), random.nextFloat(), random.nextFloat());
-                for (TeleportView tv : teleportViews.values())
-                    if (tv.isPair(t)){
-                        color = tv.getColor();
-                        break;
-                    }
-                teleportViews.put(t, new TeleportView(t, color, 20, 20));   //próbaértékek, megváltoztatandó
-            }
-        }
-        List<Settler> settlers= game.getSettlers();
-        List<Robot> robots= game.getRobots();
-        List<UFO> UFOs= game.getUFOs();
-        for(int i = 0; i < settlers.size(); i++){
-            SettlerView sv = new SettlerView(settlers.get(i), this);
-            settlerViews.add(sv);
-            travellerViews.add(sv);
-        }
-        for(int i = 0; i < robots.size(); i++){
-            travellerViews.add(new RobotView(robots.get(i), this));
-        }
-        for(int i = 0; i < robots.size(); i++){
-            travellerViews.add(new UFOView(UFOs.get(i), this));
-        }
-    }*/
-
     /**
      * Végigiterál az asteroidViews listán (a HashMap-bõl
      * elkéri a values-t), a jelenleg kiválasztott aszteroida nézetnek elkéri az aszteroidáját a
@@ -262,7 +233,6 @@ public class LevelView extends JPanel implements View {
      */
     private void addTeleportView(Teleport t) {
         boolean found = false;
-        Random random = new Random();
         Color color = new Color(random.nextFloat(), random.nextFloat(), random.nextFloat());
         for (TeleportView tv : teleportViews.values())
             if (tv != null && tv.isPair(t)){
@@ -270,10 +240,6 @@ public class LevelView extends JPanel implements View {
                 color = tv.getColor();
                 break;
             }
-        /*if(t.getNeighbour() == null){
-            teleportViews.put(t, new TeleportView(t, color, av.getX() +30, av.getY()+30));
-            return;
-        }*/
         if (teleportcolors.containsKey(t))
             color = teleportcolors.get(t);
         else if(t.getPair() != null && teleportcolors.containsKey(t.getPair()))
@@ -296,7 +262,6 @@ public class LevelView extends JPanel implements View {
             return teleportcolors.get(t);
         if (t.getPair() != null && teleportcolors.containsKey(t.getPair()))
             return teleportcolors.get(t.getPair());
-        Random random = new Random();
         Color color = new Color(random.nextFloat(), random.nextFloat(), random.nextFloat());
         teleportcolors.put(t, color);
         if (t.getPair() != null)

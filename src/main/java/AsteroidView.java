@@ -101,7 +101,6 @@ public class AsteroidView implements View {
             }
         }
         return false;
-        //return neighbours.contains(a);
     }
 
     /**
@@ -129,10 +128,7 @@ public class AsteroidView implements View {
      * @return IGAZ, ha a körön belül van a kattintás, HAMIS, ha nem.
      */
     public boolean clicked(int xClicked, int yClicked) {
-        if((pow((xClicked - x), 2)+pow((yClicked - y), 2))<=pow(radius, 2)){
-            return true;
-        }
-        return false;
+        return ((pow((xClicked - x), 2)+pow((yClicked - y), 2))<=pow(radius, 2));
     }
 
     /**
@@ -151,21 +147,9 @@ public class AsteroidView implements View {
             Mineral aCore = asteroid.getCore();
             g.setColor(LevelView.mineralColor(aCore));
             g.fillOval(x - radius + 2, y - radius + 2, radius * 2 - 4, radius * 2 - 4);
-            //if(aCloseToSun){
-                //g.setColor(new Color(255, 201, 14));      //s�rga
-
-               // g.setColor(new Color(255, 255, 255));       //feh�r
-
-                //g.setColor(new Color(0, 0, 0));     //fekete
-                //g.drawString(aShell, x-(fontMetrics.stringWidth(aShell)/2), y-(fontMetrics.getHeight()/2));
 
         }else{
-            //Mineral aCore = asteroid.getCore();
-            //g.setColor(new Color(0, 0, 0));       //fekete
-            //g.fillOval(x, y, radius*2, radius*2);
-            //g.setColor(mineralColor(aCore));
             g.setColor(Color.WHITE);
-            //g.drawString(aShell, x-(fontMetrics.stringWidth(aShell)/2), y-(fontMetrics.getHeight()/2));
             g.fillOval(x - radius + 2, y - radius + 2, radius * 2 - 4, radius * 2 - 4);
             g.setColor(Color.BLACK);
             g.setFont(Font.getFont("Arial"));
