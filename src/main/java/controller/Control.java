@@ -20,6 +20,7 @@ public class Control implements ActionListener, MouseListener {
      * Default constructor
      */
     public Control() {
+        // No parameters to set in the constructor
     }
 
     private static class Commands {
@@ -404,7 +405,7 @@ public class Control implements ActionListener, MouseListener {
                 pieces = fileInput.nextLine().split(" ");
                 Asteroid a = (Asteroid) control.IDs.getOrDefault(pieces[1], null);
                 if (a == null)
-                    throw new Exception();
+                    throw new BadGameFileFormatException("no such exception");
                 Settler s = new Settler(a, game);
                 String ID = pieces[0].substring(0, pieces[0].length() - 1);
                 updateMaxID(Entities.settler, ID);
@@ -419,7 +420,7 @@ public class Control implements ActionListener, MouseListener {
                 for (int j = 0; j < t; j++) {
                     Teleport teleport = (Teleport) control.IDs.getOrDefault(pieces[3 + k + 1 + j], null);
                     if (teleport == null)
-                        throw new Exception();
+                        throw new BadGameFileFormatException("no such teleport");
                     s.addTeleport(teleport);
                 }
                 control.gameFrame.getLevelView().addSettlerView(s);
@@ -428,7 +429,7 @@ public class Control implements ActionListener, MouseListener {
                 pieces = fileInput.nextLine().split(" ");
                 Asteroid a = (Asteroid) control.IDs.getOrDefault(pieces[1], null);
                 if (a == null)
-                    throw new Exception();
+                    throw new BadGameFileFormatException("no such asteroid");
                 model.Robot r = new model.Robot(a, control.game);
                 String ID = pieces[0].substring(0, pieces[0].length() - 1);
                 updateMaxID(Entities.robot, ID);
@@ -440,7 +441,7 @@ public class Control implements ActionListener, MouseListener {
                 pieces = fileInput.nextLine().split(" ");
                 Asteroid a = (Asteroid) control.IDs.getOrDefault(pieces[1], null);
                 if (a == null)
-                    throw new Exception();
+                    throw new BadGameFileFormatException("no such asteroid");
                 UFO ufo = new UFO(a, control.game);
                 String ID = pieces[0].substring(0, pieces[0].length() - 1);
                 updateMaxID("ufo", ID);
@@ -514,7 +515,7 @@ public class Control implements ActionListener, MouseListener {
                 if (!"0".equals(pieces[1])) {
                     Asteroid a = (Asteroid) control.IDs.getOrDefault(pieces[1], null);
                     if (a == null)
-                        throw new Exception();
+                        throw new BadGameFileFormatException("no such asteroid");
                     t.setNeighbour(a);
                 } else {
                     t.setNeighbour(null);
@@ -522,7 +523,7 @@ public class Control implements ActionListener, MouseListener {
                 if (!"0".equals(pieces[2])) {
                     Teleport t2 = (Teleport) control.IDs.getOrDefault(pieces[2], null);
                     if (t2 == null)
-                        throw new Exception();
+                        throw new BadGameFileFormatException("no such teleport");
                     t.setPair(t2);
                 } else {
                     t.setPair(null);
