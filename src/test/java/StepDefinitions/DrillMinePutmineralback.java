@@ -20,7 +20,7 @@ public class DrillMinePutmineralback {
     public void activeUserDoesSomething(String string) {
         String[] pieces = string.split(" ");
         Control.Command cmd = Control.getCommands().getOrDefault(pieces[0], null);
-        cmd.execute(pieces);
+        cmd.execute(pieces, load.control);
     }
 
     @Then("drill is successful")
