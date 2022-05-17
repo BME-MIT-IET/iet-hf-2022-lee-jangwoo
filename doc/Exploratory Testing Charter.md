@@ -30,10 +30,30 @@
 ### 7. Save Glitch
 - Save and load game in different scenarios
 ## Logs 
+Logs can be viewed [here](exploratory_logs/log.md)
 ## Reporting Summary
 | Action 							| Time		|
 | --------------------------------- | --------- |
-| Test Design and Execution 		| |
-| Issue Investigation & Reporting 	| |
-| Bug Review & Reporting			| |
-| Session Set-up					| |
+| Test Design and Execution 		| 60%       |
+| Issue Investigation & Reporting 	| 15%       |
+| Bug Review & Reporting			| 15%       |
+| Session Set-up					| 10%       |
+
+### Test Design and Execution - 60%
+- 35% actual testing
+- 25% test Set-up, making load files, documentation
+
+### Issue Investigation & Reporting - 15%
+- 5% making pictures
+- 10% documentation
+
+### Bug Review & Reporting - 15%
+- 5% making pictures
+- 10% documentation
+
+### Session Set-up - 10%
+- documentation
+- small changes in code to help testing
+
+## Conclusion
+Found 2 bugs and 2 issues that should be solved.
