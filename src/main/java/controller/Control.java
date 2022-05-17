@@ -183,6 +183,8 @@ public class Control implements ActionListener, MouseListener{
      * view.GameFrame, ami tárolja a paneleket.
      */
     private static GameFrame gameFrame;
+
+    public static GameFrame getGameFrame() { return gameFrame; }
     /**
      * Az input, ahonnan a parancsokat olvassa. Alapesetben a standard bemenet.
      */
@@ -1951,5 +1953,29 @@ public class Control implements ActionListener, MouseListener{
         gameFrame.pack();
         gameFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         gameFrame.setVisible(true);
+    }
+
+    public void parseCommandTest(String[] pieces) {
+        Control.Command cmd = Control.getCommands().getOrDefault(pieces[0], null);
+        cmd.execute(pieces);
+        checkActiveSettlerDied();
+
+        if (pieces[0].equals("save") || pieces[0].equals("giveup") ||
+                pieces[0].equals("checkwin") || pieces[0].equals("checklose")|| pieces[0].equals("newgame")) {
+
+        } else {
+            if (refreshActiveSettler()) {
+                commands.get("nextturn").execute(new String[]{"nextturn"});
+                if (checkActiveSettlerDied())
+                    refreshActiveSettler();
+                JOptionPane.showMessageDialog(null, "Turn ended, next turn starts.");
+            }
+        }
+        LevelView lv = gameFrame.getLevelView();
+        lv.setActiveSettler(activeSettler);
+        lv.Update();
+        lv.repaint();
+        lv.getInventory().Update();
+        lv.getInventory().repaint();
     }
 }

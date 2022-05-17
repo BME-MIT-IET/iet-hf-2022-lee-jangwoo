@@ -1,5 +1,5 @@
 A: 3 T: 0
-a1: 1 a2 0 1 iron
+a1: 1 a2 1 1 iron
 a2: 2 a1 a3 0 1 coal
 a3: 1 a2 0 1 ice
 S: 2 R: 0 U: 0
