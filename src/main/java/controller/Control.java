@@ -68,16 +68,12 @@ public class Control implements ActionListener, MouseListener {
             System.out.print(" " + actionCommand[1]);
         System.out.println();
         commands.get(actionCommand[0]).execute(actionCommand, this);      //move még kérdéses
-        if (actionCommand[0].equals("save") || actionCommand[0].equals("giveup") ||
-                actionCommand[0].equals("checkwin") || actionCommand[0].equals("checklose") || actionCommand[0].equals(Commands.newGame)) {
-
-        } else {
-            if (refreshActiveSettler()) {
+        if (!(actionCommand[0].equals("save") || actionCommand[0].equals("giveup") ||
+                actionCommand[0].equals("checkwin") || actionCommand[0].equals("checklose") || actionCommand[0].equals(Commands.newGame)) && refreshActiveSettler()) {
                 commands.get(Commands.nextTurn).execute(new String[]{Commands.nextTurn}, this);
                 if (checkActiveSettlerDied())
                     refreshActiveSettler();
                 JOptionPane.showMessageDialog(null, "Turn ended, next turn starts.");
-            }
         }
         LevelView lv = gameFrame.getLevelView();
         lv.setActiveSettler(activeSettler);
@@ -85,7 +81,6 @@ public class Control implements ActionListener, MouseListener {
         lv.repaint();
         lv.getInventory().Update();
         lv.getInventory().repaint();
-        //}
     }
 
     /**
@@ -127,6 +122,7 @@ public class Control implements ActionListener, MouseListener {
      */
     @Override
     public void mousePressed(MouseEvent e) {
+        // Intentionally left blank
     }
 
     /**
@@ -136,6 +132,7 @@ public class Control implements ActionListener, MouseListener {
      */
     @Override
     public void mouseReleased(MouseEvent e) {
+        // Intentionally left blank
     }
 
     /**
@@ -145,6 +142,7 @@ public class Control implements ActionListener, MouseListener {
      */
     @Override
     public void mouseEntered(MouseEvent e) {
+        // Intentionally left blank
     }
 
     /**
@@ -154,6 +152,7 @@ public class Control implements ActionListener, MouseListener {
      */
     @Override
     public void mouseExited(MouseEvent e) {
+        // Intentionally left blank
     }
 
     /**
@@ -1481,7 +1480,6 @@ public class Control implements ActionListener, MouseListener {
             Asteroid a = ufo.getAsteroid();
             Mineral core = a.getCore();
             int shell = a.getShell();
-            boolean mine = false;
             boolean move = false;
             if (args.length == 2) {
                 ufo.makeAction();
@@ -1492,7 +1490,6 @@ public class Control implements ActionListener, MouseListener {
             }
             if (args.length == 3) {
                 ufo.mine();
-                mine = true;
             }
             if (args.length == 4) {
                 int i = Integer.parseInt(args[3]);
