@@ -6,7 +6,7 @@ import java.awt.*;
 import model.Mineral;
 
 /**
- * Egy nyersanyaghoz tartozó gomb. A nyersanyagnak megfelelõ színû.
+ * Egy nyersanyaghoz tartozï¿½ gomb. A nyersanyagnak megfelelï¿½ szï¿½nï¿½.
  */
 public class MineralButton extends JButton {
 
@@ -16,7 +16,7 @@ public class MineralButton extends JButton {
     private transient Mineral mineral;
 
     /**
-     * Inicializálja a gomb méreteit.
+     * Inicializï¿½lja a gomb mï¿½reteit.
      */
     public MineralButton() {
         super();
@@ -44,8 +44,8 @@ public class MineralButton extends JButton {
     }
 
     /**
-     * Beállítja az ismert nyersanyagot és frissíti a gomb színét.
-     * @param m Az új nyersanyag.
+     * Beï¿½llï¿½tja az ismert nyersanyagot ï¿½s frissï¿½ti a gomb szï¿½nï¿½t.
+     * @param m Az ï¿½j nyersanyag.
      */
     public void setMineral(Mineral m) {
         this.mineral = m;

@@ -1,6 +1,8 @@
 package view;
 
+import model.*;
 import java.awt.*;
+import java.util.*;
 
 /**
  * Felelõssége, hogy közös interfészt biztosít a grafikus osztályoknak, és néhány közös

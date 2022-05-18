@@ -104,8 +104,11 @@ public class Asteroid implements INeighbour {
      * Ezután a sun-nak meghívja a removeAsteroid metódusát magával paraméterként.
      */
     public void radioactiveBlast() {
-        for (Traveller traveller : travellers) traveller.hitByBlast();
-        for (INeighbour neighbour : neighbours) neighbour.removeNeighbour(this);
+        int travellerCount  = travellers.size();
+    	for (int i = 0; i < travellerCount; i++)
+    		travellers.get(0).hitByBlast();
+    	for (int i = 0; i < neighbours.size(); i++)
+    		neighbours.get(i).removeNeighbour(this);
     	sun.removeAsteroid(this);
     }
 

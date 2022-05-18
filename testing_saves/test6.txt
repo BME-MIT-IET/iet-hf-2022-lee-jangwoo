@@ -1,0 +1,8 @@
+A: 2 T: 0
+a1: 1 a2 2 0 empty
+a2: 1 a1 0 1 coal
+S: 2 R: 0 U: 0
+s1: a1 2 uranium(0) iron 0
+s2: a1 2 uranium(0) iron 0
+a1: 100 200
+a2: 200 200

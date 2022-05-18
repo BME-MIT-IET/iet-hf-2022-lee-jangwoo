@@ -47,7 +47,7 @@ de_facto_output_files = []
 for i in range(len(input_files)):
     with open ('de_facto_output_files\\' + 'output_' + cut_the_end(input_files[i]), 'w') as f:
         de_facto_output_files.append('output_' + cut_the_end(input_files[i]))
-    sor = "java -cp bin Skeleton " + input_files_path + '\\' + input_files[i] + ' ' + de_facto_output_files_path + '\\' + 'output_' + cut_the_end(input_files[i])
+    sor = "java -cp bin skeleton.Skeleton " + input_files_path + '\\' + input_files[i] + ' ' + de_facto_output_files_path + '\\' + 'output_' + cut_the_end(input_files[i])
     os.system(sor)
 
 output_files_path = os.getcwd()+ '\\' + 'output_files'

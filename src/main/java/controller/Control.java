@@ -1,9 +1,5 @@
 package controller;
 
-import model.*;
-import model.Robot;
-import view.*;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -14,7 +10,12 @@ import java.io.*;
 import java.util.*;
 import java.util.List;
 
-public class Control implements ActionListener, MouseListener {
+import model.*;
+import model.Robot;
+import view.*;
+import skeleton.*;
+
+public class Control implements ActionListener, MouseListener{
 
     /**
      * Default constructor
@@ -67,7 +68,7 @@ public class Control implements ActionListener, MouseListener {
         if (actionCommand.length > 1)
             System.out.print(" " + actionCommand[1]);
         System.out.println();
-        commands.get(actionCommand[0]).execute(actionCommand, this);      //move még kérdéses
+        commands.get(actionCommand[0]).execute(actionCommand, this); 
         if (!(actionCommand[0].equals("save") || actionCommand[0].equals("giveup") ||
                 actionCommand[0].equals("checkwin") || actionCommand[0].equals("checklose") || actionCommand[0].equals(Commands.newGame)) && refreshActiveSettler()) {
                 commands.get(Commands.nextTurn).execute(new String[]{Commands.nextTurn}, this);
@@ -220,7 +221,9 @@ public class Control implements ActionListener, MouseListener {
     /**
      * view.GameFrame, ami tárolja a paneleket.
      */
-    private GameFrame gameFrame;
+    private static GameFrame gameFrame;
+
+    public static GameFrame getGameFrame() { return gameFrame; }
     /**
      * Az input, ahonnan a parancsokat olvassa. Alapesetben a standard bemenet.
      */
@@ -230,6 +233,8 @@ public class Control implements ActionListener, MouseListener {
      * Az output, ahov? a parancsok kimenet?t ?rja. Alapesetben a standard kimenet.
      */
     private PrintStream output = System.out;
+
+    public void setOutput(PrintStream out) { output = out; }
 
     /**
      * Jelzi, hogy a v?letlenszer? t?rt?n?sek ki vannak-e kapcsolva.
@@ -333,7 +338,7 @@ public class Control implements ActionListener, MouseListener {
         /**
          * Egy filechooser dialógusablak, amiből a felhasználó a fájlt választhatja ki.
          */
-        private JFileChooser fileChooser = new JFileChooser();
+        private JFileChooser fileChooser = new JFileChooser(System.getProperty("user.dir"));
 
         /**
          * Egy JFileChooser dialógusablak segítségével lekéri a felhasználótól az útvonalat.
@@ -384,7 +389,7 @@ public class Control implements ActionListener, MouseListener {
                 return;
             }
             control.gameFrame.getLevelView().Update();
-            //control.output.println("loaded " + args[1]);
+            output.println("loaded successfully");
         }
 
         /**
@@ -1508,7 +1513,7 @@ public class Control implements ActionListener, MouseListener {
                 control.output.println("model.UFO " + args[1] + Commands.moved + control.reverseIDs.get(ufo.getAsteroid()));
                 return;
             } else if (move) {
-                control.output.println("model.UFO " + args[1] + Commands.couldNotMove);
+                control.output.println("UFO " + args[1] + Commands.couldNotMove);
                 return;
             }
 
@@ -1857,7 +1862,8 @@ public class Control implements ActionListener, MouseListener {
          */
         public void execute(String[] args, Control control) {
             control.game.setGameEnd(true);
-            control.output.println("control.game given up");
+            control.output.println("game given up");
+            JOptionPane.showMessageDialog(null, "Game given up");
         }
     }
 
@@ -1922,6 +1928,8 @@ public class Control implements ActionListener, MouseListener {
      * A parancsok nev?nek ?s az ahhoz tartoz? parancsobjektumoknak az ?sszerendel?se.
      */
     private static HashMap<String, Command> commands;
+
+    public static HashMap<String, Command> getCommands() { return commands; }
 
     /**
      * Inicializ?lja a parancsokat. Hozz?adja az ?sszes el?rhet? parancsot a parancs n?v- parancsobjektum ?sszerendel?shez.
@@ -2021,6 +2029,25 @@ public class Control implements ActionListener, MouseListener {
         }
         cmd.execute(pieces, this);
         checkActiveSettlerDied();
+
+        if (pieces[0].equals("save") || pieces[0].equals("giveup") ||
+                pieces[0].equals("checkwin") || pieces[0].equals("checklose")|| pieces[0].equals("newgame")) {
+
+        } else {
+            if (refreshActiveSettler()) {
+                commands.get("nextturn").execute(new String[]{"nextturn"}, this);
+                if (checkActiveSettlerDied())
+                    refreshActiveSettler();
+                // JOptionPane.showMessageDialog(null, "Turn ended, next turn starts.");
+            }
+        }
+        LevelView lv = gameFrame.getLevelView();
+        lv.setActiveSettler(activeSettler);
+        lv.Update();
+        lv.repaint();
+        lv.getInventory().Update();
+        lv.getInventory().repaint();
+
         return true;
     }
 
@@ -2072,5 +2099,39 @@ public class Control implements ActionListener, MouseListener {
         while (hasNext) {
             hasNext = control.parseCommand();
         }
+    }
+    public void testMain() {
+        initializeCommands();
+        initializeMaxIDs();
+        gameFrame = new GameFrame(this, game);
+
+        gameFrame.getLevelView().setActiveSettler(activeSettler);
+        gameFrame.pack();
+        gameFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        gameFrame.setVisible(true);
+    }
+
+    public void parseCommandTest(String[] pieces) {
+        Control.Command cmd = Control.getCommands().getOrDefault(pieces[0], null);
+        cmd.execute(pieces, this);
+        checkActiveSettlerDied();
+
+        if (pieces[0].equals("save") || pieces[0].equals("giveup") ||
+                pieces[0].equals("checkwin") || pieces[0].equals("checklose")|| pieces[0].equals("newgame")) {
+
+        } else {
+            if (refreshActiveSettler()) {
+                commands.get("nextturn").execute(new String[]{"nextturn"}, this);
+                if (checkActiveSettlerDied())
+                    refreshActiveSettler();
+                JOptionPane.showMessageDialog(null, "Turn ended, next turn starts.");
+            }
+        }
+        LevelView lv = gameFrame.getLevelView();
+        lv.setActiveSettler(activeSettler);
+        lv.Update();
+        lv.repaint();
+        lv.getInventory().Update();
+        lv.getInventory().repaint();
     }
 }

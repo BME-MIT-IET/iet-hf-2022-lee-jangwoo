@@ -1,7 +1,17 @@
 # Ignore Gradle project-specific cache directory
 .gradle
-
-# Ignore Gradle build output directory
-build
-
 .idea
+.metadata
+target
+org.jetbrains.plugins.cucumber.java.run.CucumberJvmSMFormatter
+build
+.idea
+*.py
+de_facto_output_files/output_12.txt
+de_facto_output_files/output_13.txt
+de_facto_output_files/output_36.txt
+output_files/output_12.txt
+output_files/output_13.txt
+output_files/output_36.txt
+readme_compare_tests.txt
+readme_compare_tests.txt

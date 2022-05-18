@@ -1,7 +1,6 @@
 package view;
 
 import java.awt.*;
-
 import model.Settler;
 import model.Asteroid;
 import model.Traveller;
@@ -64,7 +63,7 @@ public class SettlerView extends TravellerView {
         Asteroid a = settler.getAsteroid();
         AsteroidView av = levelView.getAsteroidView(a);
         x = av.getTravellerX(this.settler);
-        y = av.getTravellerY(this.settler);
+        y = av.getTravellerY();
     }
 
     /**

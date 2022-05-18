@@ -71,10 +71,9 @@ public class AsteroidView implements View {
      * getTravellers metódussal. Visszaadja a paraméterként megadott traveller y
      * koordinátáját a képernyőn, kiszámolva a travellers listában elfoglalt helyéből, és az
      * aszteroida középpontjából.
-     * @param t Az utazó, akinek az x koordinátája kell
      * @return Az y koordináta
      */
-    public int getTravellerY(Traveller t) {
+    public int getTravellerY() {
         return y - radius - 20;
     }
 

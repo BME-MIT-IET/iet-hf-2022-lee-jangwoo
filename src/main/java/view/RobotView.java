@@ -1,7 +1,6 @@
 package view;
 
 import java.awt.*;
-
 import model.Robot;
 import model.Traveller;
 import model.Asteroid;
@@ -18,7 +17,7 @@ public class RobotView extends TravellerView {
      * Meghívja az ős (view.TravellerView) konstruktorát. (az x y koordináta az Update hívással lesz inicializálva)
      * @param r a mutatott model.Robot objektum.
      */
-    public RobotView(Robot r, LevelView lv) {
+    public RobotView(model.Robot r, LevelView lv) {
         super(lv);
         robot = r;
     }
@@ -49,7 +48,7 @@ public class RobotView extends TravellerView {
         Asteroid a = robot.getAsteroid();
         AsteroidView av = levelView.getAsteroidView(a);
         x = av.getTravellerX(this.robot);
-        y = av.getTravellerY(this.robot);
+        y = av.getTravellerY();
     }
 
     /**

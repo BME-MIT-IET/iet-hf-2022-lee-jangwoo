@@ -1,7 +1,7 @@
 package view;
 
+import model.*;
 import java.awt.*;
-
 import model.Teleport;
 import model.Asteroid;
 
