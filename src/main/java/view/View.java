@@ -5,14 +5,14 @@ import java.awt.*;
 import java.util.*;
 
 /**
- * Felelõssége, hogy közös interfészt biztosít a grafikus osztályoknak, és néhány közös
- * függvényt definiál (pl. draw)
+ * FelelÅ‘ssÃ©ge, hogy kÃ¶zÃ¶s interfÃ©szt biztosÃ­t a grafikus osztÃ¡lyoknak, Ã©s nÃ©heny kÃ¶zÃ¶s
+ * fÃ¼ggvÃ©nyt definiÃ¡l (pl. draw)
  */
 public interface View {
 
     /**
-     * Kirajzolásért felelõs, a leszármazott osztályokban kifejtve
-     * @param g A graphics objektum, amire a rajzolás történik.
+     * KirajzolÃ¡sÃ©rt felelÅ‘s, a leszÃ©rmazott osztÃ¡lyokban kifejtve
+     * @param g A graphics objektum, amire a rajzolÃ©s tÃ¶rtÃ©nik.
      */
     void draw(Graphics g);
 
