@@ -51,15 +51,15 @@ public class DrillMinePutmineralback {
     @Then("mine is successful")
     public void mineIsSuccessful() {
         String[] lines = load.getOutput().toString().replaceAll("(\\r)", "").split("(\\n)");
-        assertEquals("mining successful", lines[0]);
-        assertEquals("asteroid is now empty", lines[2]);
+        assertEquals("mining successful", lines[3]);
+        assertEquals("asteroid is now empty", lines[5]);
     }
 
     @Then("mine is unsuccessful")
     public void mineIsUnsuccessful() {
         String[] lines = load.getOutput().toString().replaceAll("(\\r)", "").split("(\\n)");
-        assertEquals("mining unsuccessful", lines[0]);
-        assertEquals("asteroid is already empty", lines[1]);
+        assertEquals("loaded successfully", lines[0]);
+        assertEquals("mining unsuccessful", lines[1]);
     }
 
     @Then("putmineralback is successful")
