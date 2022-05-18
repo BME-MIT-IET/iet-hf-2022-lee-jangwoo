@@ -128,38 +128,36 @@ public class Settler extends Traveller {
      * @return a teleportkapu készítés sikeressége alapján true vagy false
      */
     public boolean craftTeleport() {
-        if (teleportgates.size() < 2) {
-            //Kellõ nyersanyagok meglétének ellenõrzése
-            int iceCount = 0;
-            int ironCount = 0;
-            int uraniumCount = 0;
-            int i = 0;
-            ArrayList<Mineral> removeMinerals = new ArrayList<>();
-            while ((iceCount < 1 || ironCount < 2 || uraniumCount < 1) && i < minerals.size()) {
-                if (minerals.get(i).toString().contains("uranium") && uraniumCount < 1) {
-                    ++uraniumCount;
-                    removeMinerals.add(minerals.get(i));
-                } else if ("iron".equals(minerals.get(i).toString()) && ironCount < 2) {
-                    ++ironCount;
-                    removeMinerals.add(minerals.get(i));
-                } else if ("ice".equals(minerals.get(i).toString()) && iceCount < 1) {
-                    ++iceCount;
-                    removeMinerals.add(minerals.get(i));
-                }
-                ++i;
+        if (teleportgates.size() >= 2) return false;
+        //Kellõ nyersanyagok meglétének ellenõrzése
+        int iceCount = 0;
+        int ironCount = 0;
+        int uraniumCount = 0;
+        ArrayList<Mineral> removeMinerals = new ArrayList<>();
+        for (Mineral m : minerals){
+            if (iceCount >= 1 && ironCount >= 2 && uraniumCount >= 1) break;
+            if (m.toString().contains("uranium") && uraniumCount < 1) {
+                ++uraniumCount;
+                removeMinerals.add(m);
+            } else if ("iron".equals(m.toString()) && ironCount < 2) {
+                ++ironCount;
+                removeMinerals.add(m);
+            } else if ("ice".equals(m.toString()) && iceCount < 1) {
+                ++iceCount;
+                removeMinerals.add(m);
             }
-            if (iceCount >= 1 && ironCount >= 2 && uraniumCount >= 1) {
-                minerals.removeAll(removeMinerals);
-                Teleport t1 = new Teleport();
-                Teleport t2 = new Teleport();
-                t1.setPair(t2);
-                t2.setPair(t1);
-                teleportgates.add(t1);
-                teleportgates.add(t2);
-                game.addTeleport(t1);
-                game.addTeleport(t2);
-                return true;
-            }
+        }
+        if (iceCount >= 1 && ironCount >= 2 && uraniumCount >= 1) {
+            minerals.removeAll(removeMinerals);
+            Teleport t1 = new Teleport();
+            Teleport t2 = new Teleport();
+            t1.setPair(t2);
+            t2.setPair(t1);
+            teleportgates.add(t1);
+            teleportgates.add(t2);
+            game.addTeleport(t1);
+            game.addTeleport(t2);
+            return true;
         }
         return false;
     }

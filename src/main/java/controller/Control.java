@@ -155,6 +155,32 @@ public class Control implements ActionListener, MouseListener {
         // Intentionally left blank
     }
 
+    private boolean refreshDiedActiveSettler(){
+        int idxOfActive = ControlSettlers.indexOf(activeSettler);
+        while (idxOfActive > 0) {
+            Settler settlerBeforeActive = ControlSettlers.get(idxOfActive - 1);
+            if (game.getSettlers().contains(settlerBeforeActive)) {
+                ControlSettlers = new ArrayList<>(game.getSettlers());
+                for (int i = 0; i < ControlSettlers.size(); i++) {
+                    if (ControlSettlers.get(i).equals(settlerBeforeActive)) {
+                        if (i == ControlSettlers.size() - 1) {
+                            activeSettler = ControlSettlers.get(0);
+                            return true;
+                        } else {
+                            activeSettler = ControlSettlers.get(i + 1);
+                            return false;
+                        }
+                    }
+                }
+            }
+            idxOfActive--;
+        }
+        if (!game.getSettlers().isEmpty())
+            activeSettler = game.getSettlers().get(0);
+        ControlSettlers = new ArrayList<>(game.getSettlers());
+        return false;
+    }
+
     /**
      * Frissíti az aktív telepest.
      *
@@ -181,33 +207,7 @@ public class Control implements ActionListener, MouseListener {
                 }
             }
         } else {
-            int idxOfActive = 0;
-            for (int i = 0; i < ControlSettlers.size(); i++) {
-                if (ControlSettlers.get(i).equals(activeSettler))
-                    idxOfActive = i;
-            }
-            while (idxOfActive != 0) {
-                Settler settlerBeforeActive = ControlSettlers.get(idxOfActive - 1);
-                if (game.getSettlers().contains(settlerBeforeActive)) {
-                    ControlSettlers = new ArrayList<>(game.getSettlers());
-                    for (int i = 0; i < ControlSettlers.size(); i++) {
-                        if (ControlSettlers.get(i).equals(settlerBeforeActive)) {
-                            if (i == ControlSettlers.size() - 1) {
-                                activeSettler = ControlSettlers.get(0);
-                                return true;
-                            } else {
-                                activeSettler = ControlSettlers.get(i + 1);
-                                return false;
-                            }
-                        }
-                    }
-                }
-                idxOfActive--;
-            }
-            if (!game.getSettlers().isEmpty())
-                activeSettler = game.getSettlers().get(0);
-            ControlSettlers = new ArrayList<>(game.getSettlers());
-            return false;
+            return refreshDiedActiveSettler();
         }
         return false;
     }
@@ -363,7 +363,7 @@ public class Control implements ActionListener, MouseListener {
             } else {
                 file = new File(args[1]);
             }
-            if (!file.exists()) {
+            if (file == null || !file.exists()) {
                 control.output.println("load unsuccessful");
                 return;
             }
@@ -392,10 +392,10 @@ public class Control implements ActionListener, MouseListener {
          * Beolvassa az el?tt?k l?v? sort is, ami jelzi, hogy melyikb?l h?ny darab van.
          * Ha hiba van, akkor exceptiont dob.
          *
-         * @throws Exception Ha b?rmilyen hiba t?rt?nik olvas?s k?zben, akkor exceptiont dob.
+         * @throws BadGameFileFormatException Ha b?rmilyen hiba t?rt?nik olvas?s k?zben, akkor exceptiont dob.
          *                   Hiba lehet, ha nem megfelel? a form?tum vagy a f?jl olvas?sa k?zben hiba t?rt?nik.
          */
-        private void readTravellers(Control control) throws Exception {
+        private void readTravellers(Control control) throws BadGameFileFormatException {
             String[] pieces = fileInput.nextLine().split(" ");
             int nSettlers = Integer.parseInt(pieces[1]);
             int nRobots = Integer.parseInt(pieces[3]);
@@ -468,10 +468,10 @@ public class Control implements ActionListener, MouseListener {
          * Beolvassa a le?r?sok el?tti sort is, ami azt t?rolja, hogy melyikb?l h?ny darab van.
          *
          * @param sun A j?t?kban l?v? nap.
-         * @throws Exception Ha b?rmilyen hiba t?rt?nik olvas?s k?zben, akkor exceptiont dob.
+         * @throws BadGameFileFormatException Ha b?rmilyen hiba t?rt?nik olvas?s k?zben, akkor exceptiont dob.
          *                   Hiba lehet, ha nem megfelel? a form?tum vagy a f?jl olvas?sa k?zben hiba t?rt?nik.
          */
-        private void readAsteroidsTeleports(Sun sun, Control control) throws Exception {
+        private void readAsteroidsTeleports(Sun sun, Control control) throws BadGameFileFormatException {
             String[] pieces = fileInput.nextLine().split(" ");
             nAsteroids = Integer.parseInt(pieces[1]);
             nTeleports = Integer.parseInt(pieces[3]);
@@ -1354,6 +1354,84 @@ public class Control implements ActionListener, MouseListener {
      */
     private static class robotactionCommand implements Command {
 
+        private void randomRobotAction(String[] args, Control control){
+            if (args.length < 2) {
+                control.output.println("robot must be specified");
+                return;
+            }
+            Robot r = (Robot) control.IDs.get(args[1]);
+            Asteroid a = r.getAsteroid();
+            int shell = a.getShell();
+            if (args.length == 2) {
+                if (r.makeAction()) {
+                    if (!a.equals(r.getAsteroid())) {
+                        control.output.println(Entities.robot + " " + args[1] + Commands.moved + control.reverseIDs.get(r.getAsteroid()));
+                        return;
+                    }
+                    if (shell != r.getAsteroid().getShell()) {
+                        control.output.println(Entities.robot + args[1] + Commands.drilled + control.reverseIDs.get(a) + " shell is now " + r.getAsteroid().getShell());
+                        return;
+                    }
+                } else {
+                    control.output.println(Entities.robot + " " + args[1] + " couldn't make action");
+                }
+                return;
+            }
+            if (args[2].equals(Commands.drill)) {
+                if (r.drill())
+                    control.output.println(Entities.robot + " " + args[1] + Commands.drilled +
+                            control.reverseIDs.get(r.getAsteroid()) + "shell is now" + r.getAsteroid().getShell());
+                else
+                    control.output.println(Entities.robot + " " + args[1] + " couldn't drill");
+            }
+            if (args[2].equals("move")) {
+                if (args.length < 4) {
+                    if (a.getNeighbourCount() == 0) {
+                        control.output.println(Entities.robot + " " + args[1] + Commands.couldNotMove);
+                        return;
+                    }
+                    int randNeighbour = rand.nextInt(a.getNeighbourCount()) - 1;
+                    if (r.move(randNeighbour)) {
+                        control.output.println(Entities.robot + " " + args[1] + Commands.moved + control.reverseIDs.get(r.getAsteroid()));
+                    } else {
+                        control.output.println("robot couldn't move");
+                    }
+                    return;
+                }
+                int i = Integer.parseInt(args[3]) - 1;
+                if (r.move(i))
+                    control.output.println(Entities.robot + " " + args[1] + Commands.moved + control.reverseIDs.get(r.getAsteroid()));
+                else
+                    control.output.println(Entities.robot + " " + args[1] + Commands.couldNotMove);
+            }
+        }
+
+        private void notRandomRobotAction(String[] args, Control control){
+            if (args.length < 3) {
+                control.output.println(Commands.mustBeSpecified);
+                return;
+            }
+            Robot r = (Robot) control.IDs.get(args[1]);
+            if (args[2].equals("drill")) {
+                if (r.drill())
+                    control.output.println(Entities.robot + " " + args[1] + Commands.drilled +
+                            control.reverseIDs.get(r.getAsteroid()) + "shell is now" + r.getAsteroid().getShell());
+                else
+                    control.output.println(Entities.robot + " " + args[1] + " couldn't drill");
+            }
+            if (args[2].equals("move")) {
+                if (args.length < 4) {
+                    control.output.println(Commands.mustBeSpecified);
+                    return;
+                }
+                int i = Integer.parseInt(args[3]) - 1;
+                if (r.move(i))
+                    control.output.println(Entities.robot + " " + args[1] + Commands.moved + control.reverseIDs.get(r.getAsteroid()));
+                else
+                    control.output.println(Entities.robot + " " + args[1] + Commands.couldNotMove);
+            }
+        }
+
         /**
          * Az els? megadott param?terben l?v? robottal dolgozik.
          * Ha ezen fel?l nincs megadva param?ter, akkor egy makeAction m?veletet hajt v?gre a robottal.
@@ -1368,79 +1446,9 @@ public class Control implements ActionListener, MouseListener {
          */
         public void execute(String[] args, Control control) {
             if (control.random) {
-                if (args.length < 2) {
-                    control.output.println("robot must be specified");
-                    return;
-                }
-                model.Robot r = (model.Robot) control.IDs.get(args[1]);
-                Asteroid a = r.getAsteroid();
-                int shell = a.getShell();
-                if (args.length == 2) {
-                    if (r.makeAction()) {
-                        if (!a.equals(r.getAsteroid())) {
-                            control.output.println(Entities.robot + " " + args[1] + Commands.moved + control.reverseIDs.get(r.getAsteroid()));
-                            return;
-                        }
-                        if (shell != r.getAsteroid().getShell()) {
-                            control.output.println(Entities.robot + args[1] + Commands.drilled + control.reverseIDs.get(a) + " shell is now " + r.getAsteroid().getShell());
-                            return;
-                        }
-                    } else {
-                        control.output.println(Entities.robot + " " + args[1] + " couldn't make action");
-                    }
-                    return;
-                }
-                if (args[2].equals(Commands.drill)) {
-                    if (r.drill())
-                        control.output.println(Entities.robot + " " + args[1] + Commands.drilled +
-                                control.reverseIDs.get(r.getAsteroid()) + "shell is now" + r.getAsteroid().getShell());
-                    else
-                        control.output.println(Entities.robot + " " + args[1] + " couldn't drill");
-                }
-                if (args[2].equals("move")) {
-                    if (args.length < 4) {
-                        if (a.getNeighbourCount() == 0) {
-                            control.output.println(Entities.robot + " " + args[1] + Commands.couldNotMove);
-                            return;
-                        }
-                        int randNeighbour = rand.nextInt(a.getNeighbourCount()) - 1;
-                        if (r.move(randNeighbour)) {
-                            control.output.println(Entities.robot + " " + args[1] + Commands.moved + control.reverseIDs.get(r.getAsteroid()));
-                        } else {
-                            control.output.println("robot couldn't move");
-                        }
-                        return;
-                    }
-                    int i = Integer.parseInt(args[3]) - 1;
-                    if (r.move(i))
-                        control.output.println(Entities.robot + " " + args[1] + Commands.moved + control.reverseIDs.get(r.getAsteroid()));
-                    else
-                        control.output.println("robot couldn't move");
-                }
+                randomRobotAction(args, control);
             } else {
-                if (args.length < 3) {
-                    control.output.println(Commands.mustBeSpecified);
-                    return;
-                }
-                model.Robot r = (model.Robot) control.IDs.get(args[1]);
-                if (args[2].equals("drill")) {
-                    if (r.drill())
-                        control.output.println(Entities.robot + " " + args[1] + Commands.drilled +
-                                control.reverseIDs.get(r.getAsteroid()) + "shell is now" + r.getAsteroid().getShell());
-                    else
-                        control.output.println(Entities.robot + " " + args[1] + " couldn't drill");
-                }
-                if (args[2].equals("move")) {
-                    if (args.length < 4) {
-                        control.output.println(Commands.mustBeSpecified);
-                        return;
-                    }
-                    int i = Integer.parseInt(args[3]) - 1;
-                    if (r.move(i))
-                        control.output.println(Entities.robot + " " + args[1] + Commands.moved + control.reverseIDs.get(r.getAsteroid()));
-                    else
-                        control.output.println(Entities.robot + " " + args[1] + Commands.couldNotMove);
-                }
+                notRandomRobotAction(args, control);
             }
         }
     }

@@ -160,39 +160,34 @@ public class Game {
         for (Settler s1 : settlers) {
             Asteroid currAsteroid = s1.getAsteroid();
             List<Mineral> backpack = s1.getMinerals();
-            for (Mineral backPackItem : backpack) {
-                for (int i = 0; i < allMineralCount; i++) {
-                    if (backPackItem.toString().equals(allMinerals.get(i).toString()) ||
-                            (backPackItem.toString().contains(uranium) && allMinerals.get(i).toString().contains(uranium))) {
-                        counter[i]++;
-                    }
-                }
-            }
+            checkMineralsInBackpack(counter, backpack);
             for (Settler s2 : settlers) {
                 if (!s1.equals(s2) && currAsteroid.equals(s2.getAsteroid())) {
                     backpack = s2.getMinerals();
-                    for (Mineral backPackItem : backpack) {
-                        for (int i = 0; i < allMineralCount; i++) {
-                            if (backPackItem.toString().equals(allMinerals.get(i).toString()) ||
-                                    (backPackItem.toString().contains(uranium) && allMinerals.get(i).toString().contains(uranium))) {
-                                counter[i]++;
-                            }
-                        }
-                    }
+                    checkMineralsInBackpack(counter, backpack);
                 }
             }
-            for (int i = 0; i < allMineralCount; i++) {
-                if (counter[i] < 3) {
-                    break;
-                }
-                if (i == allMineralCount - 1) {
-                    gameEnd = true;
-                    return true;
-                }
+            int i = 0;
+            while (i < allMineralCount && counter[i] >= 3)
+                i++;
+            if (i >= allMineralCount){
+                gameEnd = true;
+                return true;
             }
-
         }
         return false;
+    }
+
+    private void checkMineralsInBackpack(int[] counter, List<Mineral> backpack) {
+        List<Mineral> allMinerals = Mineral.getAllMinerals();
+        for (Mineral backPackItem : backpack) {
+            for (int i = 0; i < allMinerals.size(); i++) {
+                if (backPackItem.toString().equals(allMinerals.get(i).toString()) ||
+                        (backPackItem.toString().contains(uranium) && allMinerals.get(i).toString().contains(uranium))) {
+                    counter[i]++;
+                }
+            }
+        }
     }
 
     /**

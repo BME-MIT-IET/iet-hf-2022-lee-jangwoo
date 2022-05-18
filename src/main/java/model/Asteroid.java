@@ -226,8 +226,10 @@ public class Asteroid implements INeighbour {
      */
     @Override
     public void solarWind(int i) {
-        if (core != null || shell != 0)
-            for (Traveller traveller : travellers) traveller.die();
+        if (core != null || shell != 0) {
+            for (int j = 0; j < travellers.size(); ++j)
+                travellers.get(0).die();
+        }
         if (i > 0)
             for (INeighbour neighbour : neighbours) neighbour.solarWind(i - 1);
     }

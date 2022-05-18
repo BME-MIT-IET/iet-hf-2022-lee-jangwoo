@@ -344,12 +344,10 @@ public class LevelView extends JPanel implements View {
         for (TravellerView tv : travellerViews){
             boolean didIdentify = false;
             for (Settler s : settlers) {
-                if (didIdentify) break;
-                didIdentify = tv.identify(s);
+                didIdentify = didIdentify || tv.identify(s);
             }
             for (UFO u : UFOs) {
-                if (didIdentify) break;
-                didIdentify = tv.identify(u);
+                didIdentify = didIdentify || tv.identify(u);
             }
             for (Robot r : robots) {
                 if (didIdentify) break;
