@@ -38,8 +38,8 @@ public class UFOView extends TravellerView {
     public void Update() {
         Asteroid a = ufo.getAsteroid();
         AsteroidView av = levelView.getAsteroidView(a);
-        x = av.getTravellerX(ufo);
-        y = av.getTravellerY(ufo);
+        x = av.getTravellerX();
+        y = av.getTravellerY();
     }
 
     /**
