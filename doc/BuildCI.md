@@ -1,0 +1,6 @@
+## 1. feladat Build keretrendszer + CI beüzemelése
+A projekt nem használt eredetileg semmilyen build keretrendszert. Java alapú a projekt, tehát elsősorban a Maven és Gradle közül válaszhattunk.
+**Gradle** build keretrendszert használtunk, mert ez újabb és már több Java és Kotlin projektnél használtuk. Ehhez a projektet át kellett alakítani. Meg kellett változtatni a mappaszerkezetet és létre kellett hozni a Gradle-hez szükséges fájlokat.
+**Github Actions** a használt CI eszköz, ehhez a gradle.yml fájlban találhatóak a beállítások. Megnéztünk más opciókat is (pl.: Travis, ami fizetős volt), de a Github Actions-nél maaradtunk, mert ez volt könnyen beüzemelhető a projekthez.
+Eredmény: A Gradle build lefut minden main branchre érkező push-nál és pull request-nél. A későbbi feladatoknál nagy előny volt, hogy látszott, hogy egy újabb commit után is lefordul-e a kód, így az időközben belekerült hibákat könnyebben észre tudtuk venni. A későbbi SonarCloud integrációhoz is elengedhetetlen volt, hogy legyen valamilyen CI. A Cucumber használatában is sokat segített a Gradle, mert automatikusan behúzta a szükséges dependenciákat.
+Tanulság: Minden új projektnél nagyon fontos lenne egy CI használata, mert megkönnyíti a munkát. A Gradle használatáról sokat tanultunk. Fontos jól megválasztani és összenézni a használt Java és Gradle verziókat.
