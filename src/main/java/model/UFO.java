@@ -1,6 +1,7 @@
 package model;
+
 /**
- * A Traveller leszármazottja. Képes bányászni és mozogni. Felelõssége csinálnia ezek közül
+ * A model.Traveller leszármazottja. Képes bányászni és mozogni. Felelõssége csinálnia ezek közül
  * valamit körönként. Meg kell halnia, ha napszél éri, vagy ha felrobban az aszteroidája.
  *
  */
@@ -9,14 +10,14 @@ public class UFO extends Traveller {
 	/**
      * Konstruktor amely a traveller ősre meghívja a konstruktort
      * @param a az aszteroida ahol az objektum lesz.
-     * @apram g a játék, amelyben az ufó van.
+     * @param g a játék, amelyben az ufó van.
      */
     public UFO(Asteroid a, Game g) {
         super(a, g);
     }
 
     /**
-     * Az UFO-t radioaktív robbanás éri, amitõl meghal.
+     * Az model.UFO-t radioaktív robbanás éri, amitõl meghal.
      */
     @Override
     public void hitByBlast() {
@@ -24,7 +25,7 @@ public class UFO extends Traveller {
     }
 
     /**
-     * Az UFO meghal. Ekkor eltávolítjuk az aszteroida és a game tárolóiból.
+     * Az model.UFO meghal. Ekkor eltávolítjuk az aszteroida és a game tárolóiból.
      */
     @Override
     public void die() {
@@ -33,7 +34,7 @@ public class UFO extends Traveller {
     }
 
     /**
-     * makeAction függvény: vagy mozog, vagypedig bányászik az UFO.
+     * makeAction függvény: vagy mozog, vagypedig bányászik az model.UFO.
      * ha a generált random igaz, akkor bányászik, egyébként pedig 
      * mozog az aszteroidájának egy random szomszédjára.
      */
@@ -49,7 +50,7 @@ public class UFO extends Traveller {
     }
 
     /**
-     * Az UFO kiüríti az aszteroidát, amin tartózkodik, és eldobja annak magját eltárolás nélkül.
+     * Az model.UFO kiüríti az aszteroidát, amin tartózkodik, és eldobja annak magját eltárolás nélkül.
      */
     public void mine(){
         asteroid.onMine();

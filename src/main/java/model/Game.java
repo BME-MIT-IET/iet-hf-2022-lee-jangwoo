@@ -1,11 +1,12 @@
 package model;
+
 import java.util.*;
 
 /**
- * A telepesek, robotok, UFO-k és a nap nyilvántartója.
- * A telepesek, robotok és UFO-k listáját menedzseli. Ha
+ * A telepesek, robotok, model.UFO-k és a nap nyilvántartója.
+ * A telepesek, robotok és model.UFO-k listáját menedzseli. Ha
  * új robot jön létre, fel kell vennie a nyilvántartásba.
- * Felelõssége inicializálni a telepeseket, UFO-kat, az
+ * Felelõssége inicializálni a telepeseket, model.UFO-kat, az
  * aszteroidákat. A játék végét ellenõrzõ metódusokért is õ felel.
  */
 public class Game {
@@ -22,10 +23,10 @@ public class Game {
     /**
      * A játékban lévõ robotok listája.
      */
-    private List<Robot> robots = new ArrayList<>();
+    private final List<Robot> robots = new ArrayList<>();
 
     /**
-     * A játékban lévõ UFO-k listája.
+     * A játékban lévõ model.UFO-k listája.
      */
     private List<UFO> UFOs = new ArrayList<>();
 
@@ -37,19 +38,19 @@ public class Game {
     /**
      * A játékban lévő lehelyezett teleportkapuk. Amik a játékos zsebében vannak, azokat is tárolja.
      */
-    private List<Teleport> gates = new ArrayList<>();
+    private final List<Teleport> gates = new ArrayList<>();
 
     /**
      * Random objektum.
      */
     public static final Random rand = new Random();
 
-    private static String uranium = "uranium";
+    private static final String uranium = "uranium";
 
     /**
-     * Konstruktor, meghívja a Mineral osztály egy statikus függvényét,
+     * Konstruktor, meghívja a model.Mineral osztály egy statikus függvényét,
      * amely azért fontos, mert ez inicializálja, hogy mely nyersanyagok
-     * vesznek részt a játékban. A nyersanyagok típusai fontosak a Game
+     * vesznek részt a játékban. A nyersanyagok típusai fontosak a model.Game
      * szempontjából, hogy el tudja dönteni, a játékosok megnyerték-e a játékot,
      * ezért mindig inicializáltnak kell lennie.
      * Létrehozza a napot is, amely elengedhetetlen egy játékhoz.
@@ -89,8 +90,8 @@ public class Game {
 
     /**
      * Új játék inicializálását végző segédfüggvény. Létrehozza a paraméterben
-     * megkapott számú telepest, UFO-t, aszteroidát. Létrehoz egy új nap objektumot,
-     * melynek odaadja az elkészített aszteroidákat. A telepeseket és az UFO-kat
+     * megkapott számú telepest, model.UFO-t, aszteroidát. Létrehoz egy új nap objektumot,
+     * melynek odaadja az elkészített aszteroidákat. A telepeseket és az model.UFO-kat
      * elhelyezi randomzizált aszteroidákon. Az aszteroidáknak randomizált
      * nagyságú kérget ad, random nyersanyagot ad nekik (vagy üregest állít be),
      * és beállítja a szomszédságukat is.
@@ -144,7 +145,7 @@ public class Game {
      * az adott telepes hátizsákját, és az azon az aszteroidán lévő
      * másik telepesek hátizsákját is. Ha nincs meg a megfelelő számú
      * és típusú nyersanyag, megy a következő telepes aszteroidájára.
-     * Az ellenőrzést a Mineral osztály statikus allMinerals listája
+     * Az ellenőrzést a model.Mineral osztály statikus allMinerals listája
      * segíti. Ebben tárol a játék elejétől fogva elérhető
      * nyersanyagokból egy-egy példányt. Ha megnyerték a játékot,
      * beállítja az endgame változót igazra.
@@ -159,39 +160,34 @@ public class Game {
         for (Settler s1 : settlers) {
             Asteroid currAsteroid = s1.getAsteroid();
             List<Mineral> backpack = s1.getMinerals();
-            for (Mineral backPackItem : backpack) {
-                for (int i = 0; i < allMineralCount; i++) {
-                    if (backPackItem.toString().equals(allMinerals.get(i).toString()) ||
-                            (backPackItem.toString().contains(uranium) && allMinerals.get(i).toString().contains(uranium))) {
-                        counter[i]++;
-                    }
-                }
-            }
+            checkMineralsInBackpack(counter, backpack);
             for (Settler s2 : settlers) {
                 if (!s1.equals(s2) && currAsteroid.equals(s2.getAsteroid())) {
                     backpack = s2.getMinerals();
-                    for (Mineral backPackItem : backpack) {
-                        for (int i = 0; i < allMineralCount; i++) {
-                            if (backPackItem.toString().equals(allMinerals.get(i).toString()) ||
-                                    (backPackItem.toString().contains(uranium) && allMinerals.get(i).toString().contains(uranium))) {
-                                counter[i]++;
-                            }
-                        }
-                    }
+                    checkMineralsInBackpack(counter, backpack);
                 }
             }
-            for (int i = 0; i < allMineralCount; i++) {
-                if (counter[i] < 3) {
-                    break;
-                }
-                if (i == allMineralCount - 1) {
-                    gameEnd = true;
-                    return true;
-                }
+            int i = 0;
+            while (i < allMineralCount && counter[i] >= 3)
+                i++;
+            if (i >= allMineralCount){
+                gameEnd = true;
+                return true;
             }
-
         }
         return false;
+    }
+
+    private void checkMineralsInBackpack(int[] counter, List<Mineral> backpack) {
+        List<Mineral> allMinerals = Mineral.getAllMinerals();
+        for (Mineral backPackItem : backpack) {
+            for (int i = 0; i < allMinerals.size(); i++) {
+                if (backPackItem.toString().equals(allMinerals.get(i).toString()) ||
+                        (backPackItem.toString().contains(uranium) && allMinerals.get(i).toString().contains(uranium))) {
+                    counter[i]++;
+                }
+            }
+        }
     }
 
     /**
@@ -199,7 +195,7 @@ public class Game {
      * Ha már nincsen telepes játékban (mindegyik meghalt),
      * elvesztették, egyébként folytatódik a játék.
      *
-     * @return
+     * @return vesztettek-e
      */
     public boolean checkLose() {
         gameEnd = true;
@@ -246,7 +242,7 @@ public class Game {
     /**
      * UFOs változó gettere.
      *
-     * @return visszaadja az UFO-k listáját.
+     * @return visszaadja az model.UFO-k listáját.
      */
     public List<UFO> getUFOs() {
         return UFOs;
@@ -299,9 +295,9 @@ public class Game {
     }
 
     /**
-     * Hozzáad egy UFO-t az UFOs listához, ha még nem szerepel benne.
+     * Hozzáad egy model.UFO-t az UFOs listához, ha még nem szerepel benne.
      *
-     * @param ufo a paraméterül kapott UFO-t teszi be a listába.
+     * @param ufo a paraméterül kapott model.UFO-t teszi be a listába.
      */
     public void addUFO(UFO ufo) {
         if (!UFOs.contains(ufo))
@@ -309,9 +305,9 @@ public class Game {
     }
 
     /**
-     * Kiveszi a paraméterül kapott UFO-t a UFOs listából.
+     * Kiveszi a paraméterül kapott model.UFO-t a UFOs listából.
      *
-     * @param ufo a kivevendő UFO objektum.
+     * @param ufo a kivevendő model.UFO objektum.
      */
     public void removeUFO(UFO ufo) {
         UFOs.remove(ufo);

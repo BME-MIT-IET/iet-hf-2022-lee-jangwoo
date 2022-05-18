@@ -4,4 +4,4 @@ shell: 10
 closetosun: no
 core: iron
 ufo u2 added to asteroid: a5
-UFO u2 couldn't move
+model.UFO u2 couldn't move

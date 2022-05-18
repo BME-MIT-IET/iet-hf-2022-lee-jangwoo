@@ -1,11 +1,11 @@
 package view;
 
-import controller.Control;
-import model.Game;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+
+import controller.Control;
+import model.Game;
 
 /**
  * A levelview �s az inventoryview paneleket tartalmazza. A men�t is tartalmazza.
@@ -29,7 +29,7 @@ public class GameFrame extends JFrame {
     /**
      * Az esem�nykezel�, akit ismer.
      */
-    private ActionListener actionListener;
+    private transient ActionListener actionListener;
 
     /**
      * Inicializ�lja a men�t a megfelel�men�pontokkal.
@@ -45,7 +45,7 @@ public class GameFrame extends JFrame {
         temp.setActionCommand("save");
         temp.addActionListener(actionListener);
         file.add(temp);
-        temp = new JMenuItem("New Game");
+        temp = new JMenuItem("New model.Game");
         temp.setActionCommand("newgame");
         temp.addActionListener(actionListener);
         file.add(temp);
@@ -75,7 +75,7 @@ public class GameFrame extends JFrame {
     public GameFrame(Control c, Game game) {
         super();
         actionListener = c;
-        setTitle("Asteroid Game");
+        setTitle("model.Asteroid model.Game");
         initMenu();
         setJMenuBar(menuB);
         setMinimumSize(new Dimension(1000, 600));

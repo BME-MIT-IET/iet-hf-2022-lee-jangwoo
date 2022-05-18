@@ -1,12 +1,12 @@
 package view;
 
-import model.*;
 import java.awt.*;
-import java.util.*;
-import javax.swing.*;
-import java.math.*;
 import java.util.List;
-import java.util.logging.Level;
+
+import model.Asteroid;
+import model.Traveller;
+import model.Mineral;
+import model.INeighbour;
 
 import static java.lang.Math.pow;
 
@@ -87,7 +87,7 @@ public class AsteroidView implements View {
 
     /**
      * Elkéri az asteroid-tól a szomszédait a
-     * getNeighbours metódussal. Ezen az INeighbour listán végigiterál, és ha ez
+     * getNeighbours metódussal. Ezen az model.INeighbour listán végigiterál, és ha ez
      * megegyezik a paraméterül kapott a aszteroidával, akkor igazzal tér vissza, egyébként
      * hamissal.
      * @param a A kérdezett aszteroida.

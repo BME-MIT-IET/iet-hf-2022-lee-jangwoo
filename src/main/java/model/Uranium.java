@@ -1,8 +1,5 @@
 package model;
 
-import model.Asteroid;
-import model.Mineral;
-
 /**
  * Az urán nyersanyagot reprezentálja. Az aszteroidát fel kell robbantania, 
  * ha meghívják a függvényét és a számlálója eléri a 3-at. Használható Robotok és
@@ -48,7 +45,7 @@ public class Uranium extends Mineral {
      */
     @Override
     public String toString() { 
-    	return "uranium("+String.valueOf(exposedToSunCounter)+")";
+    	return "uranium("+ exposedToSunCounter +")";
     }
 
 }

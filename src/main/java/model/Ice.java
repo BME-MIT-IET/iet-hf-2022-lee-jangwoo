@@ -19,6 +19,7 @@ public class Ice extends Mineral {
      * a removeMineral függvényt, ezzel eltávolítva annak magját.
      * @param a a nyersanyag aszteroidája, amely magját eltávolítja.
      */
+    @Override
     public void exposedToSun(Asteroid a) {
         a.removeMineral();
     }

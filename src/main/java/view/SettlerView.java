@@ -1,7 +1,9 @@
 package view;
-import model.*;
 
 import java.awt.*;
+import model.Settler;
+import model.Asteroid;
+import model.Traveller;
 
 /**
  * Az osztály felelőssége, hogy az általa mutatott telepes objektumhoz tartozó képernyő koordinátákat eltárolja,
@@ -36,6 +38,7 @@ public class SettlerView extends TravellerView {
      * Amennyiben az active attribútuma true, egy sárga keretet rajzol a négyzete köré.
      * @param g Graphics típusú objektum a rajzoláshoz.
      */
+    @Override
     public void draw(Graphics g) {
     	//ez eleg fapados igy tudom, atirhatjuk de igy h nem fut a kod meg nem mertem borderrel------------------------------
     	if (active) {
@@ -55,6 +58,7 @@ public class SettlerView extends TravellerView {
      * A kapott view.AsteroidView objektumra meghívja a getTravellerX és Y metódusokat magát adva paraméterül,
      * majd a kapott értékeket beírja az x és y attribútumaiba.
      */
+    @Override
     public void Update() {
         Asteroid a = settler.getAsteroid();
         AsteroidView av = levelView.getAsteroidView(a);
@@ -76,6 +80,7 @@ public class SettlerView extends TravellerView {
      * @param t a model.Traveller, amivel összehasonlítjuk.
      * @return igaz vagy hamis aszerint, hogy a paraméterben megadott traveller megegyezik-e this objektummal.
      */
+    @Override
     public boolean identify(Traveller t) {
         return t == settler;
     }

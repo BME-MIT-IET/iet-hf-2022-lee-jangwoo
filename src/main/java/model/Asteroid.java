@@ -30,12 +30,12 @@ public class Asteroid implements INeighbour {
      * Az aszteroida szomszédainak listája, ezen keresztül tudja értesíteni őket felrobbanásakor.
      * Valamint létezése lehetővé teszi, hogy az utazó lekérje egy szomszédját.
      */
-    private List<INeighbour> neighbours = new ArrayList<>();
+    private final List<INeighbour> neighbours = new ArrayList<>();
 
     /**
      * Az aszteroidán lévő utazók listája. Ezen keresztül értesíti őket az azteroida, ha napszél éri, vagy felrobban.
      */
-    private List<Traveller> travellers = new ArrayList<>();
+    private final List<Traveller> travellers = new ArrayList<>();
     
     /**
      * Mielőtt az aszteroida felrobban értesíti a napot, hogy fel fog robbanni.
@@ -229,12 +229,12 @@ public class Asteroid implements INeighbour {
      */
     @Override
     public void solarWind(int i) {
-        if (core != null || shell != 0)
-        	for (int j = 0; j < travellers.size(); j++)
-        		travellers.get(j).die();
+        if (core != null || shell != 0) {
+            for (int j = 0; j < travellers.size(); ++j)
+                travellers.get(0).die();
+        }
         if (i > 0)
-        	for (int j = 0; j < neighbours.size(); j++)
-        		neighbours.get(j).solarWind(i - 1);
+            for (INeighbour neighbour : neighbours) neighbour.solarWind(i - 1);
     }
 
     /**

@@ -1,6 +1,5 @@
 package model;
 
-
 /**
  * Absztrakt oszt�ly. Felel�ss�ge nyilv�ntartani a jelenlegi aszteroid�j�t, 
  * �s egy model.Game objektumot. Biztos�tania kell virtu�lis f�ggv�nyeket a t�le
@@ -13,7 +12,7 @@ public abstract class Traveller {
      * @param a traveller helye
      * @param g a j�t�k amelyben a traveller van
      */
-    public Traveller(Asteroid a, Game g) {
+    protected Traveller(Asteroid a, Game g) {
         a.placeTraveller(this);
         asteroid = a;
         setGame(g);

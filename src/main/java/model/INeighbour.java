@@ -1,34 +1,34 @@
 package model;
 
 /**
- * Interf�szt biztos�t az Aszteroida �s model.Teleport oszt�lyoknak. Ezzel val�sul meg a telepes vagy robot
- * mozgat�sa aszteroid�r�l aszteroid�ra ak�r teleporton kereszt�l, vagy an�lk�l. Ennek seg�ts�g�vel van ki�p�tve az 
- * aszteroid�k �s teleportkapuk szomsz�ds�gi h�l�ja. Seg�ts�g�vel el lehet t�vol�tani szomsz�dokat. Tudja napsz�l �rni.
+ * Interfészt biztosít az Aszteroida és model.Teleport osztályoknak. Ezzel valósul meg a telepes vagy robot
+ * mozgatása aszteroidáról aszteroidára akár teleporton keresztül, vagy anélkül. Ennek segítségével van kiépítve az 
+ * aszteroidák és teleportkapuk szomszédsági hálója. Segítségével el lehet távolítani szomszédokat. Tudja napszél érni.
  */
 public interface INeighbour {
 
     /**
-     * �thelyezi a traveller-t egy m�sik aszteroid�ra, kifejt�se az egyes interf�sz megval�s�t�sokn�l.
-     * @param traveller - az �thelyezend? traveller
+     * Áthelyezi a traveller-t egy másik aszteroidára, kifejtése az egyes interfész megvalósításoknál.
+     * @param traveller - az áthelyezend? traveller
      */
     void placeTraveller(Traveller traveller);
 
     /**
-     * Egy szomsz�d megsz�n�s�r�l �rtes�t, kifejt�se az egyes interf�sz megval�s�t�sokn�l.
+     * Egy szomszéd megszûnésérõl értesít, kifejtése az egyes interfész megvalósításoknál.
      * @param neighbour a megsz?n? neighbour	
      */
     void removeNeighbour(INeighbour neighbour);
     
     /**
-     * A napsz�lr�l �rtes�tik ezzel egym�st a megval�s�tott interf�szek.
-     * @param i napsz�l m�lys�ge (hogy mekkora ter�letet �r majd el)
+     * A napszélrõl értesítik ezzel egymást a megvalósított interfészek.
+     * @param i napszél mélysége (hogy mekkora területet ér majd el)
      */
     void solarWind(int i);
 
     /**
-     * A teleport mozgat�s��rt felel�s met�dus
-     * @param t a mozgatand� teleport
-     * @return a mozgat�s sikeress�ge
+     * A teleport mozgatásáért felelõs metódus
+     * @param t a mozgatandó teleport
+     * @return a mozgatás sikeressége
      */
     boolean moveTeleport(Teleport t);
 }

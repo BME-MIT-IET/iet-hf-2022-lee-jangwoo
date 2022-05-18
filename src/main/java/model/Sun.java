@@ -1,4 +1,5 @@
 package model;
+
 import java.util.*;
 
 /**
@@ -11,7 +12,7 @@ public class Sun {
      * Default constructor
      */
     public Sun() {
-        asteroids = new ArrayList<Asteroid>();
+        asteroids = new ArrayList<>();
     }
 
     /**
@@ -22,7 +23,7 @@ public class Sun {
     /**
      * Random objektum.
      */
-    private Random rand = new Random();
+    private final Random rand = new Random();
 
     /**
      * Ha napvihar a random feltétel igaz, akkor egy random aszteroidára meghívja a solarWind metódust. 
@@ -34,9 +35,9 @@ public class Sun {
         if(rand.nextInt() % 5 == 0) {
         	asteroids.get(rand.nextInt(asteroids.size())).solarWind(rand.nextInt()%5+1);
         }
-        for(int i = 0; i < asteroids.size(); i++) {
-            if(rand.nextInt() % 2 == 1) {
-                asteroids.get(i).setCloseToSun();
+        for (Asteroid asteroid : asteroids) {
+            if (rand.nextInt() % 2 == 1) {
+                asteroid.setCloseToSun();
             }
         }
     }

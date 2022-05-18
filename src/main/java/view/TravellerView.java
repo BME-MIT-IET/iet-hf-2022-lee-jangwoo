@@ -2,6 +2,7 @@ package view;
 
 import model.*;
 import java.awt.*;
+import model.Traveller;
 
 /**
  * Az absztrakt osztály felelőssége, hogy a belőle leszármazó objektumoknak egy közös őst biztosítson,
@@ -13,7 +14,7 @@ public abstract class TravellerView implements View {
     /**
      * Default constructor
      */
-    public TravellerView(LevelView lv) {
+    protected TravellerView(LevelView lv) {
         levelView = lv;
     }
 

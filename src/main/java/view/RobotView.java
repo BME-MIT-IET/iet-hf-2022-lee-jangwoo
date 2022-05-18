@@ -1,9 +1,9 @@
 package view;
 
-import model.*;
-import model.Robot;
-
 import java.awt.*;
+import model.Robot;
+import model.Traveller;
+import model.Asteroid;
 
 /**
  * Az osztály felelőssége, hogy az általa mutatott robot objektumhoz tartozó képernyő koordinátákat eltárolja,
@@ -31,6 +31,7 @@ public class RobotView extends TravellerView {
      * Négyzetet rajzol model.Robot-nak megfelelő módon (szürke) az örökölt x,y attribútumok szerinti koordinátákra.
      * @param g Graphics típusú objektum a rajzoláshoz.
      */
+    @Override
     public void draw(Graphics g) {
     	g.setColor(new Color(102, 102, 102));
         g.fillRect(x, y, 16, 16);
@@ -42,6 +43,7 @@ public class RobotView extends TravellerView {
      * A kapott view.AsteroidView objektumra meghívja a getTravellerX és Y metódusokat magát adva paraméterül,
      * majd a kapott értékeket beírja az x és y attribútumaiba.
      */
+    @Override
     public void Update() {
         Asteroid a = robot.getAsteroid();
         AsteroidView av = levelView.getAsteroidView(a);
@@ -55,6 +57,7 @@ public class RobotView extends TravellerView {
      * @param t a model.Traveller, amivel összehasonlítjuk.
      * @return igaz vagy hamis aszerint, hogy a paraméterben megadott traveller megegyezik-e this objektummal.
      */
+    @Override
     public boolean identify(Traveller t) {
         return t == robot;
     }

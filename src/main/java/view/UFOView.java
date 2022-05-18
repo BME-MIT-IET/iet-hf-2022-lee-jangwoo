@@ -1,8 +1,10 @@
 package view;
 
-import model.*;
-
 import java.awt.*;
+
+import model.UFO;
+import model.Asteroid;
+import model.Traveller;
 
 /**
  * Az osztály felelőssége, hogy az általa mutatott model.UFO objektumhoz tartozó képernyő koordinátákat eltárolja,
@@ -32,10 +34,11 @@ public class UFOView extends TravellerView {
      * A kapott view.AsteroidView objektumra meghívja a getTravellerX és Y metódusokat magát adva paraméterül,
      * majd a kapott értékeket beírja az x és y attribútumaiba.
      */
+    @Override
     public void Update() {
         Asteroid a = ufo.getAsteroid();
         AsteroidView av = levelView.getAsteroidView(a);
-        x = av.getTravellerX(this.ufo);
+        x = av.getTravellerX(ufo);
         y = av.getTravellerY();
     }
 
@@ -45,6 +48,7 @@ public class UFOView extends TravellerView {
      * @param t a model.Traveller, amivel összehasonlítjuk.
      * @return igaz vagy hamis aszerint, hogy a paraméterben megadott traveller megegyezik-e this objektummal.
      */
+    @Override
     public boolean identify(Traveller t) {
         return t == ufo;
     }
@@ -53,6 +57,7 @@ public class UFOView extends TravellerView {
      * Négyzetet rajzol model.UFO-nak megfelelő módon (zöld) az örökölt x,y attribútumok szerinti koordinátákra.
      * @param g Graphics típusú objektum a rajzoláshoz.
      */
+    @Override
     public void draw(Graphics g){
     	g.setColor(new Color(1, 255, 55));
         g.fillRect(x, y, 16, 16);

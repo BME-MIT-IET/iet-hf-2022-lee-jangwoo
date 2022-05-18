@@ -1,9 +1,8 @@
 package view;
 
-import model.*;
-
 import javax.swing.*;
 import java.awt.*;
+import model.Teleport;
 
 /**
  * Egy teleportkapuhoz tartoz� gomb. A teleportkapu-p�roknak megfelel� sz�n�.
@@ -13,7 +12,7 @@ public class TeleportButton extends JButton {
     /**
      * A teleportkapu, akit ismer.
      */
-    private Teleport teleport;
+    private transient Teleport teleport;
 
     private LevelView levelView;
 

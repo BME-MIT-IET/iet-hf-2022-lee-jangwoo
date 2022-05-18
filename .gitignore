@@ -5,6 +5,7 @@
 target
 org.jetbrains.plugins.cucumber.java.run.CucumberJvmSMFormatter
 build
+.idea
 *.py
 de_facto_output_files/output_12.txt
 de_facto_output_files/output_13.txt

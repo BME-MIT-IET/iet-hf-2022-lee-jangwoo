@@ -1,9 +1,9 @@
 package view;
 
-import model.*;
-
 import javax.swing.*;
 import java.awt.*;
+
+import model.Mineral;
 
 /**
  * Egy nyersanyaghoz tartoz� gomb. A nyersanyagnak megfelel� sz�n�.
@@ -13,7 +13,7 @@ public class MineralButton extends JButton {
     /**
      * A nyersanyag, amit ismer.
      */
-    private Mineral mineral;
+    private transient Mineral mineral;
 
     /**
      * Inicializ�lja a gomb m�reteit.
