@@ -307,7 +307,7 @@ public class Control implements ActionListener, MouseListener{
     /**
      * Interfész, amely a parancsok számára készült. A parancsok ezt implementálják.
      */
-    private interface Command {
+    public interface Command {
         /**
          * A parancsot v?grehajt? f?ggv?ny.
          *
