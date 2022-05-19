@@ -1667,7 +1667,7 @@ public class Control implements ActionListener, MouseListener{
         public void execute(String[] args, Control control) {
             if (control.game.checkWin()) {
                 control.output.println("control.game won");
-                JOptionPane.showMessageDialog(null, "model.Game won!");
+                JOptionPane.showMessageDialog(null, "Game won!");
             } else {
                 control.output.println("win conditions not met");
                 JOptionPane.showMessageDialog(null, "Win conditions not met!");
@@ -1688,7 +1688,7 @@ public class Control implements ActionListener, MouseListener{
         public void execute(String[] args, Control control) {
             if (control.game.checkLose()) {
                 control.output.println("control.game lost");
-                JOptionPane.showMessageDialog(null, "model.Game lost!");
+                JOptionPane.showMessageDialog(null, "Game lost!");
             } else {
                 control.output.println("losing conditions not met");
                 JOptionPane.showMessageDialog(null, "Losing conditions not met!");

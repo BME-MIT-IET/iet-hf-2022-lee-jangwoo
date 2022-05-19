@@ -77,10 +77,10 @@ public class InventoryView extends JPanel {
         Mine = new JButton("Mine");
         Mine.addActionListener(c);
         Mine.setActionCommand("mine");
-        CraftTeleport = new JButton("Craft model.Teleport");
+        CraftTeleport = new JButton("Craft Teleport");
         CraftTeleport.addActionListener(c);
         CraftTeleport.setActionCommand("craftteleport");
-        CraftRobot = new JButton("Craft model.Robot");
+        CraftRobot = new JButton("Craft Robot");
         CraftRobot.addActionListener(c);
         CraftRobot.setActionCommand("craftrobot");
 

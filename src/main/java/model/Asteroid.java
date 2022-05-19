@@ -11,7 +11,7 @@ import java.util.*;
  * Nyilván kell tartania szomszédait (ezek lehetnek aszteroidák és teleportkapuk), és vissza is kell adnia
  * egy szomszédjának objektumát, ha az utazó mozogni szeretne. Ha napközelben van és felszínre kerül a nyersanyag,
  * akkor ezt jeleznie kell a nyersanyag felé.
- * Megvalósítja az model.INeighbour interfészt (ahogy a model.Teleport osztály is).
+ * Megvalósítja az model.INeighbour interfészt (ahogy a Teleport osztály is).
  */
 public class Asteroid implements INeighbour {
 
