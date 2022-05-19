@@ -85,47 +85,47 @@
 
 Before save:
 
-![](test_15_before.png)
+![](test_15_before.PNG)
 
 After load:
 
-![](test_15_after.png)
+![](test_15_after.PNG)
 
 **#500:**
 
 Check win output:
 
-![](issue_500.png)
+![](issue_500.PNG)
 
 **#501:**
 
 UI:
 
-![](issue_501_ui.png)
+![](issue_501_ui.PNG)
 
 Console:
 
-![](issue_501_console.png)
+![](issue_501_console.PNG)
 
 **#1000:**
 
 Frozen: 
 
-![](bug_1000_frozen.png)
+![](bug_1000_frozen.PNG)
 
 Window resize:
 
-![](bug_1000.png)
+![](bug_1000.PNG)
 
 Exception:
 
-![](bug_1000_exception.png)
+![](bug_1000_exception.PNG)
 
 **#1001:**
 
 Console:
 
-![](bug_1001.png)
+![](bug_1001.PNG)
 
 ## Issues
 > Starting from #500
